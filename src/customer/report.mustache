@@ -1,0 +1,1823 @@
+{{=<< >>=}}
+\documentclass[11pt]{article}
+
+\usepackage{lpic} % used to put text over title page graphic
+\usepackage{geometry} % full page
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{tocloft}
+\usepackage{multicol}
+\usepackage{indentfirst}
+\usepackage{tablefootnote}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{nameref}
+\usepackage{textcmds}
+\usepackage{hanging}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
+%%%% Creats table header command %%%%%
+\newcommand*{\thead}[1]{\multicolumn{1}{c}{\rule{0pt}{15pt}\cellcolor{table-header}{\color{dhs-white}\large \textbf{#1}}}}
+\def \headerHeight {3pt}
+
+%%%% Sets table line size %%%%%
+\arrayrulewidth=1pt
+
+%\usepackage{color}
+
+%%%% Sets up links and there color %%%%
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    linkcolor={black},
+    citecolor={blue},
+    urlcolor={blue}
+}
+
+%% Sets up boolean for control of what sections show %%%%
+\usepackage{ifthen}
+\newboolean{labels}
+\setboolean{labels}{<<Labels_bool>>}
+
+\newboolean{reports}
+\setboolean{reports}{<<User_Report_bool>>}
+
+\newboolean{recon}
+\setboolean{recon}{<<Email_Recon_bool>>}
+
+\newboolean{multiple_clicks}
+\setboolean{multiple_clicks}{<<Multiple_Clicks>>}
+
+%%%%% Sets the fonts %%%%
+\usepackage{fontspec}
+\fontspec [Path = assets/fonts/ ]
+{Franklin Gothic.ttf}
+
+\setmainfont[Path = assets/fonts/,
+	BoldFont = *-Bold,
+	BoldFeatures={SizeFeatures={Size=10}},
+	ItalicFont= *-Italic,
+	BoldItalicFont = *-BoldItalic,
+	%BoldItalicFeatures={SizeFeatures={Size=10}}
+	]{Franklin Gothic.ttf}
+
+\setlength{\parskip}{12pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Custom Table Columns
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{array,ragged2e}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Setting Caption formatting.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{caption}
+\captionsetup{labelfont={color=dhs-dark-gray,it,bf,scriptsize},textfont={color=dhs-dark-gray,it,footnotesize}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Setting up page numbers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\lfoot{Page | \thepage \hspace{1pt} of \pageref{LastPage}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Word Warp vertical text header
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphicx}
+\newcommand{\spheading}[2][7em]{% \spheading[<width>]{<stuff>}
+  \rotatebox{90}{\parbox{#1}{\raggedright #2}}}
+\newcommand{\calcheading}[2][15em]{% \spheading[<width>]{<stuff>}
+  \rotatebox{90}{\parbox{#1}{\raggedright #2}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Nested Lists
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{enumitem}
+
+\newlist{inparaenum}{enumerate}{2}% allow two levels of nesting in an enumerate-like environment
+\setlist[inparaenum]{nosep}% compact spacing for all nesting levels
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Geometry Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\geometry{
+  top=0.75in,
+  inner=0.75in,
+  outer=0.75in,
+  bottom=0.75in,
+  headheight=3ex,
+  headsep=2ex,
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Color Setup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Primary Palette
+\definecolor{dhs-blue}{cmyk}{1.0,0.45,0.0,0.37}
+\definecolor{dhs-light-blue}{cmyk}{1.0,0.16,0.0,0.27}
+\definecolor{dhs-gray}{cmyk}{0.0,0.0,0.0,0.28}
+\definecolor{dhs-dark-gray}{HTML}{808080}
+\definecolor{dhs-blue-gray}{cmyk}{0.77,0.51,0.34,0.25}
+\definecolor{dhs-white}{cmyk}{0.0,0.0,0.0,0.0}
+%%% Table Colors
+\definecolor{table-header}{HTML}{123360}
+\definecolor{table-row-blue}{HTML}{E2EAED}
+\definecolor{table-text}{HTML}{113260}
+
+
+%%%%%%% Set default Colors %%%%%
+\usepackage{sectsty}
+
+\sectionfont{\color{table-text}}
+\subsectionfont{\color{dhs-blue}}
+\subsubsectionfont{\color{dhs-blue}}
+
+\begin{document}
+
+\begin{titlepage}
+    \newgeometry{left=0.25in,right=0.25in,top=0.25in,bottom=0.25in}
+    \begin{lpic}[] {assets/assessment-summary-title(.95)}
+      \lbl[tl]{11, 114; {\color{dhs-white}\textbf{\Large{Phishing Campaign Assessment}}}}
+			\lbl[tl]{150, 15.3; {\color{yellow}<<RVA_Number>>}}
+			\lbl[tl]{150, 6; {\color{dhs-white}<<Report_Date>>}}
+	\end{lpic}
+
+    \hsize 6in %Sets max lenght of the Organization Name Line
+    \hspace*{.25in} % Sets the title to start inset.
+	\hangindent 1in % Sets Hanging indent if new line is used
+	\baselineskip .35in % Sets space between the two lines.
+    \noindent\color{dhs-blue}{\Huge{<<Org_Name>> }\large{(<<Acronym>>)}}
+
+    \vspace*{\fill}
+    \includegraphics[height=0.8in]{assets/cisa-logo}
+
+    \begin{flushleft}\centering{
+    \textcolor{black}{
+        \fbox{\parbox{.95\textwidth}{If <<Org_Name>> wishes to create and distribute derivatives of this report (such as 		summaries of this report or <<Org_Name>>’s commentary on the report’s recommendations), <<Org_Name>> should (1) provide notice to CISA prior to distributing such derivatives; (2) clearly mark derivatives so that it is clear that <<Org_Name>> created them and so that they cannot be mistaken for official CISA documents; and (3) refrain from affixing the CISA logo or DHS seal to the derivatives, unless <<Org_Name>> has obtained written permission to do so from the CISA Office of External Affairs. \footnotemark}}
+        \footnotetext{The unauthorized use of any Federal agency’s seal is governed by the U.S. Code title 18 sections 506, 701, 709 and 1017. Requests to use the CISA logo or DHS seal should be directed to \href{mailto:branding@cisa.dhs.gov}{\underline{\smash{branding@cisa.dhs.gov}}}, copying \href{mailto:vulnerability{\_}info@cisa.dhs.gov}{\underline{\smash{vulnerability{\_}info@cisa.dhs.gov}}}}}
+    }\end{flushleft}
+\end{titlepage}
+
+%\newgeometry{left=0.5  in,right=0.5in,top=1.0in,bottom=1.0in}
+\hspace*{-1.5cm}\begin{lpic}[] {assets/table_content}
+      \lbl[tl]{11, 10; {\color{dhs-white}\textbf{\Large{Phishing Campaign Assessment}}}}
+			\lbl[tl]{145, 18; {\color{yellow}<<RVA_Number>>}}
+			\lbl[tl]{145, 10; {\color{dhs-white}<<Report_Date>>}}
+	\end{lpic}
+
+
+\tableofcontents
+\newpage
+
+
+\listoffigures
+
+\listoftables
+
+\newpage
+%%% Currently in the doc
+
+\begin{table}[h]
+\centering
+\captionsetup[table]{list=no}{\textit{Assessment Details}}\\
+\vspace*{.1in}
+\rowcolors{2}{table-row-blue}{white}
+\makebox[\linewidth]{
+\color{table-text}\begin{tabular}{|m{2in}|L{4in}|}
+\multicolumn{2}{c}{\rule{0pt}{15pt}\cellcolor{table-header}{\color{dhs-white}\large \textbf{Phishing Campaign Assessment Details}}} \\[\headerHeight]
+\textbf{Customer Name}
+	& <<Org_Name>>  (<<Acronym>>)\\
+\textbf{Customer POC}
+	& <<POC_Name>>, <<POC_Email>>\\
+\textbf{CISA Team Lead}
+	&  <<FED_Name>>, <<FED_Email>> \\
+\textbf{Dates}
+	&  <<Start_Date>> to <<End_Date>> \\
+\textbf{Test Location}
+	&CISA/Assessments Lab, Arlington, VA\\
+\textbf{Scope}
+	&<<Num_Users>> users within the following domain:
+	\newline % Sets new line for domains.
+	\hspace{.05 in}	 % sets indent of first line in scope domains
+	\hangindent .09in % Sets hanging indent if scope domains word wraps.
+	<<Target_Domain>> \\
+\textbf{Services}
+	&Phishing Campaign Assessment \\
+\textbf{CISA ID}
+	&  <<RVA_Number>>\\
+\hline
+\end{tabular}
+}
+\end{table}
+
+\clearpage
+
+
+\section{Executive Report}
+
+The Cybersecurity and Infrastructure Security Agency (CISA) team produced this report for <<Org_Name>> (<<Acronym>>) in support of a Phishing Campaign Assessment (PCA) conducted <<Start_Date>> to <<End_Date>>. CISA conducts PCAs, upon customer request, to measure an organization’s propensity to click on email phishing lures. PCA is a practical exercise intended to support and measure the effectiveness of security awareness training for information system users. The results of this PCA show the potential susceptibility of <<Acronym>> personnel to social engineering attacks—specifically email phishing attacks—in which an adversary tricks an email user into clicking a malicious link to gain unauthorized network access. The assessment’s goal was to isolate the human behavioral response to these types of attacks and no exploits were used during the assessment. The assessment operated under the scenario that technical controls were unable to detect, report, or stop the email phishing attempts from reaching the end user. CISA measured <<Acronym>>’s level of susceptibility to a phishing attack by using targeted user click rates, click times, response rates, and response times, as shown in table~\ref{tab:TargetedUserMeasurements}.
+This report aims to enhance <<Acronym>>’s understanding of their information system users’ cybersecurity behavior and to promote a secure and resilient workforce.
+
+\begin{table}[h]
+\centering
+\caption{Targeted user measurements\label{tab:TargetedUserMeasurements}}
+\rowcolors{2}{table-row-blue}{white}
+\makebox[\linewidth]{
+\color{table-text}
+\begin{tabular}{|p{.65\linewidth}|p{.35\linewidth}|}
+
+
+	\thead{User Activity Metrics}
+	 &
+	\thead{Results}\\[\headerHeight]
+
+
+	\textbf{Total users targeted for phishing}
+	& <<Num_Users>>\\
+
+	\textbf{\# of emails (phishing attempts) sent overall}
+	& <<Sum_Emails_Sent>> (<<Num_Email_Per_User>> per user) \\
+
+	\textbf{\# of clicked emails (successful phishing attempts) overall\tablefootnote{Click rate is the total number of emails with “malicious” links that users clicked on divided by the total number of emails sent.}}
+	&  <<Sum_Unique_Clicks>> (<<Click_Rate>>\% click rate ) \\
+
+	\textbf{\# of phished users overall\tablefootnote{There were <<Unique_User_Clicks>> users who clicked a “malicious” link at least once by the end of the PCA out of the <<Num_Users>> that were phished. There were <<User_Multi_Campaign>> users who clicked in more than one campaign. }}
+	&  <<Unique_User_Clicks>> (<<Unique_User_Click_PercentPop>>\% of target population) \\
+
+	\textbf{\# of user reports sent to helpdesk overall\tablefootnote{Reporting rate is total number of user reports to the helpdesk divided by total phishing emails sent.}}
+	&  <<Total_User_Reports>> (<<User_Report_Rate>>\% report rate) \\
+
+	\textbf{\# Ratio of reports-to-clicks}
+	&  <<Report_Ratio>> \\
+
+	\textbf{Average time to first click\tablefootnote{Click time is the time CISA sent the emails minus the time the user clicked the link within the email. Average time to first click and first report is calculated with geometric mean to compensate for a small sample size that is sensitive to being skewed by outliers}}
+	&  <<Ave_Time_First_Click>>   \\
+
+	\textbf{Average time to first report\tablefootnote{Average time to first click and first report is calculated with geometric mean to compensate for a small sample size that is sensitive to being skewed by outliers}}
+	&  <<Ave_Time_First_Report>>   \\
+
+	\textbf{Most clicked phishing template}
+	&  <<Most_Successful>>   \\
+
+	\hline
+\end{tabular}
+}
+\end{table}
+
+CISA has provided this PCA to <<Acronym>> at no cost and coordinated all activities — including planning and testing — with <<Acronym>>’s point of contact (POC). <<Acronym>> maintained control over the testing, including providing target email addresses, approving phishing email templates, approving testing timeframes, and adjusting mail security setting to ensure inbox access. This PCA was not intended to, and did not, test technical controls or electronic protections designed to block phishing attempts. This PCA spanned a six-week period and aimed to capture metrics of <<Acronym>> information system users reaction to phishing emails of multiple deception levels.\\
+
+CISA has established this voluntary service to help organizations
+\begin{itemize}
+\item support security awareness training efforts and
+\item decrease information system userbase susceptibility and vulnerability to phishing attempts.
+\end{itemize}
+
+Based on the assessment data, CISA recommends implementing the key finding recommendations listed in table~\ref{tab:KeyFindingRecommendations}.
+
+\begin{table}[h]
+\centering
+\caption{Key finding recommendations\label{tab:KeyFindingRecommendations}}
+\rowcolors{2}{table-row-blue}{white}
+\renewcommand{\arraystretch}{1.5}
+\makebox[\linewidth]{
+\color{table-text}
+\begin{tabular}{|p{.95\textwidth}|}
+
+	%Header
+	\thead{Key Finding Recommendations}\\[\headerHeight]
+
+	% Findings
+	\hangindent1em <<Finding_1>>\\
+	\hangindent1em <<Finding_2>>\\
+	\hangindent1em <<Finding_3>>\\
+
+	\hline
+\end{tabular}
+}
+\end{table}
+
+The remainder of this report provides findings and metrics of the CISA phishing service for <<Acronym>>.
+
+\section{<<Acronym>> Methodology Specifics}
+
+CISA used the methodology documented in \nameref{sec:Methodology} to perform testing of <<Acronym>>. Specific phishing templates can be reviewed in \nameref{sec:Templates} with their corresponding deception calculations. <<Group_String>> See table 3 for descriptions of email levels 1–6.
+
+The assessment's goal was to capture the behavior-based responses of <<Acronym>> to email phishing attempts; and the assessment operated under the scenario that no technical controls were able to detect, report, or stop the email phishing attempts. CISA, as an external body conducting this PCA, did not have direct knowledge whether or not emails successfully arrived in targeted <<Acronym>> user inboxes. To allow for a clear determination of click rates (email links clicked divided by emails sent), <<Acronym>> or CISA performed the following:
+\begin{itemize}
+	<<Customer_Setup>>
+\end{itemize}
+
+\section{Summary of Testing Activities and Results}
+This PCA concentrated on how phishing email deception affected <<Acronym>> user click behavior and response behavior. CISA expects that a more deceptive phishing email has a higher likelihood of being clicked and a lower likelihood of being reported. This assessment also gathered organizational emails through open-source information techniques to determine <<Acronym>>’s potentially attackable online presence. See  \nameref{sec:DetailedResults} for detailed phishing results and \nameref{sec:Templates} for a detailed explanation on deception levels.
+
+Over six weeks, <<Acronym>>’s targeted users received at least <<Emails_Per_User>> phishing emails of increasing deception. Levels 1–3 were “easier to detect” and levels 4–6 were “more difficult to detect,” based on the number and type of indicators used. The table below summarizes the phishing templates used in this PCA.\tablefootnote{A displayed link of type “Hidden” means hyperlinked text was used instead of a bare “Written Out” URL. A displayed link type of “Spoofed” means a fake URL or filename was used that would not match the “Hover Over” URL or file information. A displayed link type of “Written Out” always matches the “Hover Over” URL.}\\
+
+\begin{table}[H]
+\centering
+\caption{Email template overview}
+\rowcolors{2}{table-row-blue}{white}
+%\makebox[\linewidth]{
+\color{table-text}
+\begin{tabular}
+	{|L{.06\textwidth}|
+	L{.2\textwidth}|
+	L{.31\textwidth}|
+	L{.32\textwidth}|}
+
+
+	%Header
+	\thead{Level}
+	& \thead{Campaign Subject}
+	& \thead{Template Description}
+	&\thead{Link Displayed}\\[\headerHeight]
+
+	%Row 1
+	\textbf{1}
+	& <<Level-1-Subject>>
+	& <<Level-1-Description>>
+	& \textbf{<<Level-1-Link_Type>>:}
+		<<Level-1-Display_Link>>
+		<<Level-1-Hover_Over>>
+		<<Level-1-Url>>\\
+	\hline
+
+	%Row 2
+	\textbf{2}
+	& <<Level-2-Subject>>
+	& <<Level-2-Description>>
+	& \textbf{<<Level-2-Link_Type>>:}
+		<<Level-2-Display_Link>>
+		<<Level-2-Hover_Over>>
+		<<Level-2-Url>>\\
+	\hline
+
+	%Row 3
+	\textbf{3}
+	& <<Level-3-Subject>>
+	& <<Level-3-Description>>
+	& \textbf{<<Level-3-Link_Type>>:}
+		<<Level-3-Display_Link>>
+		<<Level-3-Hover_Over>>
+		<<Level-3-Url>>\\
+	\hline
+
+	%Row 4
+	\textbf{4}
+	& <<Level-4-Subject>>
+	& <<Level-4-Description>>
+	& \textbf{<<Level-4-Link_Type>>:}
+		<<Level-4-Display_Link>>
+		<<Level-4-Hover_Over>>
+		<<Level-4-Url>>\\
+	\hline
+
+	%Row 5
+	\textbf{5}
+	& <<Level-5-Subject>>
+	& <<Level-5-Description>>
+	& \textbf{<<Level-5-Link_Type>>:}
+		<<Level-5-Display_Link>>
+		<<Level-5-Hover_Over>>
+		<<Level-5-Url>>\\
+	\hline
+
+	%Row 6
+	\textbf{6}
+	& <<Level-6-Subject>>
+	& <<Level-6-Description>>
+	& \textbf{<<Level-6-Link_Type>>:}
+		<<Level-6-Display_Link>>
+		<<Level-6-Hover_Over>>
+		<<Level-6-Url>>\\
+	\hline
+\end{tabular}
+%}
+\end{table}
+
+\subsection{Click Rate vs. Report Rate}
+
+One of the most common measures of an organization’s susceptibility to phishing attacks is targeted-user click rates. If an actual phishing attack is able to bypass technical controls and arrive in a user’s inbox, the human target must click on the malicious link or attachment for the attack to be successful. In practical exercises such as this PCA, targeted-user click rates will fluctuate depending on the level of email deception used in testing. Effective security awareness training, however, should result in a noticeable click rate decrease over time and to a level deemed acceptable based on the organization’s risk management posture.
+
+The counterpart to user click rates is the user-reporting rate, determined by the number of emails sent or calls to alert <<Acronym>>’s helpdesk during each campaign. Based on previous testing, CISA recommends that organizations initially aim to have two people reporting the phishing attempts for every person that clicks. This ratio ensures that there is not only reporting coverage for the person clicking, but also redundant coverage in case the person who clicks the link does not report or does not realize they have been phished. Effective security awareness training should result in a noticeable report rate increase over time and to a level deemed acceptable based on the organization’s risk management posture.
+
+In this report, the percentages shown by the user click rate and user report rate represent, respectively, the percentage of targeted people (determined by a unique email address) who have clicked at least once on a “malicious” link and those who reported a suspicious email. The number of unique clicks correlates to the number of end user devices potentially compromised in each campaign. The number of user reports correlates to the number of opportunities the <<Acronym>> security team had to identify a potential breach and reduce its impact. Table~\ref{tab:UniqueUserClickRateReportRateResults} and figure~\ref{fig:UniqueUserClickRateVsReportRatePerLeveldeception} summarize click and report rates.\\
+
+\begin{table}[H]
+  \centering
+  \caption{Unique user click rate and report rate results\label{tab:UniqueUserClickRateReportRateResults}}
+  \rowcolors{2}{table-row-blue}{white}
+  \makebox[\linewidth]{
+  \color{table-text}
+  \begin{tabular}
+  % Table sizeing
+  {|>{\centering\arraybackslash}m{.06\linewidth}|
+  L{.25\linewidth}|
+  >{\centering\arraybackslash}m{.111\linewidth}|
+  >{\centering\arraybackslash}m{.112\linewidth}|
+  >{\centering\arraybackslash}m{.112\linewidth}|
+  >{\centering\arraybackslash}m{.112\linewidth}|
+  >{\centering\arraybackslash}m{.12\linewidth}|}
+
+  %Header
+  \rowcolor{table-header}\color{dhs-white}\textbf{Level}
+    & \multicolumn{1}{>{\centering\arraybackslash}m{.25\linewidth}|}{\color{dhs-white}\textbf{Campaign Subject}}
+    & \color{dhs-white}\textbf{User Click Rate}
+    & \color{dhs-white}\textbf{Unique Clicks}
+    & \color{dhs-white}\textbf{User Report Rate}
+    & \color{dhs-white}\textbf{User Reports}
+    & \color{dhs-white}\textbf{Reporting Ratio}\\
+
+  %Row 1
+  \textbf{1} & <<Level-1-Subject>>
+  & <<Level-1-Click_Rate>>\%
+  & <<Level-1-User_Clicks>>
+  & <<Level-1-Report-Rate>>\%
+  & <<Level-1-User_Reports>>
+  & <<Level-1-Report_Ratio>> \\
+
+  %Row 2
+  \textbf{2} & <<Level-2-Subject>>
+  & <<Level-2-Click_Rate>>\%
+  & <<Level-2-User_Clicks>>
+  & <<Level-2-Report-Rate>>\%
+  & <<Level-2-User_Reports>>
+  & <<Level-2-Report_Ratio>> \\
+
+  %Row 3
+  \textbf{3} & <<Level-3-Subject>>
+  & <<Level-3-Click_Rate>>\%
+  & <<Level-3-User_Clicks>>
+  & <<Level-3-Report-Rate>>\%
+  & <<Level-3-User_Reports>>
+  & <<Level-3-Report_Ratio>> \\
+
+  %Row 4
+  \textbf{4} & <<Level-4-Subject>>
+  & <<Level-4-Click_Rate>>\%
+  & <<Level-4-User_Clicks>>
+  & <<Level-4-Report-Rate>>\%
+  & <<Level-4-User_Reports>>
+  & <<Level-4-Report_Ratio>> \\
+
+  %Row 5
+  \textbf{5} & <<Level-5-Subject>>
+  & <<Level-5-Click_Rate>>\%
+  & <<Level-5-User_Clicks>>
+  & <<Level-5-Report-Rate>>\%
+  & <<Level-5-User_Reports>>
+  & <<Level-5-Report_Ratio>> \\
+
+  %Row 6
+  \textbf{6} & <<Level-6-Subject>>
+  & <<Level-6-Click_Rate>>\%
+  & <<Level-6-User_Clicks>>
+  & <<Level-6-Report-Rate>>\%
+  & <<Level-6-User_Reports>>
+  & <<Level-6-Report_Ratio>> \\
+  \hline
+\end{tabular}
+}
+\end{table}
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/UniqueUserClickRateVsReportRatePerLevelDeception}
+\caption{Unique user click rate vs. report rate per level of deception\label{fig:UniqueUserClickRateVsReportRatePerLeveldeception}}
+\end{figure}
+
+
+\subsection{Click Time vs. Report Time}
+
+To contain an attack, an organization’s security team must be made aware of the potential breach. In the scenario that this PCA tested, no technical controls were triggered during a phishing attack and the clock for a potential breach started once a targeted user clicked on a “malicious” link. Timely user reporting decreases the window of opportunity that an adversary has to access data or gain further network entry. Timely reporting also increases the opportunity the security team has to detect and respond to a potential breach. By educating users on how to both spot and promptly respond to phishing attempts, an organization can improve their anti-phishing defenses. The following table details the time to first click and first report throughout the assessment and the lead or lag times for incident response measures to be activated (time elapsed represented in hours:minutes:seconds).\\
+
+\begin{table}[h]
+  \centering
+  \caption{Click time vs. report time (HH:MM:SS)}
+  \rowcolors{2}{table-row-blue}{white}
+  \makebox[\linewidth]{
+  \color{table-text}
+  \begin{tabular}
+  % Table sizeing
+  {|>{\centering\arraybackslash}m{.06\linewidth}|
+  p{.29\linewidth}|
+  p{.29\linewidth}|
+  p{.29\linewidth}|}
+
+
+
+  	%Header
+	\thead{Level}
+	& \thead{Time to First Click}
+	& \thead{Time to First Report}
+	&\thead{Time Gap (Lead or Lag)}\\[\headerHeight]
+
+  %Row 1
+  \textbf{1}
+  & <<Level-1-Time-To-First-Click>>
+  & <<Level-1-Time_To_First_Report>>
+  & <<Level-1-Time_Gap>> <<Level-1-Gap_Type>> \\
+
+  %Row 2
+  \textbf{2}
+  & <<Level-2-Time-To-First-Click>>
+  & <<Level-2-Time_To_First_Report>>
+  & <<Level-2-Time_Gap>> <<Level-2-Gap_Type>>\\
+
+  %Row 3
+  \textbf{3}
+  & <<Level-3-Time-To-First-Click>>
+  & <<Level-3-Time_To_First_Report>>
+  & <<Level-3-Time_Gap>> <<Level-3-Gap_Type>>\\
+
+  %Row 4
+  \textbf{4}
+  & <<Level-4-Time-To-First-Click>>
+  & <<Level-4-Time_To_First_Report>>
+  & <<Level-4-Time_Gap>> <<Level-4-Gap_Type>>\\
+
+  %Row 5
+  \textbf{5}
+  & <<Level-5-Time-To-First-Click>>
+  & <<Level-5-Time_To_First_Report>>
+  & <<Level-5-Time_Gap>> <<Level-5-Gap_Type>>\\
+
+  %Row 6
+  \textbf{6}
+  & <<Level-6-Time-To-First-Click>>
+  & <<Level-6-Time_To_First_Report>>
+  & <<Level-6-Time_Gap>> <<Level-6-Gap_Type>>\\
+  \hline
+\end{tabular}
+}
+\end{table}
+
+The figure below shows the percentage of users who clicked during certain time intervals in the first 24 hours of a campaign. Overall, nearly <<Unique_Click_Timeline-60_min>> percent of all clicks occurred within one hour of receiving a phishing email. The median time to click was <<Median_Time_To_Click>> for the entire assessment.
+
+\begin{figure}[H]
+  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/TimelineUniqueUserClicksAllLevels}
+\caption{Timeline of unique user clicks across all levels\label{TimelineUniqueUserClicksAllLevels}}
+\end{figure}
+
+ Figure 3 shows the amount of time for the first user to click on a link in an email from the time it was sent (elapsed time displayed as HH:MM:SS).
+
+ \begin{figure}[H]
+  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/TimeFirstClickReport}
+	\caption{Time to first click and report (HH:MM:SS)\label{fig:TimeFirstClickReport}}
+\end{figure}
+
+
+\subsection{Deception Indicators}
+
+Figure~\ref{fig:ClickRateBasedDeceptionIndicators} shows the percentage of clicks for each tested deception category and indicator. For example, in the behavior category, the fear indicator had a <<complexity-behavior-fear-Click_Rate>> percent unique click rate — or, <<complexity-behavior-fear-Click_Rate>> percent of all emails sent with a fear indicator were clicked at least once. In the sender category, <<complexity-sender-internal-Generic-Click_Rate>> percent of all emails with a generic internal sender indicator were clicked at least once.
+
+ \begin{figure}[H]
+  \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/ClickRateBasedDeceptionIndicators}
+\caption{Click rates based on deception indicators\label{fig:ClickRateBasedDeceptionIndicators}}
+\end{figure}
+
+The vertical red line indicates the click rate (<<Click_Rate>>) for the overall assessment. Indicators with a click rate higher than the average show what type of low deception indicators (red flags) were ignored more often than others or what type of high deception indicators (sophisticated techniques) were more effective than others in convincing <<Acronym>> personnel to click. No direct causal link can be drawn between indicator and click, as each email had a combination or lack of various indicators. This information, however, can help guide anti-phishing training and awareness by showing what level of deception indicators and categories users have shown a greater tendency to disregard or believe.
+
+\ifthenelse{\boolean{recon}}{
+\subsection{Open-Source Information Gathering}
+
+For this PCA, CISA looked for <<Acronym>> email addresses publicly available online. The following table is a summary of the email addresses discovered through passive reconnaissance and collected using open-source information gathering tools. The emails CISA discovered were not used in this engagement unless previously provided by the technical POC.
+
+\begin{table}[H]
+  \centering
+  \caption{Email reconnaissance results}
+  \rowcolors{2}{table-row-blue}{white}
+  \makebox[\linewidth]{
+  \color{table-text}
+  \begin{tabular}
+  % Table sizeing
+  {|L{.6\linewidth}|
+  L{.2\linewidth}|}
+
+  %Header
+   \thead{Item}
+	&\thead{Result}\\[\headerHeight]
+
+  %Row 1
+  \textbf{Email domain searched}
+  & <<Target_Domain>> \\
+
+  %Row 2
+  \textbf{Date search performed}
+  & <<Email_Recon-Date_Time_Search>>\\
+
+  %Row 3
+  \textbf{\# Unique email addresses found}
+  & <<Email_Recon-Total_Emails_Discovered>>\\
+
+  %Row 4
+  \textbf{\# Matching list of user emails provided by <<Acronym>>}
+  & <<Email_Recon-Email_List_Match>> (<<Email_Recon-Match_Rate>>\% of total target list)\\
+
+  %Row 5
+  \textbf{\# Search source methods and findings count}
+  & <<Email_Recon-Email_Discovery_Source>>\\
+
+    \hline
+\end{tabular}
+}
+\end{table}
+
+Based on previous testing, most of the email addresses discovered during passive reconnaissance are sourced from organizational documents and presentations shared online. To limit the exposure of exploitable organizational information, CISA recommends that employee names and emails be limited in use on websites and in reports or presentations stored on the public internet. When announcing new products or updating online registration, CISA also recommends that organizations use generic distribution email address as opposed to specific employee names.}{}
+
+\section{Closing}
+
+Under this PCA’s attack scenario, CISA measured <<Acronym>>  information system user susceptibility to a successful email phishing attack in the case where technical controls failed to detect, report, or stop the attack. Targeted-userbase vulnerability was measured through four key metrics:
+ \begin{itemize}[noitemsep]
+ 	\item click rate (number of email links clicked divided by number of emails sent),
+ 	\item click time (the time user clicked “malicious” link minus the time CISA sent the phishing emails),
+ 	\item report rate (number of user alerts to security office or helpdesk of phishing attempt divided by number of emails sent), and
+ 	\item report time the time user alerts security office or helpdesk minus the time CISA sent the phishing emails).
+ \end{itemize}
+
+To collect these metrics, CISA sent six emails of varying deception levels to the email list provided by <<Acronym>>. The overall click rate was <<Click_Rate>> percent \ifthenelse{\boolean{reports}}{and the overall reporting rate was <<User_Report_Rate>> percent}{} when analyzing all emails clicked \ifthenelse{\boolean{reports}}{and reports submitted}{} across all levels of deception. Overall, <<Acronym>> user click rates <<Click-Rate-Trend>> as the deception or phishing sophistication levels increased. When looking at all levels assessed, emails with the following indicators had higher than average clicks: <<Indicators-Above-Ave>>.
+
+The email template that had the highest unique user click rate (<<Closing-1-Clicks-Click_Rate>> percent) was the  level <<Closing-1-Clicks-Level>>, a <<Closing-1-Clicks-Deception_Level>> deception email with the subject line “<<Closing-1-Clicks-Subject>>.” The red flags with regards to the sender of the email that were intended to arouse suspicion was <<Closing-1-Clicks-Sender_Text>>. <<Closing-1-Clicks-Appearance_Text>><<Closing-1-Clicks-Relevancy_Text>>
+
+\ifthenelse{\boolean{multiple_clicks}}{The email template that had the second highest unique user click rate (<<Closing-2-Clicks-Click_Rate>> percent) was the  level <<Closing-2-Clicks-Level>>, a <<Closing-2-Clicks-Deception_Level>> deception email with the subject line “<<Closing-2-Clicks-Subject>>.” The red flags surrounding the sender in this email that were intended to arouse suspicion is <<Closing-2-Clicks-Sender_Text>>. <<Closing-2-Clicks-Appearance_Text>><<Closing-2-Clicks-Relevancy_Text>>}{}
+
+\ifthenelse{\boolean{reports}}{There were <<Closing-1-Clicks-User_Reports>> users who reported the suspicious  level <<Closing-1-Clicks-Level>> email to <<Acronym>>'s IT helpdesk (<<Closing-1-Clicks-Report_Rate>> percent report rate) \ifthenelse{\boolean{multiple_clicks}}{and <<Closing-2-Clicks-User_Reports>> users who reported the level <<Closing-2-Clicks-Level>> email}{}. Overall, <<Acronym>> user report rates <<Report-Rate-Trend>> as the deception or phishing sophistication levels increased. The level <<Closing-Report-Highest-Level>>, and <<Closing-Report-Highest-Deception>> deceptive email by indicator count, with the subject “<<Closing-Report-Highest-Subject>>” had the greatest number of user reports (<<Closing-Report-Highest-User_Reports>>), a reporting rate of <<Closing-Report-Highest-Report-Rate>>\% percent, and a <<Closing-Report-Highest-Gap_Type>> <<Closing-Report-Highest-Time_Gap>> between first report and first click. The <<Closing-Report-Lead-Deception>> deceptive level <<Closing-Report-Lead-Level>> email with the subject “<<Closing-Report-Lead-Subject>>" had the largest lead time between reporting and clicking (<<Closing-Report-Lead-Time_Gap>>).}{}
+
+CISA recommends that <<Acronym>> educate email users to be suspicious of any unsolicited emails that come from external mailing domains, specifically ones that require the user to click on links to learn more information about the email content. Emphasis should be placed on how to validate a sending email is from a legitimate source and being immediately suspicious of “unsubscribe” link options before validating, how to check the underlying URL of hyperlinked text by hovering over links (or long pressing if on mobile) to ensure the web address that pops up matches the displayed link or the web address meets expectations before clicking, and questioning whether non-work related emails should be opened or even received at work addresses. \ifthenelse{\boolean{reports}}{CISA recommends <<Acronym>> review email users’ understanding of the preferred phishing response and reporting procedures in order to increase reporting rates and decrease reporting times to levels that correspond with <<Acronym>>’s risk management posture.}{ } \nameref{sec:TopPhishingTechniquesScams} is also available for <<Acronym>> review and use in anti-phishing training and awareness.
+
+%% Included if reporting data was not provided. %%
+ \ifthenelse{\boolean{reports}}{}{Though not measured or recorded for this PCA, the counterparts to user click rates and click times are user report rates and report times when measuring an organization’s susceptibility or resiliency to phishing. The report rate is determined by the number of emails or calls to alert an organization’s helpdesk during each campaign. Based on previous testing, CISA recommends that organizations aim to have two people reporting the phishing attempts for every person that clicks. This ratio ensures that there is not only reporting coverage for the person clicking, but also redundant coverage in case the person who clicks the link does not report or does not realize they have been phished.}
+
+\ifthenelse{\boolean{recon}}{During open-source information gathering, CISA was able to collect  <<Email_Recon-Total_Emails_Discovered>> email addresses under the <<Target_Domain>> domain(s). Of those emails, <<Email_Recon-Email_List_Match>> matched addresses on the list of user emails provided by <<Acronym>>. The matching emails indicate a pool of potential phishing targets for actual malicious actors to exploit. CISA recommends that <<Acronym>> review their business need for having individual contact information available online versus generic group emails, and to educate email users on the types on information available online that may be used to add legitimacy to a phishing email.}{}
+
+<<Additional-Closing>>
+
+CISA appreciates any comments to improve this report or service as a whole. For questions about this report or for future engagements with CISA, please send an email to \href{mailto:vulnerability@cisa.dhs.gov}{\underline{\smash{vulnerability@cisa.dhs.gov}}}
+
+\newpage
+
+\appendix
+\setcounter{secnumdepth}{0}
+\section{Appendix A: Methodology}
+\label{sec:Methodology}
+
+The Phishing Campaign Assessment (PCA) measures the susceptibility of an organization’s personnel to social engineering attacks, specifically email phishing attacks. During the phishing assessment, click rate and reporting rate metrics are gathered and no malicious payloads are actually sent. This assessment is conducted in four phases across approximately six weeks:
+\begin{enumerate}
+	\item	Pre-planning
+	\item Planning
+	\item Testing
+	\item Reporting
+\end{enumerate}
+
+\subsection{Pre-planning}
+During the pre-planning phase, CISA offers a capability brief of all CISA services, including PCAs. In addition,
+a Service Request Form (SRF) and Rules of Engagement (ROE) document are provided, of which the ROE is the
+legal agreement for testing between CISA and the requesting organization. The customer can request a PCA by
+submitting a completed SRF and ROE. Note: The ROE appendices are not required to be completed at the time of submission, and an organization only needs one signed ROE on file with CISA to request additional CISA assessments.
+
+\subsection{Planning}
+Once a completed ROE is signed, a testing timeframe is established with the customer. A CISA lead engineer is assigned to the test and works directly with the customer POC for the remainder of the assessment. Additionally, CISA holds a planning meeting to provide the customer with details of the service and to obtain testing specifics. This meeting is an engineering level meeting that includes conversations on the following items:
+\begin{itemize}
+	\item Signed rules of engagement
+	\begin{itemize}
+		\item Appendix A (start/end date, technical POC)
+		\item Template approval
+		\item Redirect page determination
+	\end{itemize}
+	\item Phishing template process
+	\begin{itemize}
+		\item Draft templates
+		\item List of individual email addresses
+		\item Redirect page determination
+	\end{itemize}
+		\item Preparation week (the week prior to testing)
+	\begin{itemize}
+		\item Send one to five test emails
+		\item Whitelisting activities if needed
+	\end{itemize}
+\end{itemize}
+
+In addition, Appendix A of the ROE is completed to define the scope of this single PCA. \\
+
+Next, the CISA federal lead finalizes the start date to begin preparation and testing activities. The customer approves the schedule and provides a list of email addresses to be used throughout the phishing assessment. Emails may be divided into two or more groups and email delivery times may vary to help obfuscate PCA activities. The table below outlines a sample schedule:
+
+\begin{table}[h]
+  \centering
+  \caption{Sample schedule outlines}
+  \rowcolors{2}{table-row-blue}{white}
+  \makebox[\linewidth]{
+  \color{table-text}
+  \begin{tabular}
+  % Table sizeing
+  {|C{.06\linewidth}|
+  C{.20\linewidth}|
+  C{.20\linewidth}|
+  C{.20\linewidth}|
+   C{.20\linewidth}|}
+
+  %Header
+	\thead{Week}
+	& \thead{Template}
+	& \thead{Email Group}
+	& \thead{Day}
+	&\thead{Time}\\[\headerHeight]
+
+  %Row 1
+  \textbf{1}
+  & Level 1
+  & 1
+  & Monday
+  & 9 a.m. \\
+
+  %Row 2
+  \textbf{2}
+  & Level 2
+  & 2
+  & Wednesday
+  & 12 p.m. \\
+
+  %Row 3
+  \textbf{3}
+  & Level 3
+  & 3
+  & Thursday
+  & 9 a.m. \\
+
+   %Row 4
+  \textbf{4}
+  & Level 4
+  & 4
+  & Tuesday
+  & 2 p.m. \\
+
+  %Row 5
+  \textbf{5}
+  & Level 5
+  & 2
+  & Friday
+  & 9 a.m. \\
+
+  %Row 6
+  \textbf{6}
+  & Level 6
+  & 3
+  & Friday
+  & 9 a.m. \\
+   \hline
+\end{tabular}
+}
+\end{table}
+
+The phishing templates used throughout the assessment vary in six levels of deception. The deception of each template is scored based on rankings in the following categories: (1) Appearance, (2) Sender, (3) Relevancy, and (4) Behavior. The CISA engineer may provides multiple templates per level for the customer to approve. The customer is asked to review each template, modify it if desired, and select one template to be used each week.
+
+All testing activities are conducted from CISA testing facilities external to the customer’s site.
+
+The week prior to the start of the assessment, CISA engineers work with the customer’s technical POC to determine if test emails are successfully delivered to a user’s inbox. If an email is not delivered, CISA requests that the customer whitelist the CISA network and domain name(s). The goal of the PCA is to capture click rate metrics and, although testing may identify technological strengths and weaknesses, this service is not intended to test an organization’s technical controls against phishing attempts.
+
+\subsection{Testing}
+
+During the testing phase, CISA will generate and send a phishing email to a targeted list of email addresses provided and agreed upon by the customer. The customer is asked to provide a list between 100–7500 email addresses to ensure enough data is collected throughout the assessment. Each user typically receives a minimum of two emails during the entire assessment. Each email sent varies in deception; the first email is typically  a lower-ranking level of deception (three or lower), whereas the second email is a high-ranking level of deception (four or higher).
+
+Within the email, a user is enticed to click on a “malicious” link. When clicked, the link redirects a user to a page of the customer’s choice. CISA is able to track the percentage of users that click the link, providing insight into the effectiveness of any existing security awareness programs and measuring the susceptibility of an attack from this vector. Metrics are collected for a minimum of three business days, and typically up to five business days, depending on click rate frequency.
+
+Throughout each assessment week, a CISA engineer coordinates all activities, including phishing template creation, campaign launch times, and campaign completion. Additionally, if the customer desires, weekly results can be provided that include preliminary metrics on campaign status, number of emails sent, email deception, click rate, and number of clicks.
+
+\subsection{Reporting}
+During the reporting phase, the CISA team begins report writing as the customer provides response rate metrics. The main section of the PCA report is currently manually generated, where the main section is tailored to business executives and the appendices are intended for managers and engineers. The report shows how susceptible the Organization’s users are to phishing emails in terms of users who click, as well as those who report. The report provides data and statistics, but not business analysis. The report does not show attribution to users that clicked or did not click a potentially malicious link.
+
+The report is only sent to the designated POC and any inquiries about the report from a third party are directed to the POC for response. Each PCA is considered complete with the delivery of the final report.
+\newpage
+
+\section{Appendix B: Detailed Results}
+\label{sec:DetailedResults}
+Appendix B is a listing of detailed results collected throughout testing. Table~\ref{tab:WeeklyClickReportResults} lists weekly click rates captured and report rates <<Acronym>> collected and submitted to CISA throughout testing.
+
+\begin{table}[h]
+  \centering
+  \caption{Weekly click and report results\label{tab:WeeklyClickReportResults}}
+  \rowcolors{2}{table-row-blue}{white}
+  \makebox[\linewidth]{
+  \color{table-text}
+  \begin{tabular}
+  % Table sizeing
+  {|>{\centering\arraybackslash}m{.06\linewidth}|
+ L{.3\linewidth}|
+  >{\centering\arraybackslash}m{.08\linewidth}|
+  >{\centering\arraybackslash}m{.08\linewidth}|
+  >{\centering\arraybackslash}m{.08\linewidth}|
+  >{\centering\arraybackslash}m{.08\linewidth}|
+  >{\centering\arraybackslash}m{.09\linewidth}|
+  >{\centering\arraybackslash}m{.08\linewidth}|}
+
+  %Header
+  \rowcolor{table-header}\color{dhs-white}\textbf{Week}
+    & \color{dhs-white}\textbf{Campaign Subject}
+    & \color{dhs-white}\textbf{Email Sent}
+    & \color{dhs-white}\textbf{Total Clicks}
+    & \color{dhs-white}\textbf{User Clicks}
+    & \color{dhs-white}\textbf{Click Rate}
+    & \color{dhs-white}\textbf{User Reports}
+    & \color{dhs-white}\textbf{Report Rate}\\[5pt]
+
+  %Row 1
+  \textbf{1}
+  & <<Level-1-Subject>>
+  & <<Level-1-Emails_Sent_Attempted>>
+  & <<Level-1-Total_Clicks>>
+  & <<Level-1-User_Clicks>>
+  & <<Level-1-Click_Rate>>\%
+  & <<Level-1-User_Reports>>
+  &<<Level-1-Report-Rate>>\%\\
+
+  %Row 2
+  \textbf{2}
+  & <<Level-2-Subject>>
+  & <<Level-2-Emails_Sent_Attempted>>
+  & <<Level-2-Total_Clicks>>
+  & <<Level-2-User_Clicks>>
+  & <<Level-2-Click_Rate>>\%
+  & <<Level-2-User_Reports>>
+  &<<Level-2-Report-Rate>>\%\\
+
+  %Row 3
+  \textbf{3}
+  & <<Level-3-Subject>>
+  & <<Level-3-Emails_Sent_Attempted>>
+  & <<Level-3-Total_Clicks>>
+  & <<Level-3-User_Clicks>>
+  & <<Level-3-Click_Rate>>\%
+  & <<Level-3-User_Reports>>
+  &<<Level-3-Report-Rate>>\%\\
+
+   %Row 4
+  \textbf{4}
+  & <<Level-4-Subject>>
+  & <<Level-4-Emails_Sent_Attempted>>
+  & <<Level-4-Total_Clicks>>
+  & <<Level-4-User_Clicks>>
+  & <<Level-4-Click_Rate>>\%
+  & <<Level-4-User_Reports>>
+  &<<Level-4-Report-Rate>>\%\\
+
+  %Row 5
+  \textbf{5}
+  & <<Level-5-Subject>>
+  & <<Level-5-Emails_Sent_Attempted>>
+  & <<Level-5-Total_Clicks>>
+  & <<Level-5-User_Clicks>>
+  & <<Level-5-Click_Rate>>\%
+  & <<Level-5-User_Reports>>
+  &<<Level-5-Report-Rate>>\%\\
+
+  %Row 6
+  \textbf{6}
+  & <<Level-6-Subject>>
+  & <<Level-6-Emails_Sent_Attempted>>
+  & <<Level-6-Total_Clicks>>
+  & <<Level-6-User_Clicks>>
+  & <<Level-6-Click_Rate>>\%
+  & <<Level-6-User_Reports>>
+  &<<Level-6-Report-Rate>>\%\\
+   \hline
+\end{tabular}
+}
+\end{table}
+
+Figure~\ref{fig:UniqueTotalClickReportResultsByLevel} shows the comparison of unique clicks, total clicks, and reports per level of deception.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/UniqueTotalClickReportResultsByLevel}
+	\caption{Unique click, total click, and report results by level\label{fig:UniqueTotalClickReportResultsByLevel}}
+\end{figure}
+
+Figure~\ref{fig:BreakdownMultipleClicksByLevel} shows the number of users who clicked once, 2–3 times, 4–5 times, 6–10 times, and more than 10 times per campaign, broken down by deception level. Users who click more than once are creating multiple connect-and-control opportunities for the adversary.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/BreakdownMultipleClicksByLevel}
+	\caption{Breakdown of multiple clicks by level\label{fig:BreakdownMultipleClicksByLevel}}
+\end{figure}
+
+Table~\ref{tab:EventLog} shows the time-related event log throughout testing.
+
+\begin{table}[h]
+	 \centering
+	 \caption{Event log\label{tab:EventLog}}
+	 \rowcolors{2}{table-row-blue}{white}
+	 \makebox[\linewidth]{
+	\color{table-text}
+	\begin{tabular}
+	% Table sizeing
+	{|>{\centering\arraybackslash}m{.06\linewidth}|
+ 	L{.30\linewidth}|
+  	>{\centering\arraybackslash}m{.11\linewidth}|
+ 	>{\centering\arraybackslash}m{.15\linewidth}|
+  	>{\centering\arraybackslash}m{.15\linewidth}|
+ 	>{\centering\arraybackslash}m{.11\linewidth}|}
+
+ 	%Header
+ 	\rowcolor{table-header}\color{dhs-white}\textbf{Week}
+    & \color{dhs-white}\textbf{Campaign	Subject}
+    & \color{dhs-white}\textbf{Date Sent (ET)}
+    & \color{dhs-white}\textbf{Time to First Click (HH:MM:SS)}
+    & \color{dhs-white}\textbf{Median Time to Click (HH:MM:SS)}
+    & \color{dhs-white}\textbf{Length of Campaign (Days)}\\[5pt]
+
+  	%Row 1
+  	\textbf{1}
+  	& <<Level-1-Subject>>
+ 	& <<Level-1-Start_Date>>
+ 	& <<Level-1-Time-To-First-Click>>
+  	& <<Level-1-Median_Time_To_Click>>
+  	& <<Level-1-Length>>\\
+
+  	%Row 2
+  	\textbf{2}
+  	& <<Level-2-Subject>>
+  	& <<Level-2-Start_Date>>
+  	& <<Level-2-Time-To-First-Click>>
+  	& <<Level-2-Median_Time_To_Click>>
+  	& <<Level-2-Length>>\\
+
+ 	 %Row 3
+  	\textbf{3}
+  	& <<Level-3-Subject>>
+  	& <<Level-3-Start_Date>>
+  	& <<Level-3-Time-To-First-Click>>
+  	& <<Level-3-Median_Time_To_Click>>
+  	& <<Level-3-Length>>\\
+
+   	%Row 4
+  	\textbf{4}
+  	& <<Level-4-Subject>>
+  	& <<Level-4-Start_Date>>
+  	& <<Level-4-Time-To-First-Click>>
+  	& <<Level-4-Median_Time_To_Click>>
+  	& <<Level-4-Length>>\\
+
+ 	 %Row 5
+  	\textbf{5}
+  	& <<Level-5-Subject>>
+  	& <<Level-5-Start_Date>>
+  	& <<Level-5-Time-To-First-Click>>
+  	& <<Level-5-Median_Time_To_Click>>
+  	& <<Level-5-Length>>\\
+
+ 	 %Row 6
+  	\textbf{6}
+  	& <<Level-6-Subject>>
+  	& <<Level-6-Start_Date>>
+  	& <<Level-6-Time-To-First-Click>>
+  	& <<Level-6-Median_Time_To_Click>>
+  	& <<Level-6-Length>>\\
+   	\hline
+	\end{tabular}
+	}
+\end{table}
+
+Figure~\ref{fig:ClickingUserTimeline} shows the percentage of clicking users who had clicked by certain time intervals for each of the six deception levels.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/ClickingUserTimeline}
+	\caption{Clicking user timeline\label{fig:ClickingUserTimeline}}
+\end{figure}
+
+
+% Lables boolean set here!
+\ifthenelse{\boolean{labels}}{
+
+Table~\ref{tab:UniqueClicksPerOffice} shows the number and percentage of unique and total email clicks by the top five clicking “Office” designations provided by <<Acronym>> with 10 or more users. All other offices are listed in the “Other” category. Percentage of office that clicked is based on the office count. Percentage of all unique clicks is based on the unique clicks gathered for the whole assessment. Office unique click rate overall is based on total emails sent to that office. For example, <<Labels-1-Name>> clicked on <<Labels-1-Click_Rate>> percent of all emails sent to that office. Additionally, <<Labels-1-Percent_Of_All_Clicks>> percent of all unique clicks gathered during the PCA came from <<Labels-1-Name>>.
+
+\begin{table}[H]
+  	\centering
+  	\caption{Unique clicks per “Office”\label{tab:UniqueClicksPerOffice}}
+  	\rowcolors{2}{table-row-blue}{white}
+  	\makebox[\linewidth]{
+  	\color{table-text}
+  	\begin{tabular}
+  	% Table sizeing
+  	{|>{\centering\arraybackslash}m{.10	\linewidth}|
+  	>{\centering\arraybackslash}m{.06\linewidth}|
+  	>{\centering\arraybackslash}m{.09\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.15\linewidth}|
+  	>{\centering\arraybackslash}m{.15\linewidth}|
+  	>{\centering\arraybackslash}m{.15\linewidth}|}
+
+  %Header
+ 	 \rowcolor{table-header}\color{dhs-white} Office
+    & \color{dhs-white} Count
+    & \color{dhs-white} Total Emails Sent
+    & \color{dhs-white} Unique Clicks
+    & \color{dhs-white} Total Clicks
+    & \color{dhs-white} Percent of Office that Clicked at least Once
+    & \color{dhs-white} Percent of All Unique Clicks from Office
+    & \color{dhs-white} Office Unique Click Rate Overall\\[5pt]
+
+  	%Row 1
+ 	<<Labels-1-Name>>
+  	& <<Labels-1-Total_Users>>
+  	& <<Labels-1-Total_Sent>>
+ 	& <<Labels-1-Unique_Clicks>>
+ 	& <<Labels-1-Total_Clicks>>
+  	& <<Labels-1-Phish_Rate>>\%
+  	& <<Labels-1-Percent_Of_All_Clicks>>\%
+  	& <<Labels-1-Click_Rate>>\%\\
+
+  	%Row 2
+ 	<<Labels-2-Name>>
+  	& <<Labels-2-Total_Users>>
+  	& <<Labels-2-Total_Sent>>
+ 	& <<Labels-2-Unique_Clicks>>
+ 	& <<Labels-2-Total_Clicks>>
+  	& <<Labels-2-Phish_Rate>>\%
+  	& <<Labels-2-Percent_Of_All_Clicks>>\%
+  	& <<Labels-2-Click_Rate>>\%\\
+
+  	%Row 3
+ 	<<Labels-3-Name>>
+  	& <<Labels-3-Total_Users>>
+  	& <<Labels-3-Total_Sent>>
+ 	& <<Labels-3-Unique_Clicks>>
+ 	& <<Labels-3-Total_Clicks>>
+  	& <<Labels-3-Phish_Rate>>\%
+  	& <<Labels-3-Percent_Of_All_Clicks>>\%
+  	& <<Labels-3-Click_Rate>>\%\\
+
+  	%Row 4
+ 	<<Labels-4-Name>>
+  	& <<Labels-4-Total_Users>>
+  	& <<Labels-4-Total_Sent>>
+ 	& <<Labels-4-Unique_Clicks>>
+ 	& <<Labels-4-Total_Clicks>>
+  	& <<Labels-4-Phish_Rate>>\%
+  	& <<Labels-4-Percent_Of_All_Clicks>>\%
+  	& <<Labels-4-Click_Rate>>\%\\
+
+  	%Row 5
+ 	<<Labels-5-Name>>
+  	& <<Labels-5-Total_Users>>
+  	& <<Labels-5-Total_Sent>>
+ 	& <<Labels-5-Unique_Clicks>>
+ 	& <<Labels-5-Total_Clicks>>
+  	& <<Labels-5-Phish_Rate>>\%
+  	& <<Labels-5-Percent_Of_All_Clicks>>\%
+  	& <<Labels-5-Click_Rate>>\%\\
+
+  	%Row 6
+ 	<<Labels-Other-Name>>
+  	& <<Labels-Other-Total_Users>>
+  	& <<Labels-Other-Total_Sent>>
+ 	& <<Labels-Other-Unique_Clicks>>
+ 	& <<Labels-Other-Total_Clicks>>
+  	& <<Labels-Other-Phish_Rate>>\%
+  	& <<Labels-Other-Percent_Of_All_Clicks>>\%
+  	& <<Labels-Other-Click_Rate>>\%\\
+   \hline
+\end{tabular}
+}
+\end{table}
+
+Figure~\ref{fig:CountUniqueClickesByOfficePerLevel} shows the numbers of clicks for each level belonging to the different “Office” designations.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/CountUniqueClickesByOfficePerLevel}
+	\caption{Count of unique clicks by “Office” per level\label{fig:CountUniqueClickesByOfficePerLevel}}
+\end{figure}
+
+Figure~\ref{fig:PercentageOfficeClickedByLevel} shows the percentage of each “Office” that clicked by level. The percentage is relative to individual “Office” totals and not a percentage of the whole of <<Acrony>>». For example, <<Labels-1-1-Click_Rate>> percent of <<Labels-1-Name>> clicked on level 1.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/PercentageOfficeClickedByLevel}
+	\caption{Percentage of “Office” that clicked by level\label{fig:PercentageOfficeClickedByLevel}}
+\end{figure}
+
+Tables~\ref{fig:PercentageUniqueClicksPerLevelByOffice} and~\ref{tab:CountUniqueClicksPerLevelByOffice} shows the number of unique clicks (and percentage of total unique clicks) by deception level per “Office.” For example, <<Labels-1-1-Percent_Of_All_Clicks>> percent of all clicks in Level 1 came from the <<Labels-1-Name>>.
+
+% Percentage of unique clicks per level by office
+\begin{table}[H]
+  	\centering
+  	\caption{Percentage of unique clicks per level by office\label{fig:PercentageUniqueClicksPerLevelByOffice}}
+  	\rowcolors{2}{table-row-blue}{white}
+  	\makebox[\linewidth]{
+  	\color{table-text}
+  	\begin{tabular}
+  	% Table sizeing
+  	{|>{\centering\arraybackslash}m{.09	\linewidth}|
+  	>{\centering\arraybackslash}m{.09\linewidth}|
+  	>{\centering\arraybackslash}m{.09\linewidth}|
+  	>{\centering\arraybackslash}m{.09\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|}
+
+  %Header
+ 	 \rowcolor{table-header}\color{dhs-white}\textbf{Level}
+    	& \color{dhs-white}\textbf{Emails Sent}
+    	& \color{dhs-white}\textbf{Unique Clicks}
+    	& \color{dhs-white}\textbf{Total Clicks}
+    	& \spheading{\color{dhs-white}\textbf{<<Labels-1-Name>>}}
+    	& \spheading{\color{dhs-white}\textbf{<<Labels-2-Name>>}}
+  	& \spheading{\color{dhs-white}\textbf{<<Labels-3-Name>>}}
+  	& \spheading{\color{dhs-white}\textbf{<<Labels-4-Name>>}}
+  	& \spheading{\color{dhs-white}\textbf{<<Labels-5-Name>>}}
+    & \spheading{\color{dhs-white}\textbf{Other}}\\
+
+  	%Row 1
+ 	\textbf{1}
+  	& <<Level-1-Emails_Sent_Attempted>>
+  	& <<Level-1-User_Clicks>>
+ 	& <<Level-1-Total_Clicks>>
+ 	& <<Labels-1-1-Percent_Of_All_Clicks>>\%
+  	& <<Labels-2-1-Percent_Of_All_Clicks>>\%
+  	& <<Labels-3-1-Percent_Of_All_Clicks>>\%
+  	& <<Labels-4-1-Percent_Of_All_Clicks>>\%
+  	& <<Labels-5-1-Percent_Of_All_Clicks>>\%
+  	& <<Labels-Other-1-Percent_Of_All_Clicks>>\%\\
+
+  	%Row 2
+ 	\textbf{2}
+  	& <<Level-2-Emails_Sent_Attempted>>
+  	& <<Level-2-User_Clicks>>
+ 	& <<Level-2-Total_Clicks>>
+ 	& <<Labels-1-2-Percent_Of_All_Clicks>>\%
+  	& <<Labels-2-2-Percent_Of_All_Clicks>>\%
+  	& <<Labels-3-2-Percent_Of_All_Clicks>>\%
+  	& <<Labels-4-2-Percent_Of_All_Clicks>>\%
+  	& <<Labels-5-2-Percent_Of_All_Clicks>>\%
+  	& <<Labels-Other-2-Percent_Of_All_Clicks>>\%\\
+
+  	%Row 3
+ 	\textbf{3}
+  	& <<Level-3-Emails_Sent_Attempted>>
+  	& <<Level-3-User_Clicks>>
+ 	& <<Level-3-Total_Clicks>>
+ 	& <<Labels-1-3-Percent_Of_All_Clicks>>\%
+  	& <<Labels-2-3-Percent_Of_All_Clicks>>\%
+  	& <<Labels-3-3-Percent_Of_All_Clicks>>\%
+  	& <<Labels-4-3-Percent_Of_All_Clicks>>\%
+  	& <<Labels-5-3-Percent_Of_All_Clicks>>\%
+  	& <<Labels-Other-3-Percent_Of_All_Clicks>>\%\\
+
+  	%Row 4
+ 	\textbf{4}
+  	& <<Level-4-Emails_Sent_Attempted>>
+  	& <<Level-4-User_Clicks>>
+ 	& <<Level-4-Total_Clicks>>
+ 	& <<Labels-1-4-Percent_Of_All_Clicks>>\%
+  	& <<Labels-2-4-Percent_Of_All_Clicks>>\%
+  	& <<Labels-3-4-Percent_Of_All_Clicks>>\%
+  	& <<Labels-4-4-Percent_Of_All_Clicks>>\%
+  	& <<Labels-5-4-Percent_Of_All_Clicks>>\%
+  	& <<Labels-Other-4-Percent_Of_All_Clicks>>\%\\
+
+  	%Row 5
+ 	\textbf{5}
+  	& <<Level-5-Emails_Sent_Attempted>>
+  	& <<Level-5-User_Clicks>>
+ 	& <<Level-5-Total_Clicks>>
+ 	& <<Labels-1-5-Percent_Of_All_Clicks>>\%
+  	& <<Labels-2-5-Percent_Of_All_Clicks>>\%
+  	& <<Labels-3-5-Percent_Of_All_Clicks>>\%
+  	& <<Labels-4-5-Percent_Of_All_Clicks>>\%
+  	& <<Labels-5-5-Percent_Of_All_Clicks>>\%
+  	& <<Labels-Other-5  -Percent_Of_All_Clicks>>\%\\
+
+   	%Row 6
+ 	\textbf{6}
+  	& <<Level-6-Emails_Sent_Attempted>>
+  	& <<Level-6-User_Clicks>>
+ 	& <<Level-6-Total_Clicks>>
+ 	& <<Labels-1-6-Percent_Of_All_Clicks>>\%
+  	& <<Labels-2-6-Percent_Of_All_Clicks>>\%
+  	& <<Labels-3-6-Percent_Of_All_Clicks>>\%
+  	& <<Labels-4-6-Percent_Of_All_Clicks>>\%
+  	& <<Labels-5-6-Percent_Of_All_Clicks>>\%
+  	& <<Labels-Other-6-Percent_Of_All_Clicks>>\%\\
+  	 \hline
+\end{tabular}
+}
+\end{table}
+
+% Count of unique clicks per level by office
+\begin{table}[H]
+  	\centering
+  	\caption{Count of unique clicks per level by office\label{tab:CountUniqueClicksPerLevelByOffice}}
+  	\rowcolors{2}{table-row-blue}{white}
+  	\makebox[\linewidth]{
+  	\color{table-text}
+  	\begin{tabular}
+  	% Table sizeing
+  	{|>{\centering\arraybackslash}m{.09	\linewidth}|
+  	>{\centering\arraybackslash}m{.09\linewidth}|
+  	>{\centering\arraybackslash}m{.09\linewidth}|
+  	>{\centering\arraybackslash}m{.09\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|
+  	>{\centering\arraybackslash}m{.08\linewidth}|}
+
+  %Header
+ 	 \rowcolor{table-header}\color{dhs-white}\textbf{Level}
+    	& \color{dhs-white}\textbf{Emails Sent}
+    	& \color{dhs-white}\textbf{Unique Clicks}
+    	& \color{dhs-white}\textbf{Total Clicks}
+    	& \spheading{\color{dhs-white}\textbf{<<Labels-1-Name>>}}
+    	& \spheading{\color{dhs-white}\textbf{<<Labels-2-Name>>}}
+  	& \spheading{\color{dhs-white}\textbf{<<Labels-3-Name>>}}
+  	& \spheading{\color{dhs-white}\textbf{<<Labels-4-Name>>}}
+  	& \spheading{\color{dhs-white}\textbf{<<Labels-5-Name>>}}
+    & \spheading{\color{dhs-white}\textbf{Other}}\\
+
+  	%Row 1
+ 	\textbf{1}
+  	& <<Level-1-Emails_Sent_Attempted>>
+  	& <<Level-1-User_Clicks>>
+ 	& <<Level-1-Total_Clicks>>
+ 	& <<Labels-1-1-Unique_Clicks>>
+  	& <<Labels-2-1-Unique_Clicks>>
+  	& <<Labels-3-1-Unique_Clicks>>
+  	& <<Labels-4-1-Unique_Clicks>>
+  	& <<Labels-5-1-Unique_Clicks>>
+  	& <<Labels-Other-1-Unique_Clicks>>\\
+
+  	%Row 2
+ 	\textbf{2}
+  	& <<Level-2-Emails_Sent_Attempted>>
+  	& <<Level-2-User_Clicks>>
+ 	& <<Level-2-Total_Clicks>>
+ 	& <<Labels-1-2-Unique_Clicks>>
+  	& <<Labels-2-2-Unique_Clicks>>
+  	& <<Labels-3-2-Unique_Clicks>>
+  	& <<Labels-4-2-Unique_Clicks>>
+  	& <<Labels-5-2-Unique_Clicks>>
+  	& <<Labels-Other-2-Unique_Clicks>>\\
+
+  	%Row 3
+ 	\textbf{3}
+  	& <<Level-3-Emails_Sent_Attempted>>
+  	& <<Level-3-User_Clicks>>
+ 	& <<Level-3-Total_Clicks>>
+ 	& <<Labels-1-3-Unique_Clicks>>
+  	& <<Labels-2-3-Unique_Clicks>>
+  	& <<Labels-3-3-Unique_Clicks>>
+  	& <<Labels-4-3-Unique_Clicks>>
+  	& <<Labels-5-3-Unique_Clicks>>
+  	& <<Labels-Other-3-Unique_Clicks>>\\
+
+  	%Row 4
+ 	\textbf{4}
+  	& <<Level-4-Emails_Sent_Attempted>>
+  	& <<Level-4-User_Clicks>>
+ 	& <<Level-4-Total_Clicks>>
+ 	& <<Labels-1-4-Unique_Clicks>>
+  	& <<Labels-2-4-Unique_Clicks>>
+  	& <<Labels-3-4-Unique_Clicks>>
+  	& <<Labels-4-4-Unique_Clicks>>
+  	& <<Labels-5-4-Unique_Clicks>>
+  	& <<Labels-Other-4-Unique_Clicks>>\\
+
+  	%Row 5
+ 	\textbf{5}
+  	& <<Level-5-Emails_Sent_Attempted>>
+  	& <<Level-5-User_Clicks>>
+ 	& <<Level-5-Total_Clicks>>
+ 	& <<Labels-1-5-Unique_Clicks>>
+  	& <<Labels-2-5-Unique_Clicks>>
+  	& <<Labels-3-5-Unique_Clicks>>
+  	& <<Labels-4-5-Unique_Clicks>>
+  	& <<Labels-5-5-Unique_Clicks>>
+  	& <<Labels-Other-5-Unique_Clicks>>\\
+
+   	%Row 6
+ 	\textbf{6}
+  	& <<Level-6-Emails_Sent_Attempted>>
+  	& <<Level-6-User_Clicks>>
+ 	& <<Level-6-Total_Clicks>>
+ 	& <<Labels-1-6-Unique_Clicks>>
+  	& <<Labels-2-6-Unique_Clicks>>
+  	& <<Labels-3-6-Unique_Clicks>>
+  	& <<Labels-4-6-Unique_Clicks>>
+  	& <<Labels-5-6-Unique_Clicks>>
+  	& <<Labels-Other-6-Unique_Clicks>>\\
+  	 \hline
+\end{tabular}
+}
+\end{table}
+
+Figure 10 shows the number of unique clicks for each “Office” by level of phishing deception.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/CountUniqueClicksByLevelPerOffice}
+	\caption{Count of unique clicks by level per “Office”\label{fig:CountUniqueClicksByLevelPerOffice}}
+\end{figure}
+
+Figure 11 shows the percentage of total unique clicks per “office” by level of phishing deception. The percentage is relative to the total unique clicks for that level.
+
+\begin{figure}[H]
+	\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{figures/PercTotalUniqueClicksBelongOfficeByLevel}
+	\caption{Percentage of total unique clicks belonging to each “Office” by level\label{fig:PercTotalUniqueClicksBelongOfficeByLevel}}
+\end{figure}
+
+}{}
+
+\clearpage
+
+\section{Appendix C: Templates}
+\label{sec:Templates}
+The phishing templates used throughout this service include six levels of varying deception. Each level is based on a calculation of the factors designed to entice users to click on a malicious link. An explanation of the four factors used when determining an email’s level of deception can be found in \hyperref[subsec:Deception Calculator]{''Deception Calculator''}. The following defines key differences between each level:
+
+\begin{description}
+\setlength{\itemindent}{-.25em}
+\item [Level 1] - This level will be the easiest to detect and features common scams that are easily identified. Templates will usually include low deception indicators such as bad grammar, fake domains, and unknown external senders. Commonly the emails will appeal to emotions of greed, monetary gain, or guilt to elicit a user’s response.
+
+\item [Level 2] – These email templates also use low deception indicators in that they typically appear to be from an external, unauthoritative sender. The templates use one higher deception indicator such as decent or proper grammar and are written in a tone of urgency to help the email appear genuine. They also commonly appeal to emotions of greed, monetary gain, or guilt.
+
+\item [Level 3] – These are email scams that usually use two higher deception indicators such as appearing to be from a legitimate external organization or spoofing a known internal office or job title, but the link is usually fake and not associated with the content. Templates typically will include low deception indicators such as bad grammar or display fake domains. The theme of the templates can appeal to emotions or guilt and cause a sense of urgency if the request is not followed quickly.
+
+\item [Level 4] –The email templates use more high deception indicators than low deception and frequently appear to come from a commonly found internal department, such as “IT Support” or “Human Resources”. The templates will request actions or information that real world departments would be trained not to ask users over email such as their passwords, private information, or financial accounts. The email templates will normally have decent grammar, but will be sent by a generic account internal with fake domains. The template can appeal to sense of urgency and fear of disciplinary action to elicit a user’s click.
+
+\item [Level 5]– This level includes seemingly common emails that might be sent from the respective organization and uses information gathered from publicly available sources to seem genuine. The templates usually come from internal and authoritative senders (high deception indicators) but with fake domains or generic information (lower deception indicators). The templates can appeal to a sense of fear and the need to comply with authority to elicit a user’s response.
+
+\item [Level 6] – This level’s templates will be the hardest to detect and will typically have the highest click rate. These templates can appear to be from an internal office, personally address the recipient, and include themes such as negative policy changes and responses to internal and external news that may negatively affect employees. This level uses information gathered from public sources to develop the templates such as names of organizational individuals or departments, any relevant news, or information about specific organizational processes or tools.
+\end{description}
+
+\subsection{Deception Calculator} \label{subsec:Deception Calculator}
+
+The following calculator provides the method for determining the deception of each template (1 being not deceptive and easy to detect and 6 being very deceptive and difficult to detect).
+
+% Table: Phishing email template deception rating calculator
+\begin{table}[H]
+\centering
+\caption{Example Phishing email template deception calculator}
+\color{table-text}
+\begin{tabular}{|p{.13\linewidth}|L{.20\linewidth}|L{.30\linewidth}|L{.10\linewidth}|}
+	\hline
+
+	%Header
+	 \thead{Category}
+	& \thead{Indicator}
+	& \thead{Ranking Scale}
+	& \thead{Ranking}\\[\headerHeight]
+
+\multirow{3}{*}
+{\textbf{Appearance}}
+	& Grammar
+		& 0=Poor, 1=Decent, 2=Proper		& \\
+
+	& \cellcolor{table-row-blue}Link Domain
+		& \cellcolor{table-row-blue}0=Fake, 1=Spoofed/Hidden
+		& \cellcolor{table-row-blue}  \\
+
+        & Logo/Graphics
+        		& 0=Fake/None, 1=Spoofed/HTML	&	\\
+\hline
+\multirow{3}{*}
+{\textbf{Sender }}
+	& \cellcolor{table-row-blue}External
+		& \cellcolor{table-row-blue}0=Fake/NA, 1=Spoofed & \cellcolor{table-row-blue}  \\
+
+	& Internal
+		& 0=Fake/NA, 1= Unknown Spoofed, 2= Known Spoofed &                   \\
+
+     & \cellcolor{table-row-blue}Authoritative
+    		& \cellcolor{table-row-blue}0=None, 1=Corporate/Local, 2=Federal/State &\cellcolor{table-row-blue}   \\
+\hline
+\multirow{2}{*}
+{\textbf{Relevancy }}
+	& Organization
+		& 0=No, 1=Yes  &   \\
+
+	& \cellcolor{table-row-blue}Public News
+	& \cellcolor{table-row-blue}0=No, 1=Yes   & \cellcolor{table-row-blue}  \\
+\hline
+\multirow{4}{*}
+{\textbf{\begin{tabular}[x]{@{}c@{}}Behavior\\(Optional)\end{tabular}}}
+	& Fear
+		& No Score	&                   \\
+	& \cellcolor{table-row-blue}Duty or Obligation
+		& \cellcolor{table-row-blue}No Score  &  \cellcolor{table-row-blue}                 \\
+	& Curiosity
+		& No Score  &     \\
+     & \cellcolor{table-row-blue}Greed
+     	& \cellcolor{table-row-blue}No Score     & \cellcolor{table-row-blue}      \\
+\hline
+Total            &     &          &         \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection*{Appearance}
+	\begin{description}
+		\setlength{\itemindent}{.5em}
+		\item [Grammar] – Writing level of the content in the email
+			\begin{itemize}
+			\item Poor indicates several misspellings and awkward use of the English language
+			\item Decent indicates few misspellings and few grammatical errors or is relatively short in length
+			\item Proper indicates one or no misspellings or grammatical errors and the email is longer/more formal than the usual email
+			\end{itemize}
+		\item[Link Domain] – Embedded link can be clearly fake or attempt to impersonate a real domain
+		\item[Logo/Graphics] – Images can be either clearly fake or close imposters
+	\end{description}
+
+\subsubsection*{Sender}
+	\begin{description}
+		\setlength{\itemindent}{.5em}
+		\item [External] – Sender and email domain are external to the users organization, but are clearly fake or look like real external entities
+		\item[Internal] – Sender and email domain appear to come from user’s organization, but are clearly fake or spoof internal senders
+		\item[Authoritative (Corporate/Local or Federal/State)] – Sender making a request or demand and speaks from a position of power that could be associated with a Corporate/Local office or Federal/State office
+	\end{description}
+
+\subsubsection*{Relevancy}
+	\begin{description}
+		\setlength{\itemindent}{.5em}
+		\item [Organization] – Content is pertinent to organization’s current events, news, or uses the name/email of the targeted user
+		\item[Public News] – Content is pertinent to current events in the local area or nation
+	\end{description}
+
+\subsubsection*{Behavior (Optional)}
+	\begin{description}
+		\setlength{\itemindent}{.5em}
+		\item [Fear] – Scareware or appeals to the emotion of fear within the theme of the email
+		\item[Duty or Obligation] – Appeals to the sense of responsibility within the theme of the email
+		\item[Curiosity] – Appeals to the desire to learn more within the theme of the email
+		\item[Greed] – Appeals to greed and monetary gain within the theme of the email
+	\end{description}
+
+\subsection{Engagement Specific Templates} \label{subsec:Engagement Specific Templates}
+Below are the details about the templates used during PCA with <<Acronym>>. The deception indicators are shown in the table below. In addition, a text version of each email template is provided along with key characteristics pertaining to each template which help describe the red flags (“RF”) and sophisticated techniques (“ST”) used to rank each template. Basic statistics for each campaign are also provided below the key characteristics.
+
+\subsubsection*{Deception Calculator}
+\begin{table}[H]
+\centering
+\caption{Phishing email template deception calculator}
+\color{table-text}
+\makebox[\linewidth]{
+\begin{tabular}{|>{\centering\arraybackslash}m{.13\linewidth}|
+						>{\centering\arraybackslash}m{.15\linewidth}|
+						>{\centering\arraybackslash}m{.23\linewidth}|
+						>{\centering\arraybackslash}m{.06\linewidth}|
+						>{\centering\arraybackslash}m{.06\linewidth}|
+						>{\centering\arraybackslash}m{.06\linewidth}|
+						>{\centering\arraybackslash}m{.06\linewidth}|
+						>{\centering\arraybackslash}m{.06\linewidth}|
+						>{\centering\arraybackslash}m{.06\linewidth}|}
+	\hline
+	\rowcolor{table-header}\color{dhs-white}\textbf{Category}
+	& \color{dhs-white}\textbf{Indicator}
+	& \color{dhs-white}\textbf{Ranking Scale}
+	& \calcheading{\color{dhs-white}\textbf{<<Level-1-Subject>>}}
+	& \calcheading{\color{dhs-white}\textbf{<<Level-2-Subject>>}}
+	& \calcheading{\color{dhs-white}\textbf{<<Level-3-Subject>>}}
+	& \calcheading{\color{dhs-white}\textbf{<<Level-4-Subject>>}}
+	& \calcheading{\color{dhs-white}\textbf{<<Level-5-Subject>>}}
+	& \calcheading{\color{dhs-white}\textbf{<<Level-6-Subject>>}}\\
+	\hline
+	\hline
+
+\multirow{3}{*}
+{\textbf{Appearance}}
+	& Grammar
+		& 0=Poor, 1=Decent, 2=Proper
+		     &<<Level-1-Complexity-Grammar>>
+        		&<<Level-2-Complexity-Grammar>>
+        		&<<Level-3-Complexity-Grammar>>
+        		&<<Level-4-Complexity-Grammar>>
+        		&<<Level-5-Complexity-Grammar>>
+        		&<<Level-6-Complexity-Grammar>>\\
+
+	& \cellcolor{table-row-blue}Link Domain
+		& \cellcolor{table-row-blue}0=Fake, 1=Spoofed/Hidden
+			& \cellcolor{table-row-blue}<<Level-1-Complexity-Link_Domain>>
+        		& \cellcolor{table-row-blue}<<Level-2-Complexity-Link_Domain>>
+        		& \cellcolor{table-row-blue}<<Level-3-Complexity-Link_Domain>>
+        		& \cellcolor{table-row-blue}<<Level-4-Complexity-Link_Domain>>
+        		& \cellcolor{table-row-blue}<<Level-5-Complexity-Link_Domain>>
+        		& \cellcolor{table-row-blue}<<Level-6-Complexity-Link_Domain>>\\
+
+        & Logo/Graphics
+        		& 0=Fake/None, 1=Spoofed/HTML
+        			&<<Level-1-Complexity-Logo_Graphics>>
+        			&<<Level-2-Complexity-Logo_Graphics>>
+        			&<<Level-3-Complexity-Logo_Graphics>>
+        			&<<Level-4-Complexity-Logo_Graphics>>
+        			&<<Level-5-Complexity-Logo_Graphics>>
+        			&<<Level-6-Complexity-Logo_Graphics>>\\
+\hline
+\multirow{3}{*}
+{\textbf{Sender }}
+	& \cellcolor{table-row-blue}External
+		& \cellcolor{table-row-blue}0=Fake/NA, 1=Spoofed
+			& \cellcolor{table-row-blue}<<Level-1-Complexity-External>>
+        		& \cellcolor{table-row-blue}<<Level-2-Complexity-External>>
+        		& \cellcolor{table-row-blue}<<Level-3-Complexity-External>>
+        		& \cellcolor{table-row-blue}<<Level-4-Complexity-External>>
+        		& \cellcolor{table-row-blue}<<Level-5-Complexity-External>>
+        		& \cellcolor{table-row-blue}<<Level-6-Complexity-External>>\\
+
+	& Internal
+		& 0=Fake/NA, 1= Unknown Spoofed, 2= Known Spoofed
+        			&<<Level-1-Complexity-Internal>>
+        			&<<Level-2-Complexity-Internal>>
+        			&<<Level-3-Complexity-Internal>>
+        			&<<Level-4-Complexity-Internal>>
+        			&<<Level-5-Complexity-Internal>>
+        			&<<Level-6-Complexity-Internal>>\\
+
+     & \cellcolor{table-row-blue}Authoritative
+    		& \cellcolor{table-row-blue}0=None, 1=Corporate/Local, 2=Federal/State
+			& \cellcolor{table-row-blue}<<Level-1-Complexity-Authoritative>>
+        		& \cellcolor{table-row-blue}<<Level-2-Complexity-Authoritative>>
+        		& \cellcolor{table-row-blue}<<Level-3-Complexity-Authoritative>>
+        		& \cellcolor{table-row-blue}<<Level-4-Complexity-Authoritative>>
+        		& \cellcolor{table-row-blue}<<Level-5-Complexity-Authoritative>>
+        		& \cellcolor{table-row-blue}<<Level-6-Complexity-Authoritative>>\\
+\hline
+\multirow{2}{*}
+{\textbf{Relevancy }}
+	& Organization
+		& 0=No, 1=Yes
+        			&<<Level-1-Complexity-Organization>>
+        			&<<Level-2-Complexity-Organization>>
+        			&<<Level-3-Complexity-Organization>>
+        			&<<Level-4-Complexity-Organization>>
+        			&<<Level-5-Complexity-Organization>>
+        			&<<Level-6-Complexity-Organization>>\\
+
+	& \cellcolor{table-row-blue}Public News
+	& \cellcolor{table-row-blue}0=No, 1=Yes
+			& \cellcolor{table-row-blue}<<Level-1-Complexity-Public_News>>
+        		& \cellcolor{table-row-blue}<<Level-2-Complexity-Public_News>>
+        		& \cellcolor{table-row-blue}<<Level-3-Complexity-Public_News>>
+        		& \cellcolor{table-row-blue}<<Level-4-Complexity-Public_News>>
+        		& \cellcolor{table-row-blue}<<Level-5-Complexity-Public_News>>
+        		& \cellcolor{table-row-blue}<<Level-6-Complexity-Public_News>>\\
+\hline
+\multirow{4}{*}
+{\textbf{Behavior}}
+	& Fear
+		& No Score
+        			&<<Level-1-Complexity-Fear>>
+        			&<<Level-2-Complexity-Fear>>
+        			&<<Level-3-Complexity-Fear>>
+        			&<<Level-4-Complexity-Fear>>
+        			&<<Level-5-Complexity-Fear>>
+        			&<<Level-6-Complexity-Fear>>\\
+	& \cellcolor{table-row-blue}Duty or Obligation
+		& \cellcolor{table-row-blue}No Score
+			& \cellcolor{table-row-blue}<<Level-1-Complexity-Duty_Obligation>>
+        		& \cellcolor{table-row-blue}<<Level-2-Complexity-Duty_Obligation>>
+        		& \cellcolor{table-row-blue}<<Level-3-Complexity-Duty_Obligation>>
+        		& \cellcolor{table-row-blue}<<Level-4-Complexity-Duty_Obligation>>
+        		& \cellcolor{table-row-blue}<<Level-5-Complexity-Duty_Obligation>>
+        		& \cellcolor{table-row-blue}<<Level-6-Complexity-Duty_Obligation>>\\
+	& Curiosity
+		& No Score
+        			&<<Level-1-Complexity-Curiosity>>
+        			&<<Level-2-Complexity-Curiosity>>
+        			&<<Level-3-Complexity-Curiosity>>
+        			&<<Level-4-Complexity-Curiosity>>
+        			&<<Level-5-Complexity-Curiosity>>
+        			&<<Level-6-Complexity-Curiosity>>\\
+     & \cellcolor{table-row-blue}Greed
+     	& \cellcolor{table-row-blue}No Score
+			& \cellcolor{table-row-blue}<<Level-1-Complexity-Greed>>
+        		& \cellcolor{table-row-blue}<<Level-2-Complexity-Greed>>
+        		& \cellcolor{table-row-blue}<<Level-3-Complexity-Greed>>
+        		& \cellcolor{table-row-blue}<<Level-4-Complexity-Greed>>
+        		& \cellcolor{table-row-blue}<<Level-5-Complexity-Greed>>
+        		& \cellcolor{table-row-blue}<<Level-6-Complexity-Greed>>\\
+\hline
+		& % Makes to blank cells to put total to the right
+		&\textbf{Total}
+		& \textbf{1}
+		& \textbf{2}
+		& \textbf{3}
+		& \textbf{4}
+		& \textbf{5}
+		& \textbf{6} \\
+\hline
+\end{tabular}
+}
+\end{table}
+\clearpage
+
+\subsubsection{Templates}
+
+\noindent \textbf{Level 1 Template} \newline
+\indent Subject: <<Level-1-Subject>> \newline
+\indent Sender: <<Level-1-From_Address>>
+\begin{center}
+\fcolorbox{table-header}{white}{\includegraphics[width=\textwidth,height=.9\textheight,keepaspectratio]{screenshots/Level-1-Screenshot}}
+\end{center}
+\hangindent1em \textbf{Key characteristics:} <<Level-1-Key_Characteristics>>
+
+\begin{table}[h]
+\begin{tabular}{ll}
+	\textbf{Total emails sent:} & <<Level-1-Emails_Sent_Attempted>> \\
+	\textbf{Unique targets who clicked:} & <<Level-1-User_Clicks>> \\
+	\textbf{Unique click rate:} & <<Level-1-Click_Rate>>\% \\
+	\textbf{Total clicks:} & <<Level-1-Total_Clicks>> \\
+	\textbf{Total user reports:} & <<Level-1-User_Reports>>\\
+	\textbf{Report rate:} & <<Level-1-Report-Rate>>\% \\
+\end{tabular}
+\end{table}
+
+\newpage
+
+\noindent \textbf{Level 2 Template} \newline
+\indent Subject: <<Level-2-Subject>> \newline
+\indent Sender: <<Level-2-From_Address>>
+\begin{center}
+\fcolorbox{table-header}{white}{\includegraphics[width=\textwidth,height=.9\textheight,keepaspectratio]{screenshots/Level-2-Screenshot}}
+\end{center}
+\hangindent1em \textbf{Key characteristics:} <<Level-2-Key_Characteristics>>
+
+\begin{table}[h]
+\begin{tabular}{ll}
+	\textbf{Total emails sent:} & <<Level-2-Emails_Sent_Attempted>> \\
+	\textbf{Unique targets who clicked:} & <<Level-2-User_Clicks>> \\
+	\textbf{Unique click rate:} & <<Level-2-Click_Rate>>\% \\
+	\textbf{Total clicks:} & <<Level-2-Total_Clicks>> \\
+	\textbf{Total user reports:} & <<Level-2-User_Reports>>\\
+	\textbf{Report rate:} & <<Level-2-Report-Rate>>\% \\
+\end{tabular}
+\end{table}
+
+\newpage
+
+
+\noindent \textbf{Level 3 Template} \newline
+\indent Subject: <<Level-3-Subject>>\newline
+\indent Sender: <<Level-3-From_Address>>
+\begin{center}
+\fcolorbox{table-header}{white}{\includegraphics[width=\textwidth,height=.9\textheight,keepaspectratio]{screenshots/Level-3-Screenshot}}
+\end{center}
+\hangindent1em \textbf{Key characteristics:} <<Level-3-Key_Characteristics>>
+
+\begin{table}[h]
+\begin{tabular}{ll}
+	\textbf{Total emails sent:} & <<Level-3-Emails_Sent_Attempted>> \\
+	\textbf{Unique targets who clicked:} & <<Level-3-User_Clicks>> \\
+	\textbf{Unique click rate:} & <<Level-3-Click_Rate>>\% \\
+	\textbf{Total clicks:} & <<Level-3-Total_Clicks>> \\
+	\textbf{Total user reports:} & <<Level-3-User_Reports>>\\
+	\textbf{Report rate:} & <<Level-3-Report-Rate>>\% \\
+\end{tabular}
+\end{table}
+
+\newpage
+
+\noindent \textbf{Level 4 Template} \newline
+\indent Subject: <<Level-4-Subject>>\newline
+\indent Sender: <<Level-4-From_Address>>
+\begin{center}
+\fcolorbox{table-header}{white}{\includegraphics[width=\textwidth,height=.9\textheight,keepaspectratio]{screenshots/Level-4-Screenshot}}
+\end{center}
+\hangindent1em \textbf{Key characteristics:} <<Level-4-Key_Characteristics>>
+
+\begin{table}[h]
+\begin{tabular}{ll}
+	\textbf{Total emails sent:} & <<Level-4-Emails_Sent_Attempted>> \\
+	\textbf{Unique targets who clicked:} & <<Level-4-User_Clicks>> \\
+	\textbf{Unique click rate:} & <<Level-4-Click_Rate>>\% \\
+	\textbf{Total clicks:} & <<Level-4-Total_Clicks>> \\
+	\textbf{Total user reports:} & <<Level-4-User_Reports>>\\
+	\textbf{Report rate:} & <<Level-4-Report-Rate>>\% \\
+\end{tabular}
+\end{table}
+
+\newpage
+
+\noindent \textbf{Level 5 Template} \newline
+\indent Subject: <<Level-5-Subject>> \newline
+\indent Sender: <<Level-5-From_Address>>
+\begin{center}
+\fcolorbox{table-header}{white}{\includegraphics[width=\textwidth,height=.9\textheight,keepaspectratio]{screenshots/Level-5-Screenshot}}
+\end{center}
+\hangindent1em \textbf{Key characteristics:} <<Level-5-Key_Characteristics>>
+
+\begin{table}[h]
+\begin{tabular}{ll}
+	\textbf{Total emails sent:} & <<Level-5-Emails_Sent_Attempted>> \\
+	\textbf{Unique targets who clicked:} & <<Level-5-User_Clicks>> \\
+	\textbf{Unique click rate:} & <<Level-5-Click_Rate>>\% \\
+	\textbf{Total clicks:} & <<Level-5-Total_Clicks>> \\
+	\textbf{Total user reports:} & <<Level-5-User_Reports>>\\
+	\textbf{Report rate:} & <<Level-5-Report-Rate>>\% \\
+\end{tabular}
+\end{table}
+
+\newpage
+
+\noindent \textbf{Level 6 Template} \newline
+\indent Subject: <<Level-6-Subject>>\newline
+\indent Sender: <<Level-6-From_Address>>
+\begin{center}
+\fcolorbox{table-header}{white}{\includegraphics[width=\textwidth,height=.9\textheight,keepaspectratio]{screenshots/Level-6-Screenshot}}
+\end{center}
+\hangindent1em \textbf{Key characteristics:} <<Level-6-Key_Characteristics>>
+
+\begin{table}[h]
+\begin{tabular}{ll}
+	\textbf{Total emails sent:} & <<Level-6-Emails_Sent_Attempted>> \\
+	\textbf{Unique targets who clicked:} & <<Level-6-User_Clicks>> \\
+	\textbf{Unique click rate:} & <<Level-6-Click_Rate>>\% \\
+	\textbf{Total clicks:} & <<Level-6-Total_Clicks>> \\
+	\textbf{Total user reports:} & <<Level-6-User_Reports>>\\
+	\textbf{Report rate:} & <<Level-6-Report-Rate>>\% \\
+\end{tabular}
+\end{table}
+
+\newpage
+
+
+\section{Appendix D: Landing/Re-direct Page}
+<<Landing_URL>>
+\begin{center}
+\includegraphics[width=\textwidth,height=.9\textheight,keepaspectratio]{screenshots/Landing-Page}
+\end{center}
+
+\clearpage
+
+\section{Appendix E: Top Phishing Techniques \& Scams}
+\label{sec:TopPhishingTechniquesScams}
+In addition to training on the red flags and sophisticated techniques email users were most susceptible to, CISA recommends anti-phishing training and awareness include the most common phishing techniques and scams used to elicit clicks from target users in real world phishing incidents. A phishing technique is an element within a larger phishing scam.
+
+\subsection{Techniques}
+
+\begin{description}
+\setlength{\itemindent}{-.25em}
+\item[A fake link.] The context of the email can be anything, but the key technique is using a link that looks like a real URL (or hyperlinked text) that the target has used and trusted before. Underlying it, however, is the actual URL to a different and potentially malicious site. Hovering over (when on a computer) or a long press (when on a mobile) reveals the true underlying link. Unexpected URLs should not be clicked. Even if it matches expectations, the user should type it directly into their browser.
+
+\item[A fake website.] Hovering over or long pressing the displayed link will reveal a matching URL. However, closer inspection of the URL would reveal slight differences between the displayed address and real address it’s imitating. Examples of slight differences include replacing a lower case ‘l’ with a ‘1’, adding extra letters, or changing the domain such as from .com to .us. A few seconds’ pause to override autopilot clicking could save a target from being phished.
+
+\item[A malicious attachment.] Just like the fake website, closer inspection of any attachments sent may reveal discrepancies between what is there versus what is expected. Questions that should be asked with each email attachment include: Was it an expected email? Is the sender known? Does their email address match their display name? Does the attachment have the expected file type? If a target does open the attachment, a document may then show a notice that “editing must be enabled to see content.” If enabled, macros and other malicious code are able to execute on the target’s computer. Organizations should have procedures for ensuring suspicious attachments are safe through use of file checkers or other secure means.
+
+\item[Fake contact information.] This technique is usually used to circumvent online portals or other established procedures that normally handle change requests. They provide the target with an email or phone numbers out of “generous convenience” so the target doesn’t have to spend time looking up that information. Rather than believing the email, the person should call the number provided to them previously such as the customer service number on the back of their card, office phone number in a directory, or on the organization’s site the person navigates to separately.
+\end{description}
+
+\subsection{Scams}
+
+\begin{description}
+\setlength{\itemindent}{-.25em}
+\item[Asking for money.] Usually long-winded stories of woe or sudden inheritance that only require a small sum of money on target’s part to transfer a huge sum of funds and generally in exchange for the “help,” the attacker promises to provide the target a decent portion of the funds. This scheme is designed to be outlandish because it's self-filtering. Attackers know only the most trusting or gullible people will fall for this scam. This is intentional because the target is less likely to question further requests as the scam continues.
+
+\item[Business Email Compromise (CEO Fraud)]. This scam has cost organizations nearly \$26 billion since coming on the scene in 2013 according to FBI reports. A company’s email infrastructure is hacked or spoofed and someone pretending to be the CEO tells their phishing target that they need help doing an urgent wire transfer. Sometimes the target is threatened with job loss or public shaming if they don’t comply. Setting and following established protocols that require a verbal phone call to confirm the transfer or having an additional person to submit the request are two ways to block this type of scam from succeeding.
+
+\item[Business Email Compromise (Vendor Product Invoice).] Similar to the CEO fraud scam, a supplier’s email has been hacked or spoofed and the attacker uses it to send a company a fraudulent invoice. Having clear processes in place to confirm vendor change requests or invoice processing is one way of stopping this scam from working.
+
+\item[Stolen/Leaked passwords and blackmail.] The information used to craft these emails come from the hundreds of millions of exposed online records. The attackers display a paired email and password saying their possession of these credentials is “proof” that the attacker has already hacked the victim’s computer. In exchange for not sharing some type of incriminating, embarrassing, or scandalous content with the target’s email contacts, the attacker asks for a bribe—usually in the form of crypto currency. Even though the hacking claims are false, this type of blackmail is a quickly rising scam because people are too embarrassed to report it.
+
+\item[Security incident alert with offer to help.] This scam uses the fake contact information or fake website techniques in their plot to first get the target to panic and then trust the attacker as the quickest solution to their problem.
+\end{description}
+
+\clearpage
+
+\section{Appendix F: Acronyms}
+
+\begin{table}[h]
+  	\centering
+  	\caption{Email reconnaissance source descriptions}
+  	\rowcolors{1}{table-row-blue}{white}
+  	\makebox[\linewidth]{
+  	\color{table-text}
+  	\begin{tabular}
+  	% Table sizeing
+  	{|L{.20	\linewidth}
+  	L{.70\linewidth}|}
+ 	\hline
+	%Row 1
+  	\textbf{CISA}
+  	& Cybersecurity and Infrastructure Security Agency\\
+
+  	%Row 2
+  	\textbf{PCA}
+  	& Phishing Campaign Assessment\\
+
+  	 %Row 3
+  	\textbf{POC}
+  	& Point of Contact \\
+
+  	 %Row 4
+  	\textbf{ROE}
+  	& Rules of Engagement\\
+  	\hline
+\end{tabular}
+}
+\end{table}
+
+
+\end{document}

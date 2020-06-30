@@ -10,7 +10,8 @@ Based on:
 
 # Standard Python Libraries
 from glob import glob
-from os.path import basename, splitext
+from os import walk
+from os.path import basename, join, splitext
 
 # Third-Party Libraries
 from setuptools import find_packages, setup
@@ -30,17 +31,29 @@ def package_vars(version_file):
     return pkg_vars
 
 
+def package_files(directory):
+    """Read in and return package files from directory."""
+    paths = []
+    for (path, directories, filenames) in walk(directory):
+        for filename in filenames:
+            paths.append("../" + join(path, filename))
+    return paths
+
+
+extra_files = package_files("pca_report/assets")
+
+
 setup(
-    name="example",
+    name="pca-report-library",
     # Versions should comply with PEP440
-    version=package_vars("src/example/_version.py")["__version__"],
-    description="Example python library",
+    version=package_vars("src/_version.py")["__version__"],
+    description="PCA Report generation library",
     long_description=readme(),
     long_description_content_type="text/markdown",
     # NCATS "homepage"
     url="https://www.us-cert.gov/resources/ncats",
     # The project's main homepage
-    download_url="https://github.com/cisagov/skeleton-python-library",
+    download_url="https://github.com/bjb28/pca-report-library",
     # Author details
     author="Cyber and Infrastructure Security Agency",
     author_email="ncats@hq.dhs.gov",
@@ -65,13 +78,27 @@ setup(
     ],
     python_requires=">=3.6",
     # What does your project relate to?
-    keywords="skeleton",
+    keywords="pca report automation",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    package_data={"example": ["data/*.txt"]},
+    package_data={
+        "": extra_files,
+        "pca_report.customer": ["*.mustache"],
+        "pca_report.templates": ["*.json"],
+    },
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
-    install_requires=["docopt", "setuptools >= 24.2.0", "schema"],
+    install_requires=[
+        "adjustText >= 0.7.3",
+        "docopt",
+        "matplotlib >= 3.1.1",
+        "numpy >= 1.17.2",
+        "pystache >= 0.5.4",
+        "pytz >= 2019.2",
+        "pytimeparse >= 1.1.8",
+        "setuptools >= 24.2.0",
+        "schema",
+    ],
     extras_require={
         "test": [
             "pre-commit",
@@ -88,5 +115,11 @@ setup(
         ]
     },
     # Conveniently allows one to run the CLI tool as `example`
-    entry_points={"console_scripts": ["example = example.example:main"]},
+    entry_points={
+        "console_scripts": [
+            "pca-report-compiler = compiler.xelatex:main",
+            "pca-report-generator = customer.generate_report:main",
+            "pca-report-templates = templates.generate_template:main",
+        ]
+    },
 )

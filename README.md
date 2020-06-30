@@ -1,18 +1,23 @@
-# skeleton-python-library #
+# pca-report-library #
 
-[![GitHub Build Status](https://github.com/cisagov/skeleton-python-library/workflows/build/badge.svg)](https://github.com/cisagov/skeleton-python-library/actions)
-[![Coverage Status](https://coveralls.io/repos/github/cisagov/skeleton-python-library/badge.svg?branch=develop)](https://coveralls.io/github/cisagov/skeleton-python-library?branch=develop)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/skeleton-python-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/skeleton-python-library/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/skeleton-python-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/skeleton-python-library/context:python)
-[![Known Vulnerabilities](https://snyk.io/test/github/cisagov/skeleton-python-library/develop/badge.svg)](https://snyk.io/test/github/cisagov/skeleton-python-library)
+[![GitHub Build Status](https://github.com/bjb28/pca-report-library/workflows/build/badge.svg)](https://github.com/bjb28/pca-report-library/actions)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/bjb28/pca-report-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bjb28/pca-report-library/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/bjb28/pca-report-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cbjb28/pca-report-library/context:python)
+[![Known Vulnerabilities](https://snyk.io/test/github/bjb28/pca-report-library/develop/badge.svg)](https://snyk.io/test/github/bjb28/pca-report-library)
 
-This is a generic skeleton project that can be used to quickly get a
-new [cisagov](https://github.com/cisagov) Python library GitHub
-project started.  This skeleton project contains [licensing
-information](LICENSE), as well as
-[pre-commit hooks](https://pre-commit.com) and
-[GitHub Actions](https://github.com/features/actions) configurations
-appropriate for a Python library project.
+This package is used for generating PCA reports with LaTeX and supporting
+scripts. The fallowing are available commands after from inside the docker:
+
+`pca-report-generator` - Builds PCA LaTeX report and complies the PDF
+
+`pca-report-templates` - Exports the Report Mustache template and Manual data
+file template
+
+`pca-report-compiler` -  Compiles a PCA LaTeX report file,  still in development.
+
+`pca-support-scripts` - Exports the pca-data script for pulling data from PCA
+database and the pca-template-stats for looking at templates from the PCA
+Database. REQUIRES OTHER DOCKERS
 
 ## Contributing ##
 

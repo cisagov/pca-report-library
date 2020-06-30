@@ -1,0 +1,73 @@
+{
+  "Additional-Closing": "Insert additional closing comments/paragraph. If nothing to add leave empty quotes.",
+  "Customer_Setup": [
+    "**Comma separated list of each action performed during customer setup**",
+    "**Comma separated list of each action performed during customer setup**",
+    "**Comma separated list of each action performed during customer setup**"
+  ],
+  "Email_Recon": {
+    "Date_Time_Search": "Month DD, YYYY at HH:MM EST ",
+    "Email_Discovery_Source": "*** Comma separated list of sources from SimplyEmail report Source column",
+    "Email_List_Match": 0,
+    "Total_Emails_Discovered": 0
+  },
+  "Email_Recon_bool": "true",
+  "FED_Email": "",
+  "Finding_1": "**Finding for the Key Findings Table**",
+  "Finding_2": "**Finding for the Key Findings Table**",
+  "Finding_3": "**Finding for the Key Findings Table**",
+  "Landing_URL": "***URL***",
+  "Level": {
+    "1": {
+      "Description": "***Short description of the email.***",
+      "Display_Link": "**Display Link if the url was spoofed or hidden, Delete if not used***",
+      "From_Address": "\"**Display Name\" <***address***>",
+      "Key_Characteristics": "These poorly worded or purposefully vague messages are self-filtering. If someone is curious, greedy, or gullible enough to believe the sender then they are more likely to follow through with the request for personal or banking information.",
+      "Time_Of_First_Report": "MM/DD/YYYY HH:MM ***Delete Note: This date time of first report in 24-hour UTC format",
+      "User_Reports": 0
+    },
+    "2": {
+      "Description": "***Short description of the email.***",
+      "Display_Link": "**Display Link if the url was spoofed or hidden, Delete if not used***",
+      "From_Address": "\"**Display Name\" <***address***>",
+      "Key_Characteristics": "These purposefully vague messages attempt to short circuit common sense security training by looking somewhat work related or evoke enough curiosity click the link to learn more, even though the message comes from an external sending domain and has unusual misspellings for a professional or automated email.",
+      "Time_Of_First_Report": "MM/DD/YYYY HH:MM ***Delete Note: This date time of first report in 24-hour UTC format",
+      "User_Reports": 0
+    },
+    "3": {
+      "Description": "***Short description of the email.***",
+      "Display_Link": "**Display Link if the url was spoofed or hidden, Delete if not used***",
+      "From_Address": "\"**Display Name\" <***address***>",
+      "Key_Characteristics": "Typically impersonating a legitimate business interaction, these messages are more focused on their target, but are still self-filtering for more gullible recipients by using poor grammar or following unusual business practices.",
+      "Time_Of_First_Report": "MM/DD/YYYY HH:MM ***Delete Note: This date time of first report in 24-hour UTC format",
+      "User_Reports": 0
+    },
+    "4": {
+      "Description": "***Short description of the email.***",
+      "Display_Link": "**Display Link if the url was spoofed or hidden, Delete if not used***",
+      "From_Address": "\"**Display Name\" <***address***>",
+      "Key_Characteristics": "These messages are specific to work environments or try to blend in as typical or expected communications. Goal is usually to harvest credentials to later gain access to sensitive business networks since people tend to reuse credentials over several platforms. Typical phishing techniques include spoofing a sending address to look like a legitimate group, individually addressing the recipient, and having a display name and signature of group typically seen in the workplace.",
+      "Time_Of_First_Report": "MM/DD/YYYY HH:MM ***Delete Note: This date time of first report in 24-hour UTC format",
+      "User_Reports": 0
+    },
+    "5": {
+      "Description": "***Short description of the email.***",
+      "Display_Link": "**Display Link if the url was spoofed or hidden, Delete if not used***",
+      "From_Address": "\"**Display Name\" <***address***>",
+      "Key_Characteristics": "Second highest level of deception, these messages typically target specific organizations or groups that access a common resource. In real attacks, the goal is to have a recipient to download a malicious program on their workstation to give the attacker access to the internal network. Typical advanced phishing techniques include using all hidden or spoofed links that require the extra step of hovering over (or long pressing on mobile) to show the underlying URL and spoofing or mimicking the target organization\u2019s email domain or signature block.",
+      "Time_Of_First_Report": "MM/DD/YYYY HH:MM ***Delete Note: This date time of first report in 24-hour UTC format",
+      "User_Reports": 0
+    },
+    "6": {
+      "Description": "***Short description of the email.***",
+      "Display_Link": "**Display Link if the url was spoofed or hidden, Delete if not used***",
+      "From_Address": "\"**Display Name\" <***address***>",
+      "Key_Characteristics": "The highest level of deception, these are usually fine-tuned for sensitive account access or deep-pocket credential harvesting and rely on customized content to convey a sense of legitimacy. Typical advanced phishing techniques include personally addressing the recipient, spoofing or mimicking the organization\u2019s email domain or signature block, referencing relevant real world events or data, and writing in a tone that motivates the recipient is to act.",
+      "Time_Of_First_Report": "MM/DD/YYYY HH:MM ***Delete Note: This date time of first report in 24-hour UTC format",
+      "User_Reports": 0
+    }
+  },
+  "Target_Domain": "",
+  "Total_User_Reports": 0,
+  "User_Report_Provided": true
+}
