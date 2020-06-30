@@ -203,7 +203,7 @@
 \textbf{Dates}
 	&  <<Start_Date>> to <<End_Date>> \\
 \textbf{Test Location}
-	&CISA/Assessments Lab, Arlington, VA\\
+	&CISAAssessments Lab, Arlington, VA\\
 \textbf{Scope}
 	&<<Num_Users>> users within the following domain:
 	\newline % Sets new line for domains.
@@ -224,7 +224,7 @@
 
 \section{Executive Report}
 
-The Cybersecurity and Infrastructure Security Agency (CISA) team produced this report for <<Org_Name>> (<<Acronym>>) in support of a Phishing Campaign Assessment (PCA) conducted <<Start_Date>> to <<End_Date>>. CISA conducts PCAs, upon customer request, to measure an organization’s propensity to click on email phishing lures. PCA is a practical exercise intended to support and measure the effectiveness of security awareness training for information system users. The results of this PCA show the potential susceptibility of <<Acronym>> personnel to social engineering attacks—specifically email phishing attacks—in which an adversary tricks an email user into clicking a malicious link to gain unauthorized network access. The assessment’s goal was to isolate the human behavioral response to these types of attacks and no exploits were used during the assessment. The assessment operated under the scenario that technical controls were unable to detect, report, or stop the email phishing attempts from reaching the end user. CISA measured <<Acronym>>’s level of susceptibility to a phishing attack by using targeted user click rates, click times, response rates, and response times, as shown in table~\ref{tab:TargetedUserMeasurements}.
+The Cybersecurity and Infrastructure Security Agency (CISA) team produced this report for <<Org_Name>> (<<Acronym>>) in support of a Phishing Campaign Assessment (PCA) conducted <<Start_Date>> to <<End_Date>>. CISA conducts PCAs, upon customer request, to measure an organization’s propensity to click on email phishing lures. PCA is a practical exercise intended to support and measure the effectiveness of security awareness training for information system users. The results of this PCA show the potential susceptibility of <<Acronym>> personnel to social engineering attacks—specifically email phishing attacks—in which an adversary tricks an email user into clicking a malicious link to gain unauthorized network access. The assessment’s goal was to isolate the human behavioral response to these types of attacks, and no exploits were used during the assessment. The assessment operated under the scenario that technical controls were unable to detect, report, or stop the email phishing attempts from reaching the end user. CISA measured <<Acronym>>’s level of susceptibility to a phishing attack by using targeted user click rates, click times, response rates, and response times, as shown in table~\ref{tab:TargetedUserMeasurements}.
 This report aims to enhance <<Acronym>>’s understanding of their information system users’ cybersecurity behavior and to promote a secure and resilient workforce.
 
 \begin{table}[h]
@@ -273,7 +273,7 @@ This report aims to enhance <<Acronym>>’s understanding of their information s
 }
 \end{table}
 
-CISA has provided this PCA to <<Acronym>> at no cost and coordinated all activities — including planning and testing — with <<Acronym>>’s point of contact (POC). <<Acronym>> maintained control over the testing, including providing target email addresses, approving phishing email templates, approving testing timeframes, and adjusting mail security setting to ensure inbox access. This PCA was not intended to, and did not, test technical controls or electronic protections designed to block phishing attempts. This PCA spanned a six-week period and aimed to capture metrics of <<Acronym>> information system users reaction to phishing emails of multiple deception levels.\\
+CISA has provided this PCA to <<Acronym>> at no cost and coordinated all activities — including planning and testing — with <<Acronym>>’s point of contact (POC). <<Acronym>> maintained control over the testing, including providing target email addresses, approving phishing email templates, approving testing timeframes, and adjusting mail security setting to ensure inbox access. This PCA was not intended to, and did not, test technical controls or electronic protections designed to block phishing attempts. This PCA spanned a six-week period and aimed to capture metrics around <<Acronym>> information system users reaction to phishing emails of multiple deception levels.\\
 
 CISA has established this voluntary service to help organizations
 \begin{itemize}
@@ -405,7 +405,7 @@ Over six weeks, <<Acronym>>’s targeted users received at least <<Emails_Per_Us
 
 \subsection{Click Rate vs. Report Rate}
 
-One of the most common measures of an organization’s susceptibility to phishing attacks is targeted-user click rates. If an actual phishing attack is able to bypass technical controls and arrive in a user’s inbox, the human target must click on the malicious link or attachment for the attack to be successful. In practical exercises such as this PCA, targeted-user click rates will fluctuate depending on the level of email deception used in testing. Effective security awareness training, however, should result in a noticeable click rate decrease over time and to a level deemed acceptable based on the organization’s risk management posture.
+One of the most common measures of an organization’s susceptibility to phishing attacks is targeted-user click rates. If an actual phishing attack is able to bypass technical controls and arrive in a user’s inbox, the human target must click on the malicious link or attachment for the attack to be successful. In practical exercises, such as this PCA, targeted-user click rates will fluctuate depending on the level of email deception used in testing. Effective security awareness training, however, should result in a noticeable click rate decrease over time and to a level deemed acceptable based on the organization’s risk management posture.
 
 The counterpart to user click rates is the user-reporting rate, determined by the number of emails sent or calls to alert <<Acronym>>’s helpdesk during each campaign. Based on previous testing, CISA recommends that organizations initially aim to have two people reporting the phishing attempts for every person that clicks. This ratio ensures that there is not only reporting coverage for the person clicking, but also redundant coverage in case the person who clicks the link does not report or does not realize they have been phished. Effective security awareness training should result in a noticeable report rate increase over time and to a level deemed acceptable based on the organization’s risk management posture.
 
@@ -496,11 +496,11 @@ In this report, the percentages shown by the user click rate and user report rat
 
 \subsection{Click Time vs. Report Time}
 
-To contain an attack, an organization’s security team must be made aware of the potential breach. In the scenario that this PCA tested, no technical controls were triggered during a phishing attack and the clock for a potential breach started once a targeted user clicked on a “malicious” link. Timely user reporting decreases the window of opportunity that an adversary has to access data or gain further network entry. Timely reporting also increases the opportunity the security team has to detect and respond to a potential breach. By educating users on how to both spot and promptly respond to phishing attempts, an organization can improve their anti-phishing defenses. The following table details the time to first click and first report throughout the assessment and the lead or lag times for incident response measures to be activated (time elapsed represented in hours:minutes:seconds).\\
+To contain an attack, an organization’s security team must be made aware of the potential breach. In the scenario that this PCA tested, no technical controls were triggered during a phishing attack, and the clock for a potential breach started once a targeted user clicked on a “malicious” link. Timely user reporting decreases the window of opportunity that an adversary has to access data or gain further network entry. Timely reporting also increases the opportunity the security team has to detect and respond to a potential breach. By educating users on how to both spot and promptly respond to phishing attempts, an organization can improve their anti-phishing defenses. The following table details the time to first click and first report throughout the assessment as well as the lead or lag times for incident response measures to be activated.\\
 
 \begin{table}[h]
   \centering
-  \caption{Click time vs. report time (HH:MM:SS)}
+  \caption{Click time vs. report time}
   \rowcolors{2}{table-row-blue}{white}
   \makebox[\linewidth]{
   \color{table-text}
@@ -639,7 +639,7 @@ Under this PCA’s attack scenario, CISA measured <<Acronym>>  information syste
  	\item click rate (number of email links clicked divided by number of emails sent),
  	\item click time (the time user clicked “malicious” link minus the time CISA sent the phishing emails),
  	\item report rate (number of user alerts to security office or helpdesk of phishing attempt divided by number of emails sent), and
- 	\item report time the time user alerts security office or helpdesk minus the time CISA sent the phishing emails).
+ 	\item report time (the time user alerts security office or helpdesk minus the time CISA sent the phishing emails).
  \end{itemize}
 
 To collect these metrics, CISA sent six emails of varying deception levels to the email list provided by <<Acronym>>. The overall click rate was <<Click_Rate>> percent \ifthenelse{\boolean{reports}}{and the overall reporting rate was <<User_Report_Rate>> percent}{} when analyzing all emails clicked \ifthenelse{\boolean{reports}}{and reports submitted}{} across all levels of deception. Overall, <<Acronym>> user click rates <<Click-Rate-Trend>> as the deception or phishing sophistication levels increased. When looking at all levels assessed, emails with the following indicators had higher than average clicks: <<Indicators-Above-Ave>>.
@@ -1754,7 +1754,7 @@ Below are the details about the templates used during PCA with <<Acronym>>. The 
 
 \section{Appendix E: Top Phishing Techniques \& Scams}
 \label{sec:TopPhishingTechniquesScams}
-In addition to training on the red flags and sophisticated techniques email users were most susceptible to, CISA recommends anti-phishing training and awareness include the most common phishing techniques and scams used to elicit clicks from target users in real world phishing incidents. A phishing technique is an element within a larger phishing scam.
+In addition to training on the red flags and sophisticated techniques information system users were most susceptible to, CISA recommends anti-phishing training and awareness include the most common phishing techniques and scams used to elicit clicks from target users in real world phishing incidents. A phishing technique is an element within a larger phishing scam.
 
 \subsection{Techniques}
 
