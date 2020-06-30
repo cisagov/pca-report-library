@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo '################################################################################'
+echo '# The following output is used to setup aliases to containerized commands'
+echo '# To apply these changes under bash use a command similar to:'
+echo '# eval "$(docker run pca-report-generator)"'
+echo '#'
+echo '# Environment variables:'
+echo '# PCA_GENERATOR_IMAGE, defaults to "pca-report-generator" if not set'
+echo '################################################################################'
+echo
+
+cd /usr/local/bin
+
+# create output that can be eval'd to create aliases for pca-report-generator commands
+for f in pca-*
+do
+  echo alias $f=\"docker run -it --rm --volume \\\`pwd\\\`:/home/cisa \\\"\\\${PCA_GENERATOR_IMAGE:-pca-report-generator}\\\" $f\"
+done
+
+# create an alias to execute a shell in the container
+echo alias pca-report-generator-bash=\"docker run -it --rm --volume \\\`pwd\\\`:/home/cisa \\\"\\\${PCA_GENERATOR_IMAGE:-pca-report-generator}\\\" /bin/bash\"
