@@ -31,6 +31,7 @@ def reporting_closing(reportData, highest_level, second_level):
     count = 0
 
     while True:
+
         report_ratio_level = get_max_number(reportData, "Time_Gap_TD", "float", count)
 
         if reportData["Level"][str(report_ratio_level)]["Gap_Type"] == "(LEAD)":
