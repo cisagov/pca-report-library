@@ -46,7 +46,7 @@ utc = timezone("UTC")
 localTimeZone = timezone("US/Eastern")  # Holds the desired time zone.
 
 MUSTACHE_FILE = "report.mustache"
-ASSETS_DIR_SRC = "../assets"
+ASSETS_DIR_SRC = "/usr/src/pca-report-tools/src/assets/"
 ASSETS_DIR_DST = "assets"
 TO_COPY = ["figures", "screenshots"]
 # Fields that should not be Escaped for LaTeX.
@@ -319,9 +319,10 @@ def manualData_processor(dataFile, manualFile):
                         reportData["Level"][numLevel]["User_Reports"] = manualData[
                             "Level"
                         ][numLevel]["User_Reports"]
+                        
                         if (
                             manualData["Level"][numLevel]["Time_Of_First_Report"]
-                            != "N/A"
+                            != "N/A" and manualData["Level"][numLevel]["Time_Of_First_Report"] != ""
                         ):
                             reportData["Level"][numLevel][
                                 "Time_To_First_Report"
