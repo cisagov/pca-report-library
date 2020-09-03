@@ -32,7 +32,10 @@ def reporting_closing(reportData, highest_level, second_level):
 
     while True:
 
-        report_ratio_level = get_max_number(reportData, "Time_Gap_TD", "float", count)
+        max_time_gap_level = get_max_number(reportData, "Time_Gap_TD", "float", count)
+        if max_time_gap_level:
+            # Only set report_ratio_level if we get a valid value for max_time_gap_level
+            report_ratio_level = max_time_gap_level
 
         if (
             count == 5
