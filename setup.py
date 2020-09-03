@@ -83,8 +83,8 @@ setup(
     package_dir={"": "src"},
     package_data={
         "": extra_files,
-        "pca_report.customer": ["*.mustache"],
-        "pca_report.templates": ["*.json"],
+        "customer": ["*.mustache"],
+        "templates": ["*.json"],
     },
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
