@@ -6,7 +6,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/bjb28/pca-report-library/develop/badge.svg)](https://snyk.io/test/github/bjb28/pca-report-library)
 
 This package is used for generating PCA reports with LaTeX and supporting
-scripts. The fallowing are available commands after from inside the docker:
+scripts. The following are available commands after from inside the docker:
 
 `pca-report-generator` - Builds PCA LaTeX report and complies the PDF
 
