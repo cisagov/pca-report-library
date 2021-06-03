@@ -1,9 +1,10 @@
 # pca-report-library #
 
-[![GitHub Build Status](https://github.com/bjb28/pca-report-library/workflows/build/badge.svg)](https://github.com/bjb28/pca-report-library/actions)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/bjb28/pca-report-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/bjb28/pca-report-library/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/bjb28/pca-report-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cbjb28/pca-report-library/context:python)
-[![Known Vulnerabilities](https://snyk.io/test/github/bjb28/pca-report-library/develop/badge.svg)](https://snyk.io/test/github/bjb28/pca-report-library)
+[![GitHub Build Status](https://github.com/cisagov/pca-report-library/workflows/build/badge.svg)](https://github.com/cisagov/pca-report-library/actions)
+[![Coverage Status](https://coveralls.io/repos/github/cisagov/pca-report-library/badge.svg?branch=develop)](https://coveralls.io/github/cisagov/pca-report-library?branch=develop)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/pca-report-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/pca-report-library/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/pca-report-library.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/pca-report-library/context:python)
+[![Known Vulnerabilities](https://snyk.io/test/github/cisagov/pca-report-library/develop/badge.svg)](https://snyk.io/test/github/cisagov/pca-report-library)
 
 This package is used for generating PCA reports with LaTeX and supporting
 scripts. The following are available commands after from inside the docker:
