@@ -1,3 +1,5 @@
+"""Graphs."""
+
 __all__ = ["graph_builder"]
 
 # Standard Python Libraries
@@ -8,11 +10,11 @@ import textwrap
 # Third-Party Libraries
 from adjustText import adjust_text
 import matplotlib as mpl
-from matplotlib.dates import DateFormatter, HourLocator
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
+import timedelta
 
 # Set Colors
 BLUE = "#3C679D"
@@ -24,6 +26,7 @@ ORANGE = "#D67836"
 
 
 def graph_builder(assessment_ID, labels):
+    """Build the graphs."""
     success = True
     dataFile = "reportData_" + assessment_ID + ".json"
 
@@ -461,7 +464,7 @@ def click_rate_based_deception_indicators(reportData):
     for x in range(18):
         click_rates.append(reportData["Click_Rate"])
 
-    fig = plt.figure(figsize=(7, 10))
+    plt.figure(figsize=(7, 10))
 
     gridspec.GridSpec(9, 1)
 
@@ -976,7 +979,6 @@ def clicking_user_timeline(reportData):
 # Clicks by Level for offices
 def count_unique_clickes_by_office_per_level(reportData):
     # data to plot
-    n_groups = 6
     label_names = list()
     level_one = list()
     level_two = list()
