@@ -16,7 +16,7 @@ __all__ = [
 from itertools import tee
 import json
 
-# Third-Party Libraries
+# cisagov Libraries
 # inter-project packages
 from utility.gets import get_level_description, get_max_number
 
@@ -106,9 +106,11 @@ def email_closing(reportData, level, order):
         levelDict["Complexity"]["External"] == 0
         and levelDict["Complexity"]["Internal"] == 0
     ):
-        sender_text = "an external sending address with no known connection to {} ({})".format(
-            reportData["Acronym"],
-            levelDict["From_Address"].split("<")[1].replace(">", ""),
+        sender_text = (
+            "an external sending address with no known connection to {} ({})".format(
+                reportData["Acronym"],
+                levelDict["From_Address"].split("<")[1].replace(">", ""),
+            )
         )
 
     elif (
