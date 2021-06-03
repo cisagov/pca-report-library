@@ -77,6 +77,7 @@ jobs:
   # TODO: Re-enable the coveralls-related steps below once this repository
   # has been modified to be a descendant of cisagov/skeleton-python-library
   # and the "src/" directory conforms to Python library standards.
+  # See https://github.com/cisagov/pca-report-library/issues/8
   #     - name: Upload coverage report
   #       run: coveralls
   #       env:
