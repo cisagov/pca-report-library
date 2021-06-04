@@ -17,7 +17,6 @@ from itertools import tee
 import json
 
 # cisagov Libraries
-# inter-project packages
 from utility.gets import get_level_description, get_max_number
 
 
