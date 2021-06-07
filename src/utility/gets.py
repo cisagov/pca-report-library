@@ -12,18 +12,17 @@ def get_max_number(reportData, value_name, type, postion=0):
                 report_numbers.append(reportData["Level"][str(num)][value_name])
             except ValueError:
                 report_numbers.append(0)
-        
+
         elif type == "float":
             try:
                 report_numbers.append(reportData["Level"][str(num)][value_name])
             except ValueError:
                 report_numbers.append(0)
-    
 
     for i in range(len(report_numbers)):
         if report_numbers[i] is None:
             report_numbers[i] = 0
-            
+
     report_numbers.sort(reverse=True)
 
     # TODO Account for click rates being the same.

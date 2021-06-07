@@ -34,12 +34,14 @@ import tempfile
 from typing import Dict
 
 # Third-Party Libraries
-from _version import __version__
-from customer.closing import closing_builder
-from customer.graphs import graph_builder
 from docopt import docopt
 import pystache
 from pytz import timezone
+
+# cisagov Libraries
+from _version import __version__
+from customer.closing import closing_builder
+from customer.graphs import graph_builder
 from utility.time import format_timedelta_to_HHMMSS, time_to_string
 
 utc = timezone("UTC")
@@ -319,10 +321,12 @@ def manualData_processor(dataFile, manualFile):
                         reportData["Level"][numLevel]["User_Reports"] = manualData[
                             "Level"
                         ][numLevel]["User_Reports"]
-                        
+
                         if (
                             manualData["Level"][numLevel]["Time_Of_First_Report"]
-                            != "N/A" and manualData["Level"][numLevel]["Time_Of_First_Report"] != ""
+                            != "N/A"
+                            and manualData["Level"][numLevel]["Time_Of_First_Report"]
+                            != ""
                         ):
                             reportData["Level"][numLevel][
                                 "Time_To_First_Report"
