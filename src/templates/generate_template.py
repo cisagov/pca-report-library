@@ -23,8 +23,10 @@ import tempfile
 from typing import Dict
 
 # Third-Party Libraries
-from _version import __version__
 from docopt import docopt
+
+# cisagov Libraries
+from _version import __version__
 
 MANUAL_DATA_TEMPLATE = "template-manualData_RVXXXX.json"
 MUSTACHE_DIR = "../customer/"

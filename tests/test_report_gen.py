@@ -1,9 +1,16 @@
 """Tests for Report Generation functions."""
 # Third-Party Libraries
-from customer.closing import (appearance_above_ave, behavior_above_ave,
-                              indicators_above_ave, overall_trend,
-                              relevancy_above_ave, sender_above_ave)
 import pytest
+
+# cisagov Libraries
+from customer.closing import (
+    appearance_above_ave,
+    behavior_above_ave,
+    indicators_above_ave,
+    overall_trend,
+    relevancy_above_ave,
+    sender_above_ave,
+)
 
 
 class TestAboveAve:
