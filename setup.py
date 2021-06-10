@@ -9,9 +9,10 @@ Based on:
 """
 
 # Standard Python Libraries
+import codecs
 from glob import glob
 from os import walk
-from os.path import basename, join, splitext
+from os.path import abspath, basename, dirname, join, splitext
 
 # Third-Party Libraries
 from setuptools import find_packages, setup
@@ -23,12 +24,22 @@ def readme():
         return f.read()
 
 
-def package_vars(version_file):
-    """Read in and return the variables defined by the version_file."""
-    pkg_vars = {}
-    with open(version_file) as f:
-        exec(f.read(), pkg_vars)  # nosec
-    return pkg_vars
+# Below two methods were pulled from:
+# https://packaging.python.org/guides/single-sourcing-package-version/
+def read(rel_path):
+    """Open a file for reading from a given relative path."""
+    here = abspath(dirname(__file__))
+    with codecs.open(join(here, rel_path), "r") as fp:
+        return fp.read()
+
+
+def get_version(version_file):
+    """Extract a version number from the given file path."""
+    for line in read(version_file).splitlines():
+        if line.startswith("__version__"):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    raise RuntimeError("Unable to find version string.")
 
 
 def package_files(directory):
@@ -46,17 +57,21 @@ extra_files = package_files("pca_report/assets")
 setup(
     name="pca-report-library",
     # Versions should comply with PEP440
-    version=package_vars("src/_version.py")["__version__"],
-    description="PCA Report generation library",
+    version=get_version("src/pca-report-library/_version.py"),
+    description="PCA Report library",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    # NCATS "homepage"
-    url="https://www.us-cert.gov/resources/ncats",
-    # The project's main homepage
-    download_url="https://github.com/bjb28/pca-report-library",
+    # Landing page for CISA's cybersecurity mission
+    url="https://www.cisa.gov/cybersecurity",
+    # Additional URLs for this project per
+    # https://packaging.python.org/guides/distributing-packages-using-setuptools/#project-urls
+    project_urls={
+        "Source": "https://github.com/cisagov/pca-report-library",
+        "Tracker": "https://github.com/cisagov/pca-report-library/issues",
+    },
     # Author details
-    author="Cyber and Infrastructure Security Agency",
-    author_email="ncats@hq.dhs.gov",
+    author="Cybersecurity and Infrastructure Security Agency",
+    author_email="github@cisa.dhs.gov",
     license="License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -75,6 +90,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     python_requires=">=3.6",
     # What does your project relate to?
@@ -101,7 +117,7 @@ setup(
     ],
     extras_require={
         "test": [
-            "pre-commit",
+            "coverage",
             # coveralls 1.11.0 added a service number for calls from
             # GitHub Actions. This caused a regression which resulted in a 422
             # response from the coveralls API with the message:
@@ -109,7 +125,7 @@ setup(
             # 1.11.1 fixed this issue, but to ensure expected behavior we'll pin
             # to never grab the regression version.
             "coveralls != 1.11.0",
-            "coverage",
+            "pre-commit",
             "pytest-cov",
             "pytest",
         ]

@@ -61,6 +61,7 @@ repos:
       - id: shell-lint
 
   # Python hooks
+  # Run bandit on "tests" tree with a configuration
   - repo: https://github.com/PyCQA/bandit
     rev: 1.7.0
     hooks:
