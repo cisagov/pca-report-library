@@ -16,7 +16,7 @@ __all__ = [
 from itertools import tee
 import json
 
-# cisagov Libraries
+# Third-Party Libraries
 from utility.gets import get_level_description, get_max_number
 
 
