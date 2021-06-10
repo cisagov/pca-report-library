@@ -27,7 +27,8 @@ from typing import Any, Dict
 
 # Third-Party Libraries
 import docopt
-import pkg_resources
+
+# import pkg_resources
 from schema import And, Schema, SchemaError, Use
 
 from ._version import __version__
@@ -92,12 +93,12 @@ def main() -> int:
     logging.info(f'ECHO_MESSAGE="{message}"')
 
     # Access some data from our package data (see the setup.py)
-    secret_message: str = (
-        pkg_resources.resource_string("example", "data/secret.txt")
-        .decode("utf-8")
-        .strip()
-    )
-    logging.info(f'Secret="{secret_message}"')
+    # secret_message: str = (
+    #     pkg_resources.resource_string("example", "data/secret.txt")
+    #     .decode("utf-8")
+    #     .strip()
+    # )
+    # logging.info(f'Secret="{secret_message}"')
 
     # Stop logging and clean up
     logging.shutdown()

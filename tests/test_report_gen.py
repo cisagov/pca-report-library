@@ -3,7 +3,7 @@
 import pytest
 
 # cisagov Libraries
-from customer.closing import (
+from pca_report_library.customer.closing import (
     appearance_above_ave,
     behavior_above_ave,
     indicators_above_ave,
