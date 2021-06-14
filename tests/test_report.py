@@ -1,5 +1,5 @@
 #!/usr/bin/env pytest -vs
-"""Tests for example."""
+"""Tests for report."""
 
 # Standard Python Libraries
 import logging
@@ -11,7 +11,7 @@ from unittest.mock import patch
 import pytest
 
 # cisagov Libraries
-from pca_report_library import example
+from pca_report_library import report
 
 div_params = [
     (1, 1, 1),
@@ -30,14 +30,14 @@ log_levels = (
 
 # define sources of version strings
 RELEASE_TAG = os.getenv("RELEASE_TAG")
-PROJECT_VERSION = example.__version__
+PROJECT_VERSION = report.__version__
 
 
 def test_stdout_version(capsys):
     """Verify that version string sent to stdout agrees with the module version."""
     with pytest.raises(SystemExit):
         with patch.object(sys, "argv", ["bogus", "--version"]):
-            example.main()
+            report.main()
     captured = capsys.readouterr()
     assert (
         captured.out == f"{PROJECT_VERSION}\n"
@@ -54,7 +54,7 @@ def test_stdout_version(capsys):
 #             # package and running it, so there is nothing to use from this
 #             # import. As a result, we can safely ignore this warning.
 #             # Third-Party Libraries
-#             import example.__main__  # noqa: F401
+#             import report.__main__  # noqa: F401
 #     captured = capsys.readouterr()
 #     assert (
 #         captured.out == f"{PROJECT_VERSION}\n"
@@ -79,7 +79,7 @@ def test_log_levels(level):
             assert (
                 logging.root.hasHandlers() is False
             ), "root logger should not have handlers yet"
-            return_code = example.main()
+            return_code = report.main()
             assert (
                 logging.root.hasHandlers() is True
             ), "root logger should now have a handler"
@@ -89,14 +89,14 @@ def test_log_levels(level):
 def test_bad_log_level():
     """Validate bad log-level argument returns error."""
     with patch.object(sys, "argv", ["bogus", "--log-level=emergency", "1", "1"]):
-        return_code = example.main()
+        return_code = report.main()
         assert return_code == 1, "main() should return failure"
 
 
 @pytest.mark.parametrize("dividend, divisor, quotient", div_params)
 def test_division(dividend, divisor, quotient):
     """Verify division results."""
-    result = example.example_div(dividend, divisor)
+    result = report.example_div(dividend, divisor)
     assert result == quotient, "result should equal quotient"
 
 
@@ -110,7 +110,7 @@ def test_slow_division():
     # Standard Python Libraries
     import time
 
-    result = example.example_div(256, 16)
+    result = report.example_div(256, 16)
     time.sleep(4)
     assert result == 16, "result should equal be 16"
 
@@ -118,11 +118,11 @@ def test_slow_division():
 def test_zero_division():
     """Verify that division by zero throws the correct exception."""
     with pytest.raises(ZeroDivisionError):
-        example.example_div(1, 0)
+        report.example_div(1, 0)
 
 
 def test_zero_divisor_argument():
     """Verify that a divisor of zero is handled as expected."""
     with patch.object(sys, "argv", ["bogus", "1", "0"]):
-        return_code = example.main()
+        return_code = report.main()
         assert return_code == 1, "main() should exit with error"
