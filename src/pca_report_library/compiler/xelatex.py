@@ -26,7 +26,7 @@ import tempfile
 from typing import Dict
 
 # Third-Party Libraries
-from _version import __version__
+from ._version import __version__
 from docopt import docopt
 
 TO_COPY = ["figures", "screenshots"]
