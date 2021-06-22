@@ -86,37 +86,3 @@ def test_bad_log_level():
         return_code = report.main()
         assert return_code == 1, "main() should return failure"
 
-
-@pytest.mark.parametrize("dividend, divisor, quotient", div_params)
-def test_division(dividend, divisor, quotient):
-    """Verify division results."""
-    result = report.example_div(dividend, divisor)
-    assert result == quotient, "result should equal quotient"
-
-
-@pytest.mark.slow
-def test_slow_division():
-    """Example of using a custom marker.
-
-    This test will only be run if --runslow is passed to pytest.
-    Look in conftest.py to see how this is implemented.
-    """
-    # Standard Python Libraries
-    import time
-
-    result = report.example_div(256, 16)
-    time.sleep(4)
-    assert result == 16, "result should equal be 16"
-
-
-def test_zero_division():
-    """Verify that division by zero throws the correct exception."""
-    with pytest.raises(ZeroDivisionError):
-        report.example_div(1, 0)
-
-
-def test_zero_divisor_argument():
-    """Verify that a divisor of zero is handled as expected."""
-    with patch.object(sys, "argv", ["bogus", "1", "0"]):
-        return_code = report.main()
-        assert return_code == 1, "main() should exit with error"
