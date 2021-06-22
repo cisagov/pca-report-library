@@ -13,7 +13,6 @@ import pytest
 # cisagov Libraries
 from pca_report_library import report
 
-
 log_levels = (
     "debug",
     "info",
@@ -85,4 +84,3 @@ def test_bad_log_level():
     with patch.object(sys, "argv", ["bogus", "--log-level=emergency", "1", "1"]):
         return_code = report.main()
         assert return_code == 1, "main() should return failure"
-
