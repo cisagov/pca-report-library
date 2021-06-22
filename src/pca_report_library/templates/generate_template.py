@@ -25,7 +25,7 @@ from typing import Dict
 # Third-Party Libraries
 from docopt import docopt
 
-from ._version import __version__
+from .._version import __version__
 
 MANUAL_DATA_TEMPLATE = "template-manualData_RVXXXX.json"
 MUSTACHE_DIR = "../customer/"
