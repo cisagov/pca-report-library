@@ -13,12 +13,6 @@ import pytest
 # cisagov Libraries
 from pca_report_library import report
 
-div_params = [
-    (1, 1, 1),
-    (2, 2, 1),
-    (0, 1, 0),
-    (8, 2, 4),
-]
 
 log_levels = (
     "debug",
