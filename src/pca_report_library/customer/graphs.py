@@ -3,6 +3,7 @@
 __all__ = ["graph_builder"]
 
 # Standard Python Libraries
+from datetime import timedelta
 import json
 import os
 import textwrap
@@ -14,7 +15,6 @@ import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
-import timedelta
 
 # Set Colors
 BLUE = "#3C679D"
