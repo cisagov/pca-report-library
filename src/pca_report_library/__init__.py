@@ -5,4 +5,12 @@
 # Python package.
 from ._version import __version__  # noqa: F401
 
-__all__ = ["example_div"]
+__all__ = [
+    "compiler.xelatex",
+    "customer.closing",
+    "customer.generate_report",
+    "customer.graphs",
+    "templates.generate_template",
+    "utility.gets",
+    "utility.time",
+]
