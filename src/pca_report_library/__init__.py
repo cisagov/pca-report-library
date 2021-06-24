@@ -4,6 +4,5 @@
 # package_name.__version__, which is used to get version information about this
 # Python package.
 from ._version import __version__  # noqa: F401
-from .report import example_div
 
 __all__ = ["example_div"]
