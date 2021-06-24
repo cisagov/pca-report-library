@@ -1,8 +1,13 @@
 """Tests for Report Generation functions."""
+# Standard Python Libraries
+import sys
+from unittest.mock import patch
+
 # Third-Party Libraries
 import pytest
 
 # cisagov Libraries
+from pca_report_library import __version__
 from pca_report_library.customer.closing import (
     appearance_above_ave,
     behavior_above_ave,
@@ -11,6 +16,8 @@ from pca_report_library.customer.closing import (
     relevancy_above_ave,
     sender_above_ave,
 )
+
+PROJECT_VERSION = __version__
 
 
 class TestAboveAve:
@@ -302,3 +309,20 @@ class TestTrends:
     def test_overall_trend(self, reportData, expected):
         """Validate expected trend is found."""
         assert overall_trend(reportData) == expected
+
+
+def test_running_as_module(capsys):
+    """Verify that the __main__.py file loads correctly."""
+    with pytest.raises(SystemExit):
+        with patch.object(sys, "argv", ["bogus", "--version"]):
+            # F401 is a "Module imported but unused" warning. This import
+            # emulates how this project would be run as a module. The only thing
+            # being done by __main__ is importing the main entrypoint of the
+            # package and running it, so there is nothing to use from this
+            # import. As a result, we can safely ignore this warning.
+            # cisagov Libraries
+            import pca_report_library.__main__  # noqa: F401
+    captured = capsys.readouterr()
+    assert (
+        captured.out == f"{PROJECT_VERSION}\n"
+    ), "standard output by '--version' should agree with module.__version__"
