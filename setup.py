@@ -55,7 +55,7 @@ extra_files = package_files("pca_report/assets")
 
 
 setup(
-    name="pca_report_library",
+    name="pca-report-library",
     # Versions should comply with PEP440
     version=get_version("src/pca_report_library/_version.py"),
     description="PCA Report library",
@@ -95,14 +95,16 @@ setup(
     python_requires=">=3.6",
     # What does your project relate to?
     keywords="pca report automation",
-    packages=find_packages(where="src"),
-    package_dir={"": "src"},
+    packages=find_packages(where="src/pca_report_library"),
+    package_dir={"": "src/pca_report_library"},
     package_data={
         "": extra_files,
         "customer": ["*.mustache"],
         "templates": ["*.json"],
     },
-    py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
+    py_modules=[
+        splitext(basename(path))[0] for path in glob("src/pca_report_library/*.py")
+    ],
     include_package_data=True,
     install_requires=[
         "adjustText >= 0.7.3",
@@ -130,12 +132,12 @@ setup(
             "pytest",
         ]
     },
-    # Conveniently allows one to run the CLI tool as `example`
+    # Conveniently allows one to run the CLI tool as `pca-report-compiler`,`pca-report-generator`,and `pca-report-templates`
     entry_points={
         "console_scripts": [
-            "pca-report-compiler = compiler.xelatex:main",
-            "pca-report-generator = customer.generate_report:main",
-            "pca-report-templates = templates.generate_template:main",
+            "pca-report-compiler = pca_report_library.compiler.xelatex:main",
+            "pca-report-generator = pca_report_library.customer.generate_report:main",
+            "pca-report-templates = pca_report_library.templates.generate_template:main",
         ]
     },
 )
