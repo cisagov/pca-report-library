@@ -55,7 +55,7 @@ extra_files = package_files("pca_report/assets")
 
 
 setup(
-    name="pca-report-library",
+    name="pca_report_library",
     # Versions should comply with PEP440
     version=get_version("src/pca_report_library/_version.py"),
     description="PCA Report library",
