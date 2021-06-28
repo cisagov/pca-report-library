@@ -98,7 +98,7 @@ setup(
     packages=find_packages(where="src/pca_report_library"),
     package_dir={"": "src/pca_report_library"},
     package_data={
-        "": extra_files,
+        "": ["assets/*"],
         "customer": ["*.mustache"],
         "templates": ["*.json"],
     },
