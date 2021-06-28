@@ -58,7 +58,7 @@ setup(
     name="pca_report_library",
     # Versions should comply with PEP440
     version=get_version("src/pca_report_library/_version.py"),
-    description="PCA Report library",
+    description="PCA report library",
     long_description=readme(),
     long_description_content_type="text/markdown",
     # Landing page for CISA's cybersecurity mission
