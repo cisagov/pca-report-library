@@ -16,8 +16,8 @@ __all__ = [
 from itertools import tee
 import json
 
-# Third-Party Libraries
-from utility.gets import get_level_description, get_max_number
+# from pca_report_library.utility.gets import get_level_description, get_max_number
+from ..utility.gets import get_level_description, get_max_number
 
 
 def reporting_closing(reportData, highest_level, second_level):

@@ -34,12 +34,12 @@ import tempfile
 from typing import Dict
 
 # Third-Party Libraries
-from _version import __version__
 from docopt import docopt
 import pystache
 from pytz import timezone
-from utility.time import format_timedelta_to_HHMMSS, time_to_string
 
+from .._version import __version__
+from ..utility.time import format_timedelta_to_HHMMSS, time_to_string
 from .closing import closing_builder
 from .graphs import graph_builder
 

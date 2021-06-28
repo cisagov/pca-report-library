@@ -95,8 +95,8 @@ setup(
     python_requires=">=3.6",
     # What does your project relate to?
     keywords="pca report automation",
-    packages=find_packages(where="src/pca_report_library"),
-    package_dir={"": "src/pca_report_library"},
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
     package_data={
         "": extra_files,
         "customer": ["*.mustache"],
@@ -135,9 +135,9 @@ setup(
     # Conveniently allows one to run the CLI tools as `pca-report-compiler`, `pca-report-generator`, and `pca-report-templates`
     entry_points={
         "console_scripts": [
-            "pca-report-compiler = compiler.xelatex:main",
-            "pca-report-generator = customer.generate_report:main",
-            "pca-report-templates = templates.generate_template:main",
+            "pca-report-compiler = pca_report_library.compiler.xelatex:main",
+            "pca-report-generator = pca_report_library.customer.generate_report:main",
+            "pca-report-templates = pca_report_library.templates.generate_template:main",
         ]
     },
 )
