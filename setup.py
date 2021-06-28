@@ -102,9 +102,7 @@ setup(
         "customer": ["*.mustache"],
         "templates": ["*.json"],
     },
-    py_modules=[
-        splitext(basename(path))[0] for path in glob("src/pca_report_library/*.py")
-    ],
+    py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
     install_requires=[
         "adjustText >= 0.7.3",
