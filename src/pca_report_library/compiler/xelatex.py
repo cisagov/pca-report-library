@@ -28,7 +28,7 @@ from typing import Dict
 # Third-Party Libraries
 from docopt import docopt
 
-from ._version import __version__
+from .._version import __version__
 
 TO_COPY = ["figures", "screenshots"]
 ASSETS_DIR_SRC = "../assets"
