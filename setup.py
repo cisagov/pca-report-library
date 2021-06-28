@@ -135,9 +135,9 @@ setup(
     # Conveniently allows one to run the CLI tools as `pca-report-compiler`, `pca-report-generator`, and `pca-report-templates`
     entry_points={
         "console_scripts": [
-            "pca-report-compiler = pca_report_library.compiler.xelatex:main",
-            "pca-report-generator = pca_report_library.customer.generate_report:main",
-            "pca-report-templates = pca_report_library.templates.generate_template:main",
+            "pca-report-compiler = compiler.xelatex:main",
+            "pca-report-generator = customer.generate_report:main",
+            "pca-report-templates = templates.generate_template:main",
         ]
     },
 )

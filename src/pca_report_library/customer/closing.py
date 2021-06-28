@@ -16,8 +16,8 @@ __all__ = [
 from itertools import tee
 import json
 
-# cisagov Libraries
-from pca_report_library.utility.gets import get_level_description, get_max_number
+# Third-Party Libraries
+from utility.gets import get_level_description, get_max_number
 
 
 def reporting_closing(reportData, highest_level, second_level):
