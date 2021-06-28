@@ -11,7 +11,6 @@ Based on:
 # Standard Python Libraries
 import codecs
 from glob import glob
-from os import walk
 from os.path import abspath, basename, dirname, join, splitext
 
 # Third-Party Libraries
@@ -40,18 +39,6 @@ def get_version(version_file):
             delim = '"' if '"' in line else "'"
             return line.split(delim)[1]
     raise RuntimeError("Unable to find version string.")
-
-
-def package_files(directory):
-    """Read in and return package files from directory."""
-    paths = []
-    for (path, directories, filenames) in walk(directory):
-        for filename in filenames:
-            paths.append("../" + join(path, filename))
-    return paths
-
-
-extra_files = package_files("pca_report/assets")
 
 
 setup(
