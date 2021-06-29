@@ -16,7 +16,6 @@ __all__ = [
 from itertools import tee
 import json
 
-# from pca_report_library.utility.gets import get_level_description, get_max_number
 from ..utility.gets import get_level_description, get_max_number
 
 
