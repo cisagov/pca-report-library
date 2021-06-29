@@ -117,7 +117,8 @@ setup(
             "pytest",
         ]
     },
-    # Conveniently allows one to run the CLI tools as `pca-report-compiler`, `pca-report-generator`, and `pca-report-templates`
+    # Conveniently allows one to run the CLI tools as `pca-report-compiler`,
+    # `pca-report-generator`, and `pca-report-templates`
     entry_points={
         "console_scripts": [
             "pca-report-compiler = pca_report_library.compiler.xelatex:main",
