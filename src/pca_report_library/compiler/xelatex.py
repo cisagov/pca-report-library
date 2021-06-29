@@ -9,7 +9,7 @@ Usage:
 Options:
   -h --help     Show this screen.
   --version     Show version.
-  TEX_FILE      LaTeX File to come compiled
+  TEX_FILE      LaTeX file to compile.
 
   Supporting Files:
     -l --labels  Indicates the assessment included labels which utilities the labels template.
