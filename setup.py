@@ -1,5 +1,5 @@
 """
-This is the setup module for the example project.
+This is the setup module for the pca-report-library project.
 
 Based on:
 
