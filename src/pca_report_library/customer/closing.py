@@ -12,7 +12,6 @@ __all__ = [
 ]
 
 # Standard Python Libraries
-# Python packages
 from itertools import tee
 import json
 
