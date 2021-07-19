@@ -21,7 +21,6 @@ Options:
 import os
 import shutil
 import subprocess  # nosec See line 42 for explication.
-import sys
 import tempfile
 from typing import Dict
 
@@ -115,7 +114,3 @@ def main():
         return 0
     else:
         return 1
-
-
-if __name__ == "__main__":
-    sys.exit(main())

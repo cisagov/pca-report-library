@@ -18,7 +18,6 @@ Options:
 # Standard Python Libraries
 import os
 import shutil
-import sys
 import tempfile
 from typing import Dict
 
@@ -82,7 +81,3 @@ def main():
 
     os.chdir(original_working_dir)
     shutil.rmtree(temp_working_dir)
-
-
-if __name__ == "__main__":
-    sys.exit(main())
