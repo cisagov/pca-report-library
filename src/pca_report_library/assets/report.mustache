@@ -49,10 +49,10 @@
 
 %%%%% Sets the fonts %%%%
 \usepackage{fontspec}
-\fontspec [Path = assets/fonts/ ]
+\fontspec [Path = ./fonts/ ]
 {Franklin Gothic.ttf}
 
-\setmainfont[Path = assets/fonts/,
+\setmainfont[Path = ./fonts/,
 	BoldFont = *-Bold,
 	BoldFeatures={SizeFeatures={Size=10}},
 	ItalicFont= *-Italic,
@@ -145,7 +145,7 @@
 
 \begin{titlepage}
     \newgeometry{left=0.25in,right=0.25in,top=0.25in,bottom=0.25in}
-    \begin{lpic}[] {assets/assessment-summary-title(.95)}
+    \begin{lpic}[] {./assessment-summary-title(.95)}
       \lbl[tl]{11, 114; {\color{dhs-white}\textbf{\Large{Phishing Campaign Assessment}}}}
 			\lbl[tl]{150, 15.3; {\color{yellow}<<RVA_Number>>}}
 			\lbl[tl]{150, 6; {\color{dhs-white}<<Report_Date>>}}
@@ -158,7 +158,7 @@
     \noindent\color{dhs-blue}{\Huge{<<Org_Name>> }\large{(<<Acronym>>)}}
 
     \vspace*{\fill}
-    \includegraphics[height=0.8in]{assets/cisa-logo}
+    \includegraphics[height=0.8in]{./cisa-logo}
 
     \begin{flushleft}\centering{
     \textcolor{black}{
@@ -168,7 +168,7 @@
 \end{titlepage}
 
 %\newgeometry{left=0.5  in,right=0.5in,top=1.0in,bottom=1.0in}
-\hspace*{-1.5cm}\begin{lpic}[] {assets/table_content}
+\hspace*{-1.5cm}\begin{lpic}[] {./table_content}
       \lbl[tl]{11, 10; {\color{dhs-white}\textbf{\Large{Phishing Campaign Assessment}}}}
 			\lbl[tl]{145, 18; {\color{yellow}<<RVA_Number>>}}
 			\lbl[tl]{145, 10; {\color{dhs-white}<<Report_Date>>}}

@@ -35,6 +35,7 @@ from typing import Dict
 
 # Third-Party Libraries
 from docopt import docopt
+import pkg_resources
 import pystache
 from pytz import timezone
 
@@ -46,9 +47,15 @@ from .graphs import graph_builder
 utc = timezone("UTC")
 localTimeZone = timezone("US/Eastern")  # Holds the desired time zone.
 
-MUSTACHE_FILE = "report.mustache"
-ASSETS_DIR_SRC = "/usr/src/pca-report-tools/src/assets/"
+MUSTACHE_FILE_NAME = "report.mustache"
 ASSETS_DIR_DST = "assets"
+MUSTACHE_FILE = pkg_resources.resource_filename(
+    "pca_report_library",
+    "{asset_dir}/{mustache_filename}".format(
+        asset_dir=ASSETS_DIR_DST, mustache_filename=MUSTACHE_FILE_NAME
+    ),
+)
+ASSETS_DIR_SRC = pkg_resources.resource_filename("pca_report_library", "assets")
 TO_COPY = ["figures", "screenshots"]
 # Fields that should not be Escaped for LaTeX.
 LATEX_EXCLUDE_ESCAPE = [

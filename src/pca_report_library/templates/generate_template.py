@@ -23,23 +23,34 @@ from typing import Dict
 
 # Third-Party Libraries
 from docopt import docopt
+import pkg_resources
 
 from .._version import __version__
 
-MANUAL_DATA_TEMPLATE = "template-manualData_RVXXXX.json"
-MUSTACHE_DIR = "../customer/"
-MUSTACHE_FILE = "report.mustache"
-
-ASSETS_DIR_SRC = "../assets"
+MANUAL_DATA_TEMPLATE_FILE_NAME = "template-manualData_RVXXXX.json"
+MUSTACHE_FILE_NAME = "report.mustache"
 ASSETS_DIR_DST = "assets"
+MUSTACHE_FILE = pkg_resources.resource_filename(
+    "pca_report_library",
+    "{asset_dir}/{mustache_filename}".format(
+        asset_dir=ASSETS_DIR_DST, mustache_filename=MUSTACHE_FILE_NAME
+    ),
+)
+MANUAL_DATA_TEMPLATE_FILE = pkg_resources.resource_filename(
+    "pca_report_library",
+    "{asset_dir}/{manual_data_filename}".format(
+        asset_dir=ASSETS_DIR_DST, manual_data_filename=MANUAL_DATA_TEMPLATE_FILE_NAME
+    ),
+)
+ASSETS_DIR_SRC = pkg_resources.resource_filename("pca_report_library", "assets")
 
 
 def manualData_template(work_dir):
     """Move manual data template to working dir."""
     me = os.path.realpath(__file__)
     my_dir = os.path.dirname(me)
-    file_src = os.path.join(my_dir, MANUAL_DATA_TEMPLATE)
-    file_dst = os.path.join(work_dir, MANUAL_DATA_TEMPLATE)
+    file_src = os.path.join(my_dir, MANUAL_DATA_TEMPLATE_FILE)
+    file_dst = os.path.join(work_dir, MANUAL_DATA_TEMPLATE_FILE)
     shutil.copyfile(file_src, file_dst)
 
 
@@ -48,8 +59,8 @@ def latex_template(work_dir):
     me = os.path.realpath(__file__)
     my_dir = os.path.dirname(me)
 
-    file_src = os.path.join(my_dir, MUSTACHE_DIR + MUSTACHE_FILE)
-    file_dst = os.path.join(work_dir, MUSTACHE_FILE)
+    file_src = os.path.join(my_dir, MUSTACHE_FILE)
+    file_dst = os.path.join(work_dir, MUSTACHE_FILE_NAME)
     shutil.copyfile(file_src, file_dst)
     # copy static assets
     dir_src = os.path.join(my_dir, ASSETS_DIR_SRC)
@@ -69,7 +80,7 @@ def main():
 
     if args["--manualData"]:
         manualData_template(temp_working_dir)
-        print("Copying {} to current dir....".format(MANUAL_DATA_TEMPLATE))
+        print("Copying {} to current dir....".format(MANUAL_DATA_TEMPLATE_FILE))
 
     if args["--LaTeX"]:
         latex_template(temp_working_dir)
