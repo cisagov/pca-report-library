@@ -17,11 +17,11 @@ Options:
 
 """
 
-__all__ = (
+__all__ = [
     "compile_tex",
     "main",
     "setup_work_directory",
-)
+]
 
 # Standard Python Libraries
 import os
