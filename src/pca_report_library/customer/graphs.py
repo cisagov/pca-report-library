@@ -91,7 +91,7 @@ def time_ticks(in_val, _):
 
 # Unique User Click Rate vs. Report Rate per Level of Deception
 def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
-    """Handle Unique user clice rate vs report rate logic."""
+    """Handle unique user click rate vs report rate logic."""
     # data to plot
     n_groups = 6
     click_rate = list()
