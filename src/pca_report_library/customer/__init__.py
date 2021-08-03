@@ -1,5 +1,9 @@
 """The customer library."""
-# Standard Python Libraries
-from typing import List
+# Standard Python Librari
+from . import closing, generate_report, graphs
 
-__all__: List[str] = []
+__all__ = [
+    "closing",
+    "generate_report",
+    "graphs",
+]

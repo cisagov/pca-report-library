@@ -1,5 +1,9 @@
 """Get elements from data."""
-__all__ = ["get_max_number", "get_level_description"]
+
+__all__ = [
+    "get_max_number",
+    "get_level_description",
+]
 
 
 def get_max_number(reportData, value_name, type, postion=0):

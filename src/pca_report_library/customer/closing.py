@@ -1,14 +1,18 @@
 """Generate closing statement."""
+
 __all__ = [
-    "reporting_closing",
-    "email_closing",
-    "closing_builder",
-    "indicators_above_ave",
-    "behavior_above_ave",
-    "sender_above_ave",
-    "relevancy_above_ave",
     "appearance_above_ave",
+    "behavior_above_ave",
+    "closing_builder",
+    "deltas",
+    "email_closing",
+    "indicators_above_ave",
     "overall_trend",
+    "pairwise",
+    "relevancy_above_ave",
+    "reporting_closing",
+    "sender_above_ave",
+    "text_list_separator",
 ]
 
 # Standard Python Libraries

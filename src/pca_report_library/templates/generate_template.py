@@ -15,6 +15,12 @@ Options:
     -L --LaTeX    Creates a LaTeX file that the reports a built from.
 """
 
+__all__ = [
+    "latex_template",
+    "main",
+    "manualData_template",
+]
+
 # Standard Python Libraries
 import os
 import shutil

@@ -1,17 +1,22 @@
 """Convert times."""
-__all__ = ["time_to_string", "format_timedelta_to_HHMMSS"]
+
+__all__ = [
+    "time_to_string",
+    "format_timedelta_to_HHMMSS",
+]
 
 
-def time_to_string(secondsInput):
+def time_to_string(seconds_input):
     """Convert time in seconds to a string description."""
     string = ""
-    prior = False  # Used to ensure if the preceding period has a value that the following are all included.
-
+    # Used to ensure if the preceding period has a value that the
+    # following are all included.
+    prior = False
     # Creates the desired time calculations
-    days = secondsInput / (24 * 3600)
-    hours = (secondsInput % (24 * 3600)) // 3600
-    minutes = secondsInput % 3600 // 60
-    seconds = secondsInput % 60
+    days = seconds_input / (24 * 3600)
+    hours = (seconds_input % (24 * 3600)) // 3600
+    minutes = seconds_input % 3600 // 60
+    seconds = seconds_input % 60
 
     if days >= 2:
         string += "{:0.0f} days ".format(days)
@@ -44,9 +49,9 @@ def time_to_string(secondsInput):
     return string
 
 
-def format_timedelta_to_HHMMSS(td):
+def format_timedelta_to_HHMMSS(in_time_delta):
     """Convert time delta to HH:MM:SS."""
-    hours, remainder = divmod(td, 3600)
+    hours, remainder = divmod(in_time_delta, 3600)
     minutes, seconds = divmod(remainder, 60)
     hours = int(hours)
     minutes = int(minutes)

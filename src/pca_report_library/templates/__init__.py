@@ -1,5 +1,6 @@
 """The templates library."""
-# Standard Python Libraries
-from typing import List
+from . import generate_template
 
-__all__: List[str] = []
+__all__ = [
+    "generate_template",
+]

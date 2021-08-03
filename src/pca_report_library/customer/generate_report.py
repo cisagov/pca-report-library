@@ -20,6 +20,20 @@ Options:
     -e --editable   Exports the needed tex file and supporting documents to allow manual editing.
 """
 
+__all__ = [
+    "assessment_metrics",
+    "dict_formater",
+    "group_text_builder",
+    "latex_builder",
+    "latex_data_fields",
+    "latex_dict_prep",
+    "latex_string_prep",
+    "main",
+    "manualData_processor",
+    "setup_work_directory",
+    "time_gap",
+]
+
 # Standard Python Libraries
 import codecs
 from datetime import datetime
