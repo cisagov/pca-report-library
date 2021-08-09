@@ -267,8 +267,8 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
             loc="upper center", bbox_to_anchor=(0.50, -0.2), frameon=False, ncol=2
         )
 
-    ax_val._val.spines["right"].set_visible(False)
-    ax_val._val.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig(
