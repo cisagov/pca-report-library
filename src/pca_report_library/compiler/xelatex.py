@@ -36,9 +36,9 @@ from docopt import docopt
 from .._version import __version__
 
 TO_COPY = ["figures", "screenshots"]
-ASSETS_DIR_SRC = "../assets"
+ASSETS_DIR_SRC = "/usr/src/pca-report-tools/src/pca_report_library/assets/"
 ASSETS_DIR_DST = "assets"
-TEX_FILE = "/home/pca/"
+TEX_FILE = "/home/cisa/"
 
 
 def compile_tex(tex_file):
