@@ -61,15 +61,9 @@ from .graphs import graph_builder
 utc = timezone("UTC")
 localTimeZone = timezone("US/Eastern")  # Holds the desired time zone.
 
-MUSTACHE_FILE_NAME = "report.mustache"
+MUSTACHE_FILE = "report.mustache"
+ASSETS_DIR_SRC = "/usr/src/pca-report-tools/src/pca_report_library/assets/"
 ASSETS_DIR_DST = "assets"
-MUSTACHE_FILE = pkg_resources.resource_filename(
-    "pca_report_library",
-    "{asset_dir}/{mustache_filename}".format(
-        asset_dir=ASSETS_DIR_DST, mustache_filename=MUSTACHE_FILE_NAME
-    ),
-)
-ASSETS_DIR_SRC = pkg_resources.resource_filename("pca_report_library", "assets")
 TO_COPY = ["figures", "screenshots"]
 # Fields that should not be Escaped for LaTeX.
 LATEX_EXCLUDE_ESCAPE = [
@@ -120,14 +114,12 @@ CLOSING_REPORTING = (
 
 def setup_work_directory(work_dir):
     """Set up a temporary working directory."""
-    me = os.path.realpath(__file__)
-    my_dir = os.path.dirname(me)
-    for n in (MUSTACHE_FILE,):
-        file_src = os.path.join(my_dir, n)
-        file_dst = os.path.join(work_dir, n)
-        shutil.copyfile(file_src, file_dst)
+    assets_dir = pkg_resources.resource_filename("pca_report_library", "assets")
+    file_src = os.path.join(assets_dir, MUSTACHE_FILE)
+    file_dst = os.path.join(work_dir, MUSTACHE_FILE)
+    shutil.copyfile(file_src, file_dst)
     # copy static assets
-    dir_src = os.path.join(my_dir, ASSETS_DIR_SRC)
+    dir_src = os.path.join(assets_dir, ASSETS_DIR_SRC)
     dir_dst = os.path.join(work_dir, ASSETS_DIR_DST)
     shutil.copytree(dir_src, dir_dst)
 
