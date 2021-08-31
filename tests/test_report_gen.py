@@ -16,6 +16,7 @@ from pca_report_library.customer.closing import (
     relevancy_above_ave,
     sender_above_ave,
 )
+from pca_report_library.customer.generate_report import latex_string_prep
 
 PROJECT_VERSION = __version__
 
@@ -326,3 +327,10 @@ def test_running_as_module(capsys):
     assert (
         captured.out == f"{PROJECT_VERSION}\n"
     ), "standard output by '--version' should agree with module.__version__"
+
+
+def test_latex_string_prep():
+    """Verify that latex_string_prep provides a string."""
+    test_input_str = "Here's a test string & a symbol."
+    test_output_str = r"Here's a test string \& a symbol."
+    assert latex_string_prep(test_input_str) == test_output_str
