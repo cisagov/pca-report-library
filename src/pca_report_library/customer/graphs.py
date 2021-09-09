@@ -1149,7 +1149,7 @@ def percentage_office_clicked_by_level(report_data):
     level_six = list()
 
     # pulls all office Names and each levels unique clicks.
-    for label, _ in report_data["Labels"].items():
+    for label in report_data["Labels"].keys():
         if label != "Other":
             label_names.append(
                 "\n".join(textwrap.wrap(report_data["Labels"][label]["Name"], 15))
