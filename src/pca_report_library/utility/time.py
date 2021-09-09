@@ -13,10 +13,9 @@ def time_to_string(seconds_input):
     # following are all included.
     prior = False
     # Creates the desired time calculations
-    days = seconds_input / (24 * 3600)
-    hours = (seconds_input % (24 * 3600)) // 3600
-    minutes = seconds_input % 3600 // 60
-    seconds = seconds_input % 60
+    days, seconds = divmod(seconds_input, 24 * 3600)
+    hours, seconds = divmod(seconds, 3600)
+    minutes, seconds = divmod(seconds, 60)
 
     if days >= 2:
         string += "{:0.0f} days ".format(days)
