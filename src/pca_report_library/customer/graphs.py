@@ -131,7 +131,7 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
 
     else:
         # Sets the Report Rate to 0 when user reports are not provided.
-        for numlevel, value1 in report_data["Level"].items():
+        for _ in report_data["Level"].keys():
             report_rate.append(0)
 
     # create plot
