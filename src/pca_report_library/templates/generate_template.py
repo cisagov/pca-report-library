@@ -77,8 +77,10 @@ def main():
         print("Copying Asset Folder for LaTeX report to current dir....")
 
     for temp_entry in os.listdir(temp_working_dir):
-        if not os.path.exists(os.path.join(temp_working_dir, i)):
-            shutil.move(os.path.join(temp_working_dir, i), original_working_dir)
+        if not os.path.exists(os.path.join(temp_working_dir, temp_entry)):
+            shutil.move(
+                os.path.join(temp_working_dir, temp_entry), original_working_dir
+            )
 
     os.chdir(original_working_dir)
     shutil.rmtree(temp_working_dir)
