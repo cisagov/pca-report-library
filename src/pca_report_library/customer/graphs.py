@@ -84,7 +84,7 @@ def graph_builder(assessment_id, labels):
     return success
 
 
-def time_ticks(in_val, _):
+def time_ticks(in_val):
     """Time tick interval logic to return string."""
     return str(timedelta(seconds=int(in_val))).split(".")[0]
 
