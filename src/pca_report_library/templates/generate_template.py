@@ -76,7 +76,7 @@ def main():
         print("Copying {} to current dir....".format(MUSTACHE_FILE))
         print("Copying Asset Folder for LaTeX report to current dir....")
 
-    for i in os.listdir(temp_working_dir):
+    for temp_entry in os.listdir(temp_working_dir):
         if not os.path.exists(os.path.join(temp_working_dir, i)):
             shutil.move(os.path.join(temp_working_dir, i), original_working_dir)
 
