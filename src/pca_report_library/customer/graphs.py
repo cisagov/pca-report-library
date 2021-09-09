@@ -817,7 +817,7 @@ def breakdown_multiple_clicks_by_level(report_data):
         )
 
     # Pulls the number of clikers that clicked 6 to 10 times from the Report Data
-    for num_level, _ in report_data["Level"].items():
+    for num_level in report_data["Level"].keys():
         six_10_clicks.append(
             report_data["Level"][num_level]["User_Click_Summary"]["6-10 times"]
         )
