@@ -1296,7 +1296,7 @@ def count_unique_clicks_by_level_per_office(report_data):
 
     count = 1
     # pulls all office Names and each levels unique clicks.
-    for label, _ in report_data["Labels"].items():
+    for label in report_data["Labels"].keys():
         label_names.append(
             "\n".join(textwrap.wrap(report_data["Labels"][label]["Name"], 15))
         )
