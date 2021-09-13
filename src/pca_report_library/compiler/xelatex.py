@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """PCA Tex Compiler compiles PCA Reports from Tex File.
 
 Usage:

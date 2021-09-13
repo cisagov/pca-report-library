@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """PCA Report Template provides template files for PCA Reports.
 
 Usage:

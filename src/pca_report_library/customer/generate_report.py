@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """PCA Report Generator builds PCA Reports with LaTeX template.
 
 Usage:
