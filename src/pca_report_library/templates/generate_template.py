@@ -36,8 +36,6 @@ MANUAL_DATA_TEMPLATE = "template-manualData_RVXXXX.json"
 ASSETS_DIR = pkg_resources.resource_filename("pca_report_library", "assets")
 MUSTACHE_FILE = "report.mustache"
 
-ASSETS_DIR_DST = "assets"
-
 
 def manualData_template(work_dir):
     """Move manual data template to working dir."""
@@ -51,9 +49,6 @@ def latex_template(work_dir):
     file_src = os.path.join(ASSETS_DIR, MUSTACHE_FILE)
     file_dst = os.path.join(work_dir, MUSTACHE_FILE)
     shutil.copyfile(file_src, file_dst)
-    # copy static assets
-    dir_dst = os.path.join(work_dir, ASSETS_DIR_DST)
-    shutil.copytree(ASSETS_DIR, dir_dst)
 
 
 def main():
@@ -76,10 +71,9 @@ def main():
         print("Copying Asset Folder for LaTeX report to current dir....")
 
     for temp_entry in os.listdir(temp_working_dir):
-        if not os.path.exists(os.path.join(temp_working_dir, temp_entry)):
-            shutil.move(
-                os.path.join(temp_working_dir, temp_entry), original_working_dir
-            )
+        temp_path = os.path.join(temp_working_dir, temp_entry)
+        if os.path.exists(temp_path):
+            shutil.move(temp_path, original_working_dir)
 
     os.chdir(original_working_dir)
     shutil.rmtree(temp_working_dir)
