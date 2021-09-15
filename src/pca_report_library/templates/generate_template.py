@@ -72,7 +72,8 @@ def main():
 
     for temp_entry in os.listdir(temp_working_dir):
         temp_path = os.path.join(temp_working_dir, temp_entry)
-        if os.path.exists(temp_path):
+        work_dir_path = os.path.join(original_working_dir, temp_entry)
+        if os.path.exists(temp_path) and not os.path.exists(work_dir_path):
             shutil.move(temp_path, original_working_dir)
 
     os.chdir(original_working_dir)
