@@ -31,13 +31,14 @@ from typing import Dict
 
 # Third-Party Libraries
 from docopt import docopt
+import pkg_resources
 
 from .._version import __version__
 
 TO_COPY = ["figures", "screenshots"]
-ASSETS_DIR_SRC = "/usr/src/pca-report-tools/src/pca_report_library/assets/"
+ASSETS_DIR = pkg_resources.resource_filename("pca_report_library", "assets")
 ASSETS_DIR_DST = "assets"
-TEX_FILE = "/home/cisa/"
+DOCKER_DIR = "/home/cisa/"
 
 
 def compile_tex(tex_file):
@@ -54,15 +55,12 @@ def compile_tex(tex_file):
 
 def setup_work_directory(work_dir, text_file):
     """Set up a temporary working directory."""
-    me = os.path.realpath(__file__)
-    my_dir = os.path.dirname(me)
-    file_src = os.path.join(TEX_FILE, text_file)
+    file_src = os.path.join(DOCKER_DIR, text_file)
     file_dst = os.path.join(work_dir, text_file)
     shutil.copyfile(file_src, file_dst)
     # copy static assets
-    dir_src = os.path.join(my_dir, ASSETS_DIR_SRC)
     dir_dst = os.path.join(work_dir, ASSETS_DIR_DST)
-    shutil.copytree(dir_src, dir_dst)
+    shutil.copytree(ASSETS_DIR, dir_dst)
 
 
 def main():
