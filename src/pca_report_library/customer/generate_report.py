@@ -61,7 +61,7 @@ utc = timezone("UTC")
 localTimeZone = timezone("US/Eastern")  # Holds the desired time zone.
 
 MUSTACHE_FILE = "report.mustache"
-ASSETS_DIR_SRC = "/usr/src/pca-report-tools/src/pca_report_library/assets/"
+ASSETS_DIR = pkg_resources.resource_filename("pca_report_library", "assets")
 ASSETS_DIR_DST = "assets"
 TO_COPY = ["figures", "screenshots"]
 # Fields that should not be Escaped for LaTeX.
@@ -113,14 +113,12 @@ CLOSING_REPORTING = (
 
 def setup_work_directory(work_dir):
     """Set up a temporary working directory."""
-    assets_dir = pkg_resources.resource_filename("pca_report_library", "assets")
-    file_src = os.path.join(assets_dir, MUSTACHE_FILE)
+    file_src = os.path.join(ASSETS_DIR, MUSTACHE_FILE)
     file_dst = os.path.join(work_dir, MUSTACHE_FILE)
     shutil.copyfile(file_src, file_dst)
     # copy static assets
-    dir_src = os.path.join(assets_dir, ASSETS_DIR_SRC)
     dir_dst = os.path.join(work_dir, ASSETS_DIR_DST)
-    shutil.copytree(dir_src, dir_dst)
+    shutil.copytree(ASSETS_DIR, dir_dst)
 
 
 def dict_formater(dictionary, labels):
