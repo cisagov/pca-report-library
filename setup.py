@@ -84,7 +84,7 @@ setup(
     keywords="pca report automation",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    package_data={"pca_report_library": ["assets/*"]},
+    package_data={"pca_report_library": ["assets/*", "assets/*/*"]},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     include_package_data=True,
     install_requires=[
