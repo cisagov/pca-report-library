@@ -59,4 +59,4 @@ def format_timedelta_to_HHMMSS(in_time_delta):
         minutes = "0{}".format(minutes)
     if seconds < 10:
         seconds = "0{}".format(seconds)
-    return "{}:{}:{}".format(hours, minutes, seconds)
+    return "{}:{}:{}".format(int(hours), int(minutes), int(seconds))
