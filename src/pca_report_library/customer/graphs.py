@@ -52,7 +52,7 @@ def graph_builder(assessment_id, labels):
             success = False
 
     if success:
-        print("\tGenerating Graphs for " + assessment_id + " Report...")
+        print(f"\tGenerating Graphs for {assessment_id} Report...")
         # Loads report data into a dictionary from json file.
         with open(data_file) as out_file:
             report_data = json.load(out_file)
