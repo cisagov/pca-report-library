@@ -345,7 +345,7 @@ def time_first_click_report(report_data):
     user_report_provided = report_data["User_Report_Provided"]
 
     # Pulls the first clicks from the Report Data
-    for numlevel, _ in report_data["Level"].items():
+    for numlevel in report_data["Level"].keys():
         first_clicks.append(report_data["Level"][numlevel]["Time_To_First_Click_TD"])
         if user_report_provided:
             first_report.append(
