@@ -42,7 +42,7 @@ ORANGE = "#D67836"
 def graph_builder(assessment_id, labels):
     """Build the graphs."""
     success = True
-    data_file = "reportData_" + assessment_id + ".json"
+    data_file = f"reportData_{assessment_id}.json"
 
     if not os.path.exists("figures"):
         try:
