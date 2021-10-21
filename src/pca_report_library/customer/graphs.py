@@ -470,8 +470,8 @@ def click_rate_based_deception_indicators(report_data):
     ]
     indicators["appearance"]["click_rates"] = list()
 
-    for category, _ in report_data["complexity"].items():
-        for indicator_key, _ in report_data["complexity"][category].items():
+    for category in report_data["complexity"].keys():
+        for indicator_key in report_data["complexity"][category].keys():
             indicators[category]["click_rates"].append(
                 report_data["complexity"][category][indicator_key]["click_rate"]
             )
