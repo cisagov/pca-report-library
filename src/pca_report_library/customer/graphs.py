@@ -78,7 +78,7 @@ def graph_builder(assessment_id, labels):
             count_unique_clicks_by_level_per_office(report_data)
             perc_total_unique_clicks_belong_office_by_level(report_data)
 
-        with open("reportData_" + report_data["RVA_Number"] + ".json", "w") as fp:
+        with open(f"reportData_{report_data['RVA_Number']}.json", "w") as fp:
             json.dump(report_data, fp, indent=4)
 
     return success
