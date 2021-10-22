@@ -93,10 +93,10 @@ setup(
         "matplotlib >= 3.1.1",
         "numpy >= 1.17.2",
         "pystache >= 0.5.4",
-        "pytz >= 2019.2",
         "pytimeparse >= 1.1.8",
-        "setuptools >= 24.2.0",
+        "pytz >= 2019.2",
         "schema",
+        "setuptools >= 24.2.0",
     ],
     extras_require={
         "test": [
