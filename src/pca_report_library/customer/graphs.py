@@ -100,13 +100,13 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
     user_report_provided = report_data["User_Report_Provided"]
 
     # Pulls the Click Rate from the Report Data
-    for numlevel, value1 in report_data["Level"].items():
+    for numlevel in report_data["Level"].keys():
         click_rate.append(report_data["Level"][numlevel]["Click_Rate"])
 
     if user_report_provided:
 
         # Calculates the Report Rate from the Report Data
-        for numlevel, value1 in report_data["Level"].items():
+        for numlevel in report_data["Level"].keys():
             report_rate.append(
                 round(
                     report_data["Level"][numlevel]["User_Reports"]
@@ -117,7 +117,7 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
             )
 
         # Builds the report vs click ratio
-        for numlevel, value1 in report_data["Level"].items():
+        for numlevel in report_data["Level"].keys():
             if report_data["Level"][numlevel]["User_Clicks"] == 0:
                 ratio.append(report_data["Level"][numlevel]["User_Reports"])
             else:
@@ -673,20 +673,20 @@ def unique_total_click_report_results_by_level(reportData):
     user_report_provided = reportData["User_Report_Provided"]
 
     # Pulls the Unique Clicks from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for numlevel in reportData["Level"].keys():
         unique_clicks.append(reportData["Level"][numlevel]["User_Clicks"])
 
     # Pulls the Total Clicks from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for numlevel in reportData["Level"].keys():
         total_clicks.append(reportData["Level"][numlevel]["Total_Clicks"])
 
     if user_report_provided:
         # Pulls the Report Rate from the Report Data
-        for numlevel, value1 in reportData["Level"].items():
+        for numlevel in reportData["Level"].keys():
             user_reports.append(reportData["Level"][numlevel]["User_Reports"])
     else:
         # Sets the Report Rate to 0
-        for numlevel, value1 in reportData["Level"].items():
+        for numlevel in reportData["Level"].keys():
             user_reports.append(0)
 
     # create plot
