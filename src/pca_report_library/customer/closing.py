@@ -22,7 +22,7 @@ import json
 from ..utility.gets import get_level_description, get_max_number
 
 
-def reporting_closing(reportData, highest_level, second_level):
+def reporting_closing(reportData):
     """Create closing comments about user reports."""
     highest_report_level = get_max_number(reportData, "User_Reports", "int")
 
@@ -265,7 +265,7 @@ def closing_builder(assessment_ID):
             reportData["Multiple_Clicks"] = "false"
 
         if reportData["User_Report_Provided"]:
-            reportData = reporting_closing(reportData, highest_level, second_level)
+            reportData = reporting_closing(reportData)
             reportData["Report-Rate-Trend"] = overall_trend(reportData, "Report-Rate")
 
         reportData["Indicators-Above-Ave"] = indicators_above_ave(reportData)
