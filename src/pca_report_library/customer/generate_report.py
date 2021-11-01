@@ -593,7 +593,7 @@ def latex_data_fields(labels, reportData):
 def latex_dict_prep(dictionary):
     """Prepare dictionary for latex."""
     del dictionary["figures"]
-    for data_key, data_value in dictionary.items():
+    for data_key in dictionary.keys():
         if not any(exclude in data_key for exclude in LATEX_EXCLUDE_ESCAPE):
             for latex_key, latex_value in LATEX_ESCAPE_MAP.items():
                 try:
