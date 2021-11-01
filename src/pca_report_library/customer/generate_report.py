@@ -637,7 +637,7 @@ def latex_builder(assessment_id, dataFile, labels, template):
     with codecs.open(assessment_id + "_report.tex", "w", encoding="utf-8") as output:
         output.write(r)
 
-    for x in range(1, 3):
+    for _ in range(1, 3):
         # Bandit complains about the use of subprocess, but this
         # should be safe as this will only run "xelatex". The command
         # is hardcoded, which limits the ease of abuse. It could still be
