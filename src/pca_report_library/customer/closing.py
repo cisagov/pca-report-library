@@ -474,12 +474,12 @@ def overall_trend(reportData, click_rate_type="Click_Rate"):
 
     if increase > decrease and increase > same:
         return "increased"
-    elif decrease > same and increase != decrease:
+    if decrease > same and increase != decrease:
         return "decreased"
-    elif increase == decrease or increase == same or same == decrease:
+    if increase == decrease or increase == same or same == decrease:
         return "varied"
-    else:
-        return "remained the same"
+
+    return "remained the same"
 
 
 def deltas(pairs):
