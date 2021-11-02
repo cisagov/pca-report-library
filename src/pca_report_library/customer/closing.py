@@ -289,8 +289,6 @@ def closing_builder(assessment_ID):
     with open("reportData_" + reportData["RVA_Number"] + ".json", "w") as fp:
         json.dump(reportData, fp, indent=4)
 
-    return
-
 
 def indicators_above_ave(reportData):
     """Build the sentence indicating which indicators are above the average click rate.
