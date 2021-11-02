@@ -234,7 +234,7 @@ def closing_builder(assessment_ID):
 
     # Compares to 0 as a string because the dict has been flattened.
     if reportData["Sum_Unique_Clicks"] != 0:
-        click_rates = list()
+        click_rates = []
         # Finds the top two  Campaigns
         for num in range(1, 7):
             click_rates.append(float(reportData["Level"][str(num)]["Click_Rate"]))
@@ -296,22 +296,22 @@ def indicators_above_ave(reportData):
     :param reportData:
     :return above_ave_indicators:
     """
-    above_ave_indicator_text = list()
+    above_ave_indicator_text = []
 
-    for type in ["behavior", "relevancy", "sender", "appearance"]:
-        temp_indicators = list()
-        for indicator, values in reportData["complexity"][type].items():
+    for complexity_type in ["behavior", "relevancy", "sender", "appearance"]:
+        temp_indicators = []
+        for indicator, values in reportData["complexity"][complexity_type].items():
             if float(values["click_rate"]) > float(reportData["Click_Rate"]):
                 temp_indicators.append(indicator)
 
         if len(temp_indicators) != 0:
-            if type == "behavior":
+            if complexity_type == "behavior":
                 above_ave_indicator_text.append(behavior_above_ave(temp_indicators))
-            elif type == "relevancy":
+            elif complexity_type == "relevancy":
                 above_ave_indicator_text.append(relevancy_above_ave(temp_indicators))
-            elif type == "sender":
+            elif complexity_type == "sender":
                 above_ave_indicator_text.append(sender_above_ave(temp_indicators))
-            elif type == "appearance":
+            elif complexity_type == "appearance":
                 above_ave_indicator_text.append(appearance_above_ave(temp_indicators))
 
     compiled_above_ave_text = ""
@@ -328,7 +328,7 @@ def indicators_above_ave(reportData):
     return compiled_above_ave_text
 
 
-def text_list_separator(index, length, text, type="comma"):
+def text_list_separator(index, length, text, punctuation_type="comma"):
     """Add the comma or the or based on length of list.
 
     :param text:
@@ -336,14 +336,14 @@ def text_list_separator(index, length, text, type="comma"):
     """
     if (index + 1) < length:
         if (index + 1) < length - 1:
-            if type == "comma":
+            if punctuation_type == "comma":
                 text = f"{text},"
-            elif type == "semicolon":
+            elif punctuation_type == "semicolon":
                 text = f"{text};"
         else:
-            if type == "comma":
+            if punctuation_type == "comma":
                 text = f"{text}, or"
-            elif type == "semicolon":
+            elif punctuation_type == "semicolon":
                 text = f"{text}; and"
 
     return text
@@ -447,16 +447,16 @@ def appearance_above_ave(appearance):
     return appearance_text
 
 
-def overall_trend(reportData, type="Click_Rate"):
+def overall_trend(reportData, click_rate_type="Click_Rate"):
     """Find the overall trend of decreasing or increasing between click_rate or report rate.
 
     :param reportData:
     :param type:
     :return trend text:
     """
-    rates = list()
+    rates = []
     for num in range(1, 7):
-        rates.append(reportData["Level"][str(num)][type])
+        rates.append(reportData["Level"][str(num)][click_rate_type])
 
     rate_deltas = deltas(pairwise(rates))
 
