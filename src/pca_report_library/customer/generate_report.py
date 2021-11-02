@@ -30,7 +30,7 @@ __all__ = [
     "main",
     "manualData_processor",
     "setup_work_directory",
-    "time_gap",
+    "get_time_gap",
 ]
 
 # Standard Python Libraries
@@ -411,7 +411,7 @@ def manualData_processor(dataFile, manualFile):
                             reportData["Level"][numLevel]["Time_Gap"],
                             reportData["Level"][numLevel]["Time_Gap_TD"],
                             reportData["Level"][numLevel]["Gap_Type"],
-                        ) = time_gap(
+                        ) = get_time_gap(
                             reportData["Level"][str(numLevel)][
                                 "Time_To_First_Report_TD"
                             ],
@@ -498,7 +498,7 @@ def manualData_processor(dataFile, manualFile):
     return success
 
 
-def time_gap(report_td, click_td):
+def get_time_gap(report_td, click_td):
     """Build out the time Gap information.
 
     If Time to First Report is greater than  Time to first Click
