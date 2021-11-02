@@ -124,7 +124,7 @@ def setup_work_directory(work_dir):
 def dict_formater(dictionary, labels):
     """Set dictionary formatting for report merging."""
     # Loops through each of the Levels in main dictionary
-    for numLevel, replacement in dictionary["Level"].items():
+    for numLevel in dictionary["Level"].keys():
 
         # Loops through each of the Levels sub dictionary
         for word2, replacement in dictionary["Level"][numLevel].items():
