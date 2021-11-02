@@ -45,10 +45,10 @@ class TestGets:
         ),
     ]
 
-    @pytest.mark.parametrize("reportData,value_name,type,position,expected", data)
-    def test_get_max(self, reportData, value_name, type, position, expected):
+    @pytest.mark.parametrize("reportData,value_name,data_type,position,expected", data)
+    def test_get_max(self, reportData, value_name, data_type, position, expected):
         """Validate expected max value is returned."""
-        assert get_max_number(reportData, value_name, type, position) == expected
+        assert get_max_number(reportData, value_name, data_type, position) == expected
 
     @pytest.mark.parametrize(
         "level,expected",
