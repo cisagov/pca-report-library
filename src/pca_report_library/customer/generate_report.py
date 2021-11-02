@@ -246,7 +246,7 @@ def manualData_processor(dataFile, manualFile):
 
     print("\tLoading Manual Data from " + manualFile + "...")
 
-    with open(dataFile) as f:
+    with open(dataFile, encoding="utf-8") as f:
         reportData = json.load(f)
 
     # Tries to open manual data file
@@ -484,7 +484,9 @@ def manualData_processor(dataFile, manualFile):
             reportData["Report_Ratio"] = "N/A"
             reportData["Ave_Time_First_Report"] = "N/A"
 
-        with open("reportData_" + reportData["RVA_Number"] + ".json", "w") as fp:
+        with open(
+            "reportData_" + reportData["RVA_Number"] + ".json", "w", encoding="utf-8"
+        ) as fp:
             json.dump(reportData, fp, indent=4)
 
         print(
@@ -615,7 +617,7 @@ def latex_dict_prep(dictionary):
 
 def latex_builder(assessment_id, dataFile, labels, template):
     """Compile latex report."""
-    with open(dataFile) as f:
+    with open(dataFile, encoding="utf-8") as f:
         reportData = json.load(f)
 
     reportData["Report_Date"] = datetime.today().strftime("%B %d, %Y")
@@ -656,7 +658,7 @@ def latex_builder(assessment_id, dataFile, labels, template):
 
 def assessment_metrics(dataFile):
     """Build the assessment metric file."""
-    with open(dataFile) as f:
+    with open(dataFile, encoding="utf-8") as f:
         reportData = json.load(f)
 
     dropped_keys = [
@@ -678,7 +680,9 @@ def assessment_metrics(dataFile):
     for level in reportData["Level"]:
         reportData["Level"][level].pop("Url", None)
 
-    with open("assessmentMetrics_" + reportData["_id"] + ".json", "w") as fp:
+    with open(
+        "assessmentMetrics_" + reportData["_id"] + ".json", "w", encoding="utf-8"
+    ) as fp:
         json.dump(reportData, fp, indent=4)
 
     print(
