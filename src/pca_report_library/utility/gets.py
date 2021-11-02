@@ -36,6 +36,8 @@ def get_max_number(reportData, value_name, data_type, postion=0):
         if reportData["Level"][str(num)][value_name] == max_report_number:
             return str(num)
 
+    return None
+
 
 def get_level_description(level):
     """Convert level number to a word description."""
