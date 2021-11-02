@@ -6,18 +6,18 @@ __all__ = [
 ]
 
 
-def get_max_number(reportData, value_name, type, postion=0):
+def get_max_number(reportData, value_name, data_type, postion=0):
     """Get the max number from a specific metric."""
-    report_numbers = list()
+    report_numbers = []
 
     for num in range(1, 7):
-        if type == "int":
+        if data_type == "int":
             try:
                 report_numbers.append(reportData["Level"][str(num)][value_name])
             except ValueError:
                 report_numbers.append(0)
 
-        elif type == "float":
+        elif data_type == "float":
             try:
                 report_numbers.append(reportData["Level"][str(num)][value_name])
             except ValueError:
