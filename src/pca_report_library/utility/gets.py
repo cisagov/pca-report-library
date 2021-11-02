@@ -23,7 +23,7 @@ def get_max_number(reportData, value_name, data_type, postion=0):
             except ValueError:
                 report_numbers.append(0)
 
-    for i in enumerate(report_numbers):
+    for i, _ in enumerate(report_numbers):
         if report_numbers[i] is None:
             report_numbers[i] = 0
 
