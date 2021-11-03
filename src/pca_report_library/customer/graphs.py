@@ -56,7 +56,7 @@ def graph_builder(assessment_id, labels):
         # Loads report data into a dictionary from json file.
         with open(data_file) as out_file:
             report_data = json.load(out_file)
-        report_data["figures"] = list()
+        report_data["figures"] = []
 
         COLOR = "#101010"
         mpl.rcParams["text.color"] = COLOR
@@ -94,9 +94,9 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
     """Handle unique user click rate vs report rate logic."""
     # data to plot
     n_groups = 6
-    click_rate = list()
-    report_rate = list()
-    ratio = list()
+    click_rate = []
+    report_rate = []
+    ratio = []
     user_report_provided = report_data["User_Report_Provided"]
 
     # Pulls the Click Rate from the Report Data
@@ -340,8 +340,8 @@ def time_first_click_report(report_data):
     """Time to first click logic."""
     # data to plot
     n_groups = 6
-    first_clicks = list()
-    first_report = list()
+    first_clicks = []
+    first_report = []
     user_report_provided = report_data["User_Report_Provided"]
 
     # Pulls the first clicks from the Report Data
@@ -431,24 +431,24 @@ def time_first_click_report(report_data):
 # Click Rates Based on Deception Indicators
 def click_rate_based_deception_indicators(report_data):
     """Click rate indicator logic."""
-    indicators = dict()
-    click_rate = list()
-    click_rates = list()
+    indicators = {}
+    click_rate = []
+    click_rates = []
 
-    indicators["behavior"] = dict()
+    indicators["behavior"] = {}
     indicators["behavior"]["indicators"] = [
         "Greed",
         "Fear",
         "Curiosity",
         "Duty or Obligation",
     ]
-    indicators["behavior"]["click_rates"] = list()
+    indicators["behavior"]["click_rates"] = []
 
-    indicators["relevancy"] = dict()
+    indicators["relevancy"] = {}
     indicators["relevancy"]["indicators"] = ["Public News", "Organization"]
-    indicators["relevancy"]["click_rates"] = list()
+    indicators["relevancy"]["click_rates"] = []
 
-    indicators["sender"] = dict()
+    indicators["sender"] = {}
     indicators["sender"]["indicators"] = [
         "Authoritative - Federal/High-Level",
         "Authoritative - Local/Mid-Level",
@@ -457,9 +457,9 @@ def click_rate_based_deception_indicators(report_data):
         "External - Spoofed/Plausible",
         "External - Unknown",
     ]
-    indicators["sender"]["click_rates"] = list()
+    indicators["sender"]["click_rates"] = []
 
-    indicators["appearance"] = dict()
+    indicators["appearance"] = {}
     indicators["appearance"]["indicators"] = [
         "Graphics - Spoofed or HTML",
         "Link/Domain - Spoofed or Hidden",
@@ -468,7 +468,7 @@ def click_rate_based_deception_indicators(report_data):
         "Decent Grammar",
         "Poor Grammar",
     ]
-    indicators["appearance"]["click_rates"] = list()
+    indicators["appearance"]["click_rates"] = []
 
     for category in report_data["complexity"].keys():
         for indicator_key in report_data["complexity"][category].keys():
@@ -667,9 +667,9 @@ def unique_total_click_report_results_by_level(reportData):
     """Handle Unique total click report results logic."""
     # data to plot
     n_groups = 6
-    unique_clicks = list()
-    total_clicks = list()
-    user_reports = list()
+    unique_clicks = []
+    total_clicks = []
+    user_reports = []
     user_report_provided = reportData["User_Report_Provided"]
 
     # Pulls the Unique Clicks from the Report Data
@@ -791,11 +791,11 @@ def breakdown_multiple_clicks_by_level(report_data):
     """Breakdown clicks by level logic."""
     # data to plot
     n_groups = 6
-    one_click = list()
-    two_3_clicks = list()
-    four_5_clicks = list()
-    six_10_clicks = list()
-    more_10_clicks = list()
+    one_click = []
+    two_3_clicks = []
+    four_5_clicks = []
+    six_10_clicks = []
+    more_10_clicks = []
 
     # Pulls the number of clikers that clicked onces from the Report Data
     for num_level in report_data["Level"].keys():
@@ -1006,13 +1006,13 @@ def clicking_user_timeline(report_data):
 def count_unique_clickes_by_office_per_level(report_data):
     """Count unique clicks by office per level logic."""
     # data to plot
-    label_names = list()
-    level_one = list()
-    level_two = list()
-    level_three = list()
-    level_four = list()
-    level_five = list()
-    level_six = list()
+    label_names = []
+    level_one = []
+    level_two = []
+    level_three = []
+    level_four = []
+    level_five = []
+    level_six = []
 
     # pulls all office Names and each levels unique clicks.
     for label in report_data["Labels"].keys():
@@ -1139,13 +1139,13 @@ def count_unique_clickes_by_office_per_level(report_data):
 def percentage_office_clicked_by_level(report_data):
     """Percentage office click by level logic."""
     # data to plot
-    label_names = list()
-    level_one = list()
-    level_two = list()
-    level_three = list()
-    level_four = list()
-    level_five = list()
-    level_six = list()
+    label_names = []
+    level_one = []
+    level_two = []
+    level_three = []
+    level_four = []
+    level_five = []
+    level_six = []
 
     # pulls all office Names and each levels unique clicks.
     for label in report_data["Labels"].keys():
@@ -1284,14 +1284,14 @@ def percentage_office_clicked_by_level(report_data):
 def count_unique_clicks_by_level_per_office(report_data):
     """Count unique clicks by level per office."""
     # data to plot
-    label_names = list()
-    label_data = dict()
-    label_data[1] = list()
-    label_data[2] = list()
-    label_data[3] = list()
-    label_data[4] = list()
-    label_data[5] = list()
-    label_data[6] = list()
+    label_names = []
+    label_data = {}
+    label_data[1] = []
+    label_data[2] = []
+    label_data[3] = []
+    label_data[4] = []
+    label_data[5] = []
+    label_data[6] = []
 
     count = 1
     # pulls all office Names and each levels unique clicks.
@@ -1322,7 +1322,7 @@ def count_unique_clicks_by_level_per_office(report_data):
             label[num] = [x_val + bar_width for x_val in label[num - 1]]
 
     # Establishes the unique clicks bars
-    rects = list()
+    rects = []
     for num in range(num_labels):
         rect = plt.bar(
             label[num],
@@ -1386,14 +1386,14 @@ def count_unique_clicks_by_level_per_office(report_data):
 def perc_total_unique_clicks_belong_office_by_level(report_data):
     """Percentage of total unique clicks by office by level logic."""
     # data to plot
-    label_names = list()
-    label_data = dict()
-    label_data[1] = list()
-    label_data[2] = list()
-    label_data[3] = list()
-    label_data[4] = list()
-    label_data[5] = list()
-    label_data[6] = list()
+    label_names = []
+    label_data = {}
+    label_data[1] = []
+    label_data[2] = []
+    label_data[3] = []
+    label_data[4] = []
+    label_data[5] = []
+    label_data[6] = []
 
     count = 1
     # pulls all office Names and each levels unique clicks.
@@ -1436,7 +1436,7 @@ def perc_total_unique_clicks_belong_office_by_level(report_data):
             label[num] = [x_val + bar_width for x_val in label[num - 1]]
 
     # Establishes the unique clicks bars
-    rects = list()
+    rects = []
     for num in range(num_labels):
         rect = plt.bar(
             label[num],
