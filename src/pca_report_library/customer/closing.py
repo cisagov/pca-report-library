@@ -228,7 +228,7 @@ def closing_builder(assessment_ID):
     dataFile = "reportData_" + assessment_ID + ".json"
     print("\tGenerating Closing for " + assessment_ID + " Report...")
     # Loads report data into a dictionary from json file.
-    with open(dataFile) as f:
+    with open(dataFile, encoding="utf-8") as f:
         reportData = json.load(f)
 
     # Compares to 0 as a string because the dict has been flattened.
@@ -285,7 +285,9 @@ def closing_builder(assessment_ID):
             reportData[f"Closing-{order}-Clicks-Relevancy_Text"] = ""
             reportData[f"Closing-{order}-Clicks-User_Reports"] = 0
 
-    with open("reportData_" + reportData["RVA_Number"] + ".json", "w") as fp:
+    with open(
+        f"reportData_{reportData['RVA_Number']}.json", "w", encoding="utf-8"
+    ) as fp:
         json.dump(reportData, fp, indent=4)
 
 
