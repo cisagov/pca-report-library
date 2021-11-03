@@ -201,7 +201,7 @@ def dict_formater(dictionary, labels):
     for key, value in dictionary.items():
         if key not in ["figures", "User_Report_Provided"]:
             if isinstance(dictionary[key], int) or isinstance(dictionary[key], float):
-                dictionary[key] = "{:,}".format(value)
+                dictionary[key] = f"{value:,}"
             else:
                 dictionary[key] = str(
                     value
@@ -234,7 +234,7 @@ def group_text_builder(reportData):
             reportData["Groups"][group_num]["Campaigns"],
         )
 
-    return "{} {}".format(first_line, second_line)
+    return f"{first_line} {second_line}"
 
 
 def manualData_processor(dataFile, manualFile):
@@ -309,11 +309,9 @@ def manualData_processor(dataFile, manualFile):
                         ][numLevel]["From_Address"]
 
                     if "Display_Link" in manualData["Level"][numLevel].keys():
-                        reportData["Level"][numLevel]["Display_Link"] = '"{}"'.format(
-                            manualData["Level"][numLevel]["Display_Link"].replace(
-                                ", ", '", "'
-                            )
-                        )
+                        reportData["Level"][numLevel]["Display_Link"] = manualData[
+                            "Level"
+                        ][numLevel]["Display_Link"].replace(", ", '", "')
                     else:
                         reportData["Level"][numLevel]["Display_Link"] = ""
 
@@ -447,9 +445,9 @@ def manualData_processor(dataFile, manualFile):
             elif key == "Customer_Setup":
                 reportData["Customer_Setup"] = ""
                 for entry in manualData["Customer_Setup"]:
-                    reportData["Customer_Setup"] += "\\item {} ".format(
-                        latex_string_prep(entry)
-                    )
+                    reportData[
+                        "Customer_Setup"
+                    ] += f"\\item {latex_string_prep(entry)} "
 
             else:
                 reportData[key] = value
@@ -564,30 +562,31 @@ def latex_data_fields(labels, reportData):
         reportData["User_Report_bool"] = "false"
 
     for level in range(1, 7):
-        link_type = reportData["Level-{}-Complexity-Link_Domain".format(level)]
+        link_type = reportData[f"Level-{level}-Complexity-Link_Domain"]
 
         if link_type == "0":
-            reportData["Level-{}-Link_Type".format(level)] = "Written Out/Hover Over"
-            reportData["Level-{}-Hover_Over".format(level)] = ""
-            reportData["Level-{}-Display_Link".format(level)] = ""
+            reportData[f"Level-{level}-Link_Type"] = "Written Out/Hover Over"
+            reportData[f"Level-{level}-Hover_Over"] = ""
+            reportData[f"Level-{level}-Display_Link"] = ""
 
         else:
-            reportData["Level-{}-Link_Type".format(level)] = "Spoofed/Hidden"
+            reportData[f"Level-{level}-Link_Type"] = "Spoofed/Hidden"
             reportData[
-                "Level-{}-Hover_Over".format(level)
+                f"Level-{level}-Hover_Over"
             ] = "\\newline \\textbf{Hover Over:} \\newline"
 
-            display_link = reportData["Level-{}-Display_Link".format(level)]
+            display_link = reportData[f"Level-{level}-Display_Link"]
+            newline_indent = "\\newline\\indent"
             if any(url_item in display_link for url_item in URL_ID):
                 display_link = '"\\nolinkurl{' + display_link.replace('"', "") + '}"'
-                reportData["Level-{}-Display_Link".format(level)] = "{} {}".format(
-                    "\\newline\\indent",
-                    display_link.replace("http", "hxxp").replace(":", "[:]"),
-                )
+                display_link = display_link.replace("http", "hxxp").replace(":", "[:]")
+                reportData[
+                    f"Level-{level}-Display_Link"
+                ] = f"{newline_indent} {display_link}"
             else:
-                reportData["Level-{}-Display_Link".format(level)] = "{} {}".format(
-                    "\\newline\\indent", display_link
-                )
+                reportData[
+                    f"Level-{level}-Display_Link"
+                ] = f"{newline_indent} {display_link}"
 
     return reportData
 
@@ -603,7 +602,7 @@ def latex_dict_prep(dictionary):
                         latex_key, latex_value
                     )
                 except AttributeError as e:
-                    print("Attribute error with {}: {}".format(data_key, e))
+                    print(f"Attribute error with {data_key}: {e}")
                     pass
             if "url" in data_key.lower():
                 dictionary[data_key] = (
@@ -757,7 +756,7 @@ def main():
 
             for folder in TO_COPY:
                 dir_src = os.path.join(original_working_dir, folder)
-                dir_dst = os.path.join(temp_working_dir, "{}".format(folder))
+                dir_dst = os.path.join(temp_working_dir, folder)
                 shutil.copytree(dir_src, dir_dst)
 
             latex_builder(
@@ -793,11 +792,7 @@ def main():
 
             shutil.rmtree(temp_working_dir)
 
-            print(
-                "Completed, Please see report: {}_report.pdf".format(
-                    args["ASSESSMENT_ID"]
-                )
-            )
+            print(f'Completed, Please see report: {args["ASSESSMENT_ID"]}_report.pdf')
 
     if success:
         return 0
