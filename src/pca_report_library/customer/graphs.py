@@ -398,12 +398,11 @@ def time_first_click_report(report_data):
     for rect in rects1 + rects2:
         height = np.float64(rect.get_height())
         if height != 0:
-            hours, seconds = divmod(height, 3600)
+            hours, seconds = divmod(int(height), 3600)
             minutes, seconds = divmod(seconds, 60)
 
-            str_val = "{:02d}:{:02d}:{:02d}".format(
-                int(hours), int(minutes), int(seconds)
-            )
+            str_val = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
         else:
             str_val = "N/A"
 
