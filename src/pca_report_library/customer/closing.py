@@ -98,7 +98,10 @@ def email_closing(reportData, level, order):
     levelDict = reportData["Level"][str(level)]
 
     if levelDict["Complexity"]["Authoritative"] != 0:
-        authoritative_text = " The authoritative tone was also a key sophisticated phishing technique intended to persuade the targeted user into clicking the link without first questioning it."
+        authoritative_text = (
+            " The authoritative tone was also a key sophisticated phishing technique intended to persuade the"
+            " targeted user into clicking the link without first questioning it."
+        )
     else:
         authoritative_text = ""
 
@@ -108,35 +111,27 @@ def email_closing(reportData, level, order):
         and levelDict["Complexity"]["Internal"] == 0
     ):
         sender_text = (
-            "an external sending address with no known connection to {} ({})".format(
-                reportData["Acronym"],
-                levelDict["From_Address"].split("<")[1].replace(">", ""),
-            )
+            f'an external sending address with no known connection to {reportData["Acronym"]}'
+            f' ({levelDict["From_Address"].split("<")[1].replace(">", "")})'
         )
 
     elif (
         levelDict["Complexity"]["External"] == 1
         and levelDict["Complexity"]["Internal"] == 0
     ):
-        sender_text = "an external, but believable address with a spoofed display name ({})".format(
-            levelDict["From_Address"].split("<")[0]
-        )
+        sender_text = f'an external, but believable address with a spoofed display name ({levelDict["From_Address"].split("<")[0]})'
 
     elif (
         levelDict["Complexity"]["External"] == 0
         and levelDict["Complexity"]["Internal"] == 1
     ):
-        sender_text = "an unknown internal address with a organizational relevant display name ({})".format(
-            levelDict["From_Address"].split("<")[0]
-        )
+        sender_text = f'an unknown internal address with a organizational relevant display name ({levelDict["From_Address"].split("<")[0]})'
 
     elif (
         levelDict["Complexity"]["External"] == 0
         and levelDict["Complexity"]["Internal"] == 2
     ):
-        sender_text = "a  (fully or partially) spoofed internal address with a known or believable display name ({})".format(
-            levelDict["From_Address"].split("<")[0]
-        )
+        sender_text = f'a (fully or partially) spoofed internal address with a known or believable display name ({levelDict["From_Address"].split("<")[0]})'
 
     # Section 2: Builds out appearance text
 
@@ -151,7 +146,7 @@ def email_closing(reportData, level, order):
         not levelDict["Complexity"]["Grammar"] == 2
         and levelDict["Complexity"]["Link_Domain"] == 0
     ):
-        grammar_text = "{}{}".format(grammar_text, " and")
+        grammar_text = f'{grammar_text}{" and"}'
 
     if levelDict["Complexity"]["Logo_Graphics"] == 1:
         logo_text = (
@@ -163,24 +158,28 @@ def email_closing(reportData, level, order):
 
     if levelDict["Complexity"]["Link_Domain"] == 0:
         link_text = "an external link with no known organizational connection"
-        appearance_text = "Red flags in the appearance that should have caused user hesitation were {} {}.{}{}".format(
-            grammar_text, link_text, logo_text, authoritative_text
+        appearance_text = (
+            "Red flags in the appearance that should have caused user hesitation were "
+            f"{grammar_text} {link_text}.{logo_text}{authoritative_text}"
         )
 
     elif levelDict["Complexity"]["Link_Domain"] == 1:
         link_text = (
-            "a spoofed or hidden link ({}) requiring the extra step "
-            "of hovering over or long - pressing(on mobile phone) to verify "
-            "legitimacy".format(levelDict["Display_Link"])
+            f"a spoofed or hidden link ({levelDict['Display_Link']}) requiring the extra "
+            "step of hovering over or long - pressing(on mobile phone) to verify legitimacy"
         )
 
         if levelDict["Complexity"]["Grammar"] == 2:
-            appearance_text = "The sophisticated techniques designed to fool the recipient were the use of proper grammar to blend in with professional communications and a spoofed or hidden link ({}) requiring the extra step of hovering over or long - pressing (on mobile phone) to verify legitimacy. {}{}".format(
-                levelDict["Display_Link"], logo_text, authoritative_text
+            appearance_text = (
+                "The sophisticated techniques designed to fool the recipient were the use of proper grammar to blend in with "
+                f"professional communications and a spoofed or hidden link ({levelDict['Display_Link']}) requiring the extra "
+                f"step of hovering over or long - pressing (on mobile phone) to verify legitimacy. {logo_text}{authoritative_text}"
             )
         elif levelDict["Complexity"]["Grammar"] != 2:
-            appearance_text = "Red flags in the appearance that should have caused user hesitation were {}. A sophisticated technique designed to fool the recipient was a spoofed or hidden link ({}) requiring the extra step of hovering over or long - pressing (on mobile phone) to verify legitimacy. {}{}".format(
-                grammar_text, levelDict["Display_Link"], logo_text, authoritative_text
+            appearance_text = (
+                f"Red flags in the appearance that should have caused user hesitation were {grammar_text}. "
+                f"A sophisticated technique designed to fool the recipient was a spoofed or hidden link ({levelDict['Display_Link']})"
+                f" requiring the extra step of hovering over or long - pressing (on mobile phone) to verify legitimacy. {logo_text}{authoritative_text}"
             )
 
     # Section 3: Builds out relevancy
@@ -277,14 +276,14 @@ def closing_builder(assessment_ID):
         reportData["No_Clicks"] = "true"
         reportData["Multiple_Clicks"] = "false"
         for order in [1, 2]:
-            reportData["Closing-{}-Clicks-Click_Rate".format(order)] = 0
-            reportData["Closing-{}-Clicks-Level".format(order)] = 0
-            reportData["Closing-{}-Clicks-Deception_Level".format(order)] = 0
-            reportData["Closing-{}-Clicks-Subject".format(order)] = ""
-            reportData["Closing-{}-Clicks-Sender_Text".format(order)] = ""
-            reportData["Closing-{}-Clicks-Appearance_Text".format(order)] = ""
-            reportData["Closing-{}-Clicks-Relevancy_Text".format(order)] = ""
-            reportData["Closing-{}-Clicks-User_Reports".format(order)] = 0
+            reportData[f"Closing-{order}-Clicks-Click_Rate"] = 0
+            reportData[f"Closing-{order}-Clicks-Level"] = 0
+            reportData[f"Closing-{order}-Clicks-Deception_Level"] = 0
+            reportData[f"Closing-{order}-Clicks-Subject"] = ""
+            reportData[f"Closing-{order}-Clicks-Sender_Text"] = ""
+            reportData[f"Closing-{order}-Clicks-Appearance_Text"] = ""
+            reportData[f"Closing-{order}-Clicks-Relevancy_Text"] = ""
+            reportData[f"Closing-{order}-Clicks-User_Reports"] = 0
 
     with open("reportData_" + reportData["RVA_Number"] + ".json", "w") as fp:
         json.dump(reportData, fp, indent=4)
