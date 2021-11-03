@@ -63,11 +63,11 @@ def main():
 
     if args["--manualData"]:
         manualData_template(temp_working_dir)
-        print("Copying {} to current dir....".format(MANUAL_DATA_TEMPLATE))
+        print(f"Copying {MANUAL_DATA_TEMPLATE} to current dir....")
 
     if args["--LaTeX"]:
         latex_template(temp_working_dir)
-        print("Copying {} to current dir....".format(MUSTACHE_FILE))
+        print(f"Copying {MUSTACHE_FILE} to current dir....")
         print("Copying Asset Folder for LaTeX report to current dir....")
 
     for temp_entry in os.listdir(temp_working_dir):
