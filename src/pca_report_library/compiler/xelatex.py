@@ -93,7 +93,7 @@ def main():
 
         for folder in TO_COPY:
             dir_src = os.path.join(original_working_dir, folder)
-            dir_dst = os.path.join(temp_working_dir, "{}".format(folder))
+            dir_dst = os.path.join(temp_working_dir, f"{folder}")
             shutil.copytree(dir_src, dir_dst)
 
         compile_tex(args["TEX_FILE"])
@@ -111,7 +111,7 @@ def main():
 
         shutil.rmtree(temp_working_dir)
 
-        print("Completed, Please see report: {}".format(dest_report_filename))
+        print(f"Completed, Please see report: {dest_report_filename}")
 
     if success:
         return 0
