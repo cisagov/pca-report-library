@@ -18,31 +18,31 @@ def time_to_string(seconds_input):
     minutes, seconds = divmod(seconds, 60)
 
     if days >= 2:
-        string += "{:0.0f} days ".format(days)
+        string += f"{days:0.0f} days "
         prior = True
     elif days == 1:
-        string += "{:0.0f} day ".format(days)
+        string += f"{days:0.0f} day "
         prior = True
 
     if hours >= 2 or prior:
-        string += "{:0.0f} hours ".format(hours)
+        string += f"{hours:0.0f} hours "
         prior = True
     elif hours == 1 or prior:
-        string += "{:0.0f} hour ".format(hours)
+        string += f"{hours:0.0f} hour "
         prior = True
 
     if minutes >= 2 or prior:
-        string += "{:0.0f} minutes ".format(minutes)
+        string += f"{minutes:0.0f} minutes "
         prior = True
     elif minutes == 1 or prior:
-        string += "{:0.0f} minute ".format(minutes)
+        string += f"{minutes:0.0f} minute "
         prior = True
 
     if seconds >= 2 or prior:
-        string += "{:0.0f} seconds".format(seconds)
+        string += f"{seconds:0.0f} seconds"
         prior = True
     elif seconds == 1 or prior:
-        string += "{:0.0f} second".format(seconds)
+        string += f"{seconds:0.0f} second"
         prior = True
 
     return string
@@ -56,7 +56,7 @@ def format_timedelta_to_HHMMSS(in_time_delta):
     minutes = int(minutes)
     seconds = int(seconds)
     if minutes < 10:
-        minutes = "0{}".format(minutes)
+        minutes = f"0{minutes}"
     if seconds < 10:
-        seconds = "0{}".format(seconds)
-    return "{}:{}:{}".format(hours, minutes, seconds)
+        seconds = f"0{seconds}"
+    return f"{hours}:{minutes}:{seconds}"
