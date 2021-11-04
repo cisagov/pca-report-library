@@ -71,8 +71,8 @@ def main():
     # Tries to see if report tex file is present.
     try:
         # Checks for report data file
-        f = open(args["TEX_FILE"])
-        f.close()
+        with open(args["TEX_FILE"], encoding="utf-8"):
+            pass
 
     except IOError as e:
         print("ERROR- File not found: " + e.filename)
