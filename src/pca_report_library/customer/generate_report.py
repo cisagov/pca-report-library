@@ -601,7 +601,7 @@ def latex_dict_prep(dictionary):
                     )
                 except AttributeError as e:
                     print(f"Attribute error with {data_key}: {e}")
-                    pass
+
             if "url" in data_key.lower():
                 dictionary[data_key] = (
                     "\\nolinkurl{"
