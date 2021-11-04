@@ -137,7 +137,7 @@ def dict_formater(dictionary, labels):
                 dictionary["Level-" + numLevel + "-" + word2] = replacement.strftime(
                     "%m/%d/%Y %H:%M"
                 )
-            elif word2 != "User_Click_Summary" and word2 != "Complexity":
+            elif word2 not in ("User_Click_Summary", "Complexity"):
                 dictionary["Level-" + numLevel + "-" + word2] = replacement
 
             else:
@@ -200,7 +200,7 @@ def dict_formater(dictionary, labels):
     # Converts values to strings.
     for key, value in dictionary.items():
         if key not in ["figures", "User_Report_Provided"]:
-            if isinstance(dictionary[key], int) or isinstance(dictionary[key], float):
+            if isinstance(dictionary[key], (float, int)):
                 dictionary[key] = f"{value:,}"
             else:
                 dictionary[key] = str(
