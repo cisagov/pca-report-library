@@ -54,7 +54,7 @@ def graph_builder(assessment_id, labels):
     if success:
         print(f"\tGenerating Graphs for {assessment_id} Report...")
         # Loads report data into a dictionary from json file.
-        with open(data_file) as out_file:
+        with open(data_file, encoding="utf-8") as out_file:
             report_data = json.load(out_file)
         report_data["figures"] = []
 
@@ -78,7 +78,9 @@ def graph_builder(assessment_id, labels):
             count_unique_clicks_by_level_per_office(report_data)
             perc_total_unique_clicks_belong_office_by_level(report_data)
 
-        with open(f"reportData_{report_data['RVA_Number']}.json", "w") as fp:
+        with open(
+            f"reportData_{report_data['RVA_Number']}.json", "w", encoding="utf-8"
+        ) as fp:
             json.dump(report_data, fp, indent=4)
 
     return success
