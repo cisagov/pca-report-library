@@ -251,14 +251,12 @@ def manualData_processor(dataFile, manualFile):
 
     # Tries to open manual data file
     try:
-        f = open(manualFile)
+        with open(manualFile, encoding="utf-8") as f:
+            manualData = json.load(f)
     except IOError:
         print("\tERROR- Manual Data File not found: " + manualFile)
         sys.exit(1)
     else:
-
-        manualData = json.load(f)
-        f.close()
 
         # Holds if user reports were provided
         userReportProvided = manualData["User_Report_Provided"]
@@ -483,7 +481,7 @@ def manualData_processor(dataFile, manualFile):
             reportData["Ave_Time_First_Report"] = "N/A"
 
         with open(
-            "reportData_" + reportData["RVA_Number"] + ".json", "w", encoding="utf-8"
+            f"reportData_{reportData['RVA_Number']}.json", "w", encoding="utf-8"
         ) as fp:
             json.dump(reportData, fp, indent=4)
 
@@ -627,7 +625,8 @@ def latex_builder(assessment_id, dataFile, labels, template):
 
     reportData = latex_dict_prep(reportData)
 
-    template = codecs.open(template, "r", encoding="utf-8").read()
+    with codecs.open(template, "r", encoding="utf-8") as f:
+        template = f.read()
 
     # renderer = pystache.Renderer(string_encoding="utf-8")
 
@@ -635,7 +634,7 @@ def latex_builder(assessment_id, dataFile, labels, template):
 
     r = html.unescape(r)
 
-    with codecs.open(assessment_id + "_report.tex", "w", encoding="utf-8") as output:
+    with codecs.open(f"{assessment_id}_report.tex", "w", encoding="utf-8") as output:
         output.write(r)
 
     for _ in range(1, 3):
@@ -680,7 +679,7 @@ def assessment_metrics(dataFile):
         reportData["Level"][level].pop("Url", None)
 
     with open(
-        "assessmentMetrics_" + reportData["_id"] + ".json", "w", encoding="utf-8"
+        f"assessmentMetrics_{reportData['_id']}.json", "w", encoding="utf-8"
     ) as fp:
         json.dump(reportData, fp, indent=4)
 
@@ -709,12 +708,13 @@ def main():
     # Tries to see if report data file is present.
     try:
         # Checks for report data file
-        f = open(data_file)
-        f.close()
+        with open(data_file, encoding="utf-8"):
+            pass
 
         # Checks for template file.
-        f = open(manual_data_file)
-        f.close()
+        with open(manual_data_file, encoding="utf-8"):
+            pass
+
     except IOError as e:
         print("ERROR- File not found: " + e.filename)
         success = False
