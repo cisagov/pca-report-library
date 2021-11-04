@@ -88,7 +88,7 @@ def graph_builder(assessment_id, labels):
 
 def time_ticks(in_val):
     """Time tick interval logic to return string."""
-    return str(timedelta(seconds=int(in_val))).split(".")[0]
+    return str(timedelta(seconds=int(in_val))).split(".", maxsplit=1)[0]
 
 
 # Unique User Click Rate vs. Report Rate per Level of Deception
