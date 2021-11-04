@@ -274,7 +274,7 @@ def manualData_processor(dataFile, manualFile):
         for key, value in manualData.items():
             if key == "Email_Recon":
 
-                reportData["Email_Recon"] = dict()
+                reportData["Email_Recon"] = {}
 
                 for recon_name, recon_value in manualData["Email_Recon"].items():
                     reportData["Email_Recon"][recon_name] = recon_value
