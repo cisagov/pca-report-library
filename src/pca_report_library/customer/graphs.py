@@ -199,7 +199,7 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.2f" % height + "%",
+                f"{height:.2f}%",
                 ha="center",
                 va="bottom",
                 fontsize=8,
@@ -210,7 +210,7 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.2f" % height + "%",
+                f"{height:.2f}%",
                 ha="center",
                 va="bottom",
                 fontsize=8,
@@ -326,7 +326,7 @@ def timeline_unique_user_clicks_all_levels(report_data):
         plt.text(
             rect.get_x() + rect.get_width() / 2.0,
             1.01 * height,
-            "%.0f" % height + "%",
+            f"{height:.0f}%",
             ha="center",
             va="bottom",
             fontsize=8,
@@ -1250,7 +1250,7 @@ def percentage_office_clicked_by_level(report_data):
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.1f" % height + "%",
+                f"{height:.1f}%",
                 ha="center",
                 va="bottom",
                 fontsize=6,
@@ -1259,7 +1259,7 @@ def percentage_office_clicked_by_level(report_data):
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.f" % height + "%",
+                f"{height:.0f}%",
                 ha="center",
                 va="bottom",
                 fontsize=6,
@@ -1477,7 +1477,7 @@ def perc_total_unique_clicks_belong_office_by_level(report_data):
         plt.text(
             rect.get_x() + rect.get_width() / 2.0,
             1.01 * height,
-            "%.f" % height + "%",
+            f"{height:.0f}%",
             ha="center",
             va="bottom",
             fontsize=6,
