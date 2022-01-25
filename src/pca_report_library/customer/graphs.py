@@ -1,8 +1,23 @@
 """Graphs."""
 
-__all__ = ["graph_builder"]
+__all__ = [
+    "breakdown_multiple_clicks_by_level",
+    "click_rate_based_deception_indicators",
+    "clicking_user_timeline",
+    "count_unique_clickes_by_office_per_level",
+    "count_unique_clicks_by_level_per_office",
+    "graph_builder",
+    "perc_total_unique_clicks_belong_office_by_level",
+    "percentage_office_clicked_by_level",
+    "time_first_click_report",
+    "time_ticks",
+    "timeline_unique_user_clicks_all_levels",
+    "unique_total_click_report_results_by_level",
+    "unique_user_click_rate_vs_report_rate_per_level_deception",
+]
 
 # Standard Python Libraries
+from datetime import timedelta
 import json
 import os
 import textwrap
@@ -14,7 +29,6 @@ import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
-import timedelta
 
 # Set Colors
 BLUE = "#3C679D"
@@ -25,10 +39,10 @@ LIGHT_BLUE = "#398DA6"
 ORANGE = "#D67836"
 
 
-def graph_builder(assessment_ID, labels):
+def graph_builder(assessment_id, labels):
     """Build the graphs."""
     success = True
-    dataFile = "reportData_" + assessment_ID + ".json"
+    data_file = f"reportData_{assessment_id}.json"
 
     if not os.path.exists("figures"):
         try:
@@ -38,11 +52,11 @@ def graph_builder(assessment_ID, labels):
             success = False
 
     if success:
-        print("\tGenerating Graphs for " + assessment_ID + " Report...")
+        print(f"\tGenerating Graphs for {assessment_id} Report...")
         # Loads report data into a dictionary from json file.
-        with open(dataFile) as f:
-            reportData = json.load(f)
-        reportData["figures"] = list()
+        with open(data_file, encoding="utf-8") as out_file:
+            report_data = json.load(out_file)
+        report_data["figures"] = []
 
         COLOR = "#101010"
         mpl.rcParams["text.color"] = COLOR
@@ -50,76 +64,80 @@ def graph_builder(assessment_ID, labels):
         mpl.rcParams["xtick.color"] = COLOR
         mpl.rcParams["ytick.color"] = COLOR
 
-        unique_user_click_rate_vs_report_rate_per_level_deception(reportData)
-        timeline_unique_user_clicks_all_levels(reportData)
-        time_first_click_report(reportData)
-        click_rate_based_deception_indicators(reportData)
-        unique_total_click_report_results_by_level(reportData)
-        breakdown_multiple_clicks_by_level(reportData)
-        clicking_user_timeline(reportData)
+        unique_user_click_rate_vs_report_rate_per_level_deception(report_data)
+        timeline_unique_user_clicks_all_levels(report_data)
+        time_first_click_report(report_data)
+        click_rate_based_deception_indicators(report_data)
+        unique_total_click_report_results_by_level(report_data)
+        breakdown_multiple_clicks_by_level(report_data)
+        clicking_user_timeline(report_data)
 
         if labels:
-            count_unique_clickes_by_office_per_level(reportData)
-            percentage_office_clicked_by_level(reportData)
-            count_unique_clicks_by_level_per_office(reportData)
-            perc_total_unique_clicks_belong_office_by_level(reportData)
+            count_unique_clickes_by_office_per_level(report_data)
+            percentage_office_clicked_by_level(report_data)
+            count_unique_clicks_by_level_per_office(report_data)
+            perc_total_unique_clicks_belong_office_by_level(report_data)
 
-        with open("reportData_" + reportData["RVA_Number"] + ".json", "w") as fp:
-            json.dump(reportData, fp, indent=4)
+        with open(
+            f"reportData_{report_data['RVA_Number']}.json", "w", encoding="utf-8"
+        ) as fp:
+            json.dump(report_data, fp, indent=4)
 
     return success
 
 
-def time_ticks(x, pos):
-    return str(timedelta(seconds=int(x))).split(".")[0]
+def time_ticks(in_val):
+    """Time tick interval logic to return string."""
+    return str(timedelta(seconds=int(in_val))).split(".", maxsplit=1)[0]
 
 
 # Unique User Click Rate vs. Report Rate per Level of Deception
-def unique_user_click_rate_vs_report_rate_per_level_deception(reportData):
+def unique_user_click_rate_vs_report_rate_per_level_deception(report_data):
+    """Handle unique user click rate vs report rate logic."""
     # data to plot
     n_groups = 6
-    click_rate = list()
-    report_rate = list()
-    ratio = list()
-    userReportProvided = reportData["User_Report_Provided"]
+    click_rate = []
+    report_rate = []
+    ratio = []
+    user_report_provided = report_data["User_Report_Provided"]
 
     # Pulls the Click Rate from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
-        click_rate.append(reportData["Level"][numlevel]["Click_Rate"])
+    for numlevel in report_data["Level"].keys():
+        click_rate.append(report_data["Level"][numlevel]["Click_Rate"])
 
-    if userReportProvided:
+    if user_report_provided:
 
         # Calculates the Report Rate from the Report Data
-        for numlevel, value1 in reportData["Level"].items():
+        for numlevel in report_data["Level"].keys():
             report_rate.append(
                 round(
-                    reportData["Level"][numlevel]["User_Reports"]
-                    / reportData["Level"][numlevel]["Emails_Sent_Attempted"]
+                    report_data["Level"][numlevel]["User_Reports"]
+                    / report_data["Level"][numlevel]["Emails_Sent_Attempted"]
                     * 100,
                     2,
                 )
             )
 
         # Builds the report vs click ratio
-        for numlevel, value1 in reportData["Level"].items():
-            if reportData["Level"][numlevel]["User_Clicks"] == 0:
-                ratio.append(reportData["Level"][numlevel]["User_Reports"])
+        for numlevel in report_data["Level"].keys():
+            if report_data["Level"][numlevel]["User_Clicks"] == 0:
+                ratio.append(report_data["Level"][numlevel]["User_Reports"])
             else:
                 ratio.append(
                     round(
-                        reportData["Level"][numlevel]["User_Reports"]
-                        / reportData["Level"][numlevel]["User_Clicks"],
+                        report_data["Level"][numlevel]["User_Reports"]
+                        / report_data["Level"][numlevel]["User_Clicks"],
                         1,
                     )
                 )
 
     else:
         # Sets the Report Rate to 0 when user reports are not provided.
-        for numlevel, value1 in reportData["Level"].items():
+        for _ in report_data["Level"].keys():
             report_rate.append(0)
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7, 3.5))
+    _, ax_val = plt.subplots(figsize=(7, 3.5))
     index = np.arange(n_groups)
     bar_width = 0.4
 
@@ -153,35 +171,35 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(reportData):
     )
 
     # Lines xtick labels to center
-    for tick in ax.xaxis.get_major_ticks():
+    for tick in ax_val.xaxis.get_major_ticks():
         tick.tick1line.set_markersize(5)
         tick.tick2line.set_markersize(5)
         tick.label1.set_horizontalalignment("center")
 
     plt.ylabel("Rate Percentages")
-    ax.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    ax_val.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
 
-    if userReportProvided:
+    if user_report_provided:
         if max(click_rate) > max(report_rate):
-            percent_Lim = max(click_rate) + 10
+            percent_lim = max(click_rate) + 10
         else:
-            percent_Lim = max(report_rate) + 10
+            percent_lim = max(report_rate) + 10
     else:
-        percent_Lim = max(click_rate) + 10
+        percent_lim = max(click_rate) + 10
 
-    if percent_Lim > 100:
-        ax.set_ylim(0, 100)
+    if percent_lim > 100:
+        ax_val.set_ylim(0, 100)
     else:
-        ax.set_ylim(0, percent_Lim)
+        ax_val.set_ylim(0, percent_lim)
 
         # Add counts above the two bar graphs
-    if userReportProvided:
+    if user_report_provided:
         for rect in rects1 + rects2:
             height = rect.get_height()
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.2f" % height + "%",
+                f"{height:.2f}%",
                 ha="center",
                 va="bottom",
                 fontsize=8,
@@ -192,7 +210,7 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(reportData):
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.2f" % height + "%",
+                f"{height:.2f}%",
                 ha="center",
                 va="bottom",
                 fontsize=8,
@@ -208,7 +226,7 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(reportData):
                 fontsize=8,
             )
 
-    if userReportProvided and max(ratio) <= 2.0:
+    if user_report_provided and max(ratio) <= 2.0:
         plt.legend(
             loc="upper center", bbox_to_anchor=(0.30, -0.2), frameon=False, ncol=2
         )
@@ -251,38 +269,39 @@ def unique_user_click_rate_vs_report_rate_per_level_deception(reportData):
             loc="upper center", bbox_to_anchor=(0.50, -0.2), frameon=False, ncol=2
         )
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig(
         "figures/UniqueUserClickRateVsReportRatePerLevelDeception.png",
         bbox_inches="tight",
     )
-    reportData["figures"].append(1)
+    report_data["figures"].append(1)
 
 
 # Time line of Unique User Clicks Across All Levels
-def timeline_unique_user_clicks_all_levels(reportData):
+def timeline_unique_user_clicks_all_levels(report_data):
+    """Timeline unique clicks logic."""
     # data to Plot
-    timeFrame = list(reportData["Unique_Click_Timeline"].keys())[: 10 or None]
+    time_frame = list(report_data["Unique_Click_Timeline"].keys())[: 10 or None]
 
-    n_groups = len(timeFrame)
+    n_groups = len(time_frame)
 
-    if bool(reportData["Unique_Click_Timeline"]):
-        intervalpercent = list(reportData["Unique_Click_Timeline"].values())[
+    if bool(report_data["Unique_Click_Timeline"]):
+        intervalpercent = list(report_data["Unique_Click_Timeline"].values())[
             : 10 or None
         ]
     else:
         intervalpercent = [0] * n_groups
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7, 3.5))
+    _, ax_val = plt.subplots(figsize=(7, 3.5))
     index = np.arange(n_groups)
     bar_width = 0.7
 
     # Sets x and y labels.
-    plt.xticks(index, timeFrame, rotation=45, fontsize=8, ha="right")
+    plt.xticks(index, time_frame, rotation=45, fontsize=8, ha="right")
 
     # Establishes the interval bars
     rects1 = plt.bar(
@@ -290,14 +309,14 @@ def timeline_unique_user_clicks_all_levels(reportData):
     )
 
     # Lines xtick labels to center
-    for tick in ax.xaxis.get_major_ticks():
+    for tick in ax_val.xaxis.get_major_ticks():
         tick.tick1line.set_markersize(5)
         tick.tick2line.set_markersize(5)
         tick.label1.set_horizontalalignment("center")
 
     plt.ylabel("%" + " of Unique User Clicks")
-    ax.set_ylim(0, 110)
-    ax.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    ax_val.set_ylim(0, 110)
+    ax_val.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
 
     plt.xlabel("Time Intervals")
 
@@ -307,7 +326,7 @@ def timeline_unique_user_clicks_all_levels(reportData):
         plt.text(
             rect.get_x() + rect.get_width() / 2.0,
             1.01 * height,
-            "%.0f" % height + "%",
+            f"{height:.0f}%",
             ha="center",
             va="bottom",
             fontsize=8,
@@ -315,27 +334,30 @@ def timeline_unique_user_clicks_all_levels(reportData):
 
     plt.tight_layout()
     plt.savefig("figures/TimelineUniqueUserClicksAllLevels.png", bbox_inches="tight")
-    reportData["figures"].append(2)
+    report_data["figures"].append(2)
 
 
 # Time to First Click (HH:MM:SS)
-def time_first_click_report(reportData):
+def time_first_click_report(report_data):
+    """Time to first click logic."""
     # data to plot
     n_groups = 6
-    firstClicks = list()
-    firstReport = list()
-    userReportProvided = reportData["User_Report_Provided"]
+    first_clicks = []
+    first_report = []
+    user_report_provided = report_data["User_Report_Provided"]
 
     # Pulls the first clicks from the Report Data
-    for numlevel, value in reportData["Level"].items():
-        firstClicks.append(reportData["Level"][numlevel]["Time_To_First_Click_TD"])
-        if userReportProvided:
-            firstReport.append(reportData["Level"][numlevel]["Time_To_First_Report_TD"])
+    for numlevel in report_data["Level"].keys():
+        first_clicks.append(report_data["Level"][numlevel]["Time_To_First_Click_TD"])
+        if user_report_provided:
+            first_report.append(
+                report_data["Level"][numlevel]["Time_To_First_Report_TD"]
+            )
         else:
-            firstReport.append(0)
+            first_report.append(0)
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7, 3.5))
+    _, ax_val = plt.subplots(figsize=(7, 3.5))
     index = np.arange(n_groups)
     bar_width = 0.45
 
@@ -345,51 +367,51 @@ def time_first_click_report(reportData):
 
     # Establishes the interval bars
     rects1 = plt.bar(
-        index, firstClicks, bar_width, color=BLUE, label="Time to First Click"  # blue
+        index, first_clicks, bar_width, color=BLUE, label="Time to First Click"  # blue
     )
 
     rects2 = plt.bar(
         index + bar_width,
-        firstReport,
+        first_report,
         bar_width,
         color=DARK_RED,  # Dark Red
         label="Time to First Report",
     )
 
     # Lines xtick labels to center
-    for tick in ax.xaxis.get_major_ticks():
+    for tick in ax_val.xaxis.get_major_ticks():
         tick.tick1line.set_markersize(5)
         tick.tick2line.set_markersize(5)
         tick.label1.set_horizontalalignment("center")
 
     # Sets max y lim to 1.08 times the longest time
-    allTime = firstClicks + firstReport
-    timeSpread = max(allTime) - min(allTime)
-    if timeSpread > 86400:
-        ax.set_ylim(-1000, max(allTime) * 1.08)
+    all_time = first_clicks + first_report
+    time_spread = max(all_time) - min(all_time)
+    if time_spread > 86400:
+        ax_val.set_ylim(-1000, max(all_time) * 1.08)
     else:
-        ax.set_ylim(0, max(allTime) * 1.08)
+        ax_val.set_ylim(0, max(all_time) * 1.08)
 
     # Hide y-axis value but show label.
-    ax.set_yticklabels([])
+    ax_val.set_yticklabels([])
     plt.ylabel("Elapsed Time")
 
     # Add counts above the bar graphs
     for rect in rects1 + rects2:
         height = np.float64(rect.get_height())
         if height != 0:
-            hours = height // 3600
-            minutes = (height % 3600) // 60
-            seconds = height % 60
+            hours, seconds = divmod(int(height), 3600)
+            minutes, seconds = divmod(seconds, 60)
 
-            str = "{:02d}:{:02d}:{:02d}".format(int(hours), int(minutes), int(seconds))
+            str_val = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
         else:
-            str = "N/A"
+            str_val = "N/A"
 
         plt.text(
             rect.get_x() + rect.get_width() / 2.0,
             1.01 * height,
-            str,
+            str_val,
             ha="center",
             va="bottom",
             fontsize=8,
@@ -397,36 +419,37 @@ def time_first_click_report(reportData):
         )
 
     # Hide the right and top spines
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.legend(loc="upper center", bbox_to_anchor=(0.50, -0.2), frameon=False, ncol=2)
 
     plt.tight_layout()
     plt.savefig("figures/TimeFirstClickReport.png", bbox_inches="tight")
-    reportData["figures"].append(3)
+    report_data["figures"].append(3)
 
 
 # Click Rates Based on Deception Indicators
-def click_rate_based_deception_indicators(reportData):
-    indicators = dict()
-    click_rate = list()
-    click_rates = list()
+def click_rate_based_deception_indicators(report_data):
+    """Click rate indicator logic."""
+    indicators = {}
+    click_rate = []
+    click_rates = []
 
-    indicators["behavior"] = dict()
+    indicators["behavior"] = {}
     indicators["behavior"]["indicators"] = [
         "Greed",
         "Fear",
         "Curiosity",
         "Duty or Obligation",
     ]
-    indicators["behavior"]["click_rates"] = list()
+    indicators["behavior"]["click_rates"] = []
 
-    indicators["relevancy"] = dict()
+    indicators["relevancy"] = {}
     indicators["relevancy"]["indicators"] = ["Public News", "Organization"]
-    indicators["relevancy"]["click_rates"] = list()
+    indicators["relevancy"]["click_rates"] = []
 
-    indicators["sender"] = dict()
+    indicators["sender"] = {}
     indicators["sender"]["indicators"] = [
         "Authoritative - Federal/High-Level",
         "Authoritative - Local/Mid-Level",
@@ -435,9 +458,9 @@ def click_rate_based_deception_indicators(reportData):
         "External - Spoofed/Plausible",
         "External - Unknown",
     ]
-    indicators["sender"]["click_rates"] = list()
+    indicators["sender"]["click_rates"] = []
 
-    indicators["appearance"] = dict()
+    indicators["appearance"] = {}
     indicators["appearance"]["indicators"] = [
         "Graphics - Spoofed or HTML",
         "Link/Domain - Spoofed or Hidden",
@@ -446,23 +469,21 @@ def click_rate_based_deception_indicators(reportData):
         "Decent Grammar",
         "Poor Grammar",
     ]
-    indicators["appearance"]["click_rates"] = list()
+    indicators["appearance"]["click_rates"] = []
 
-    for category, categoryValue in reportData["complexity"].items():
-        for indicator_key, indicator_value in reportData["complexity"][
-            category
-        ].items():
+    for category in report_data["complexity"].keys():
+        for indicator_key in report_data["complexity"][category].keys():
             indicators[category]["click_rates"].append(
-                reportData["complexity"][category][indicator_key]["click_rate"]
+                report_data["complexity"][category][indicator_key]["click_rate"]
             )
             click_rate.append(
-                reportData["complexity"][category][indicator_key]["click_rate"]
+                report_data["complexity"][category][indicator_key]["click_rate"]
             )
 
     percent_max = max(click_rate) + 1
 
-    for x in range(18):
-        click_rates.append(reportData["Click_Rate"])
+    for _ in range(18):
+        click_rates.append(report_data["Click_Rate"])
 
     plt.figure(figsize=(7, 10))
 
@@ -472,25 +493,25 @@ def click_rate_based_deception_indicators(reportData):
     plt.yticks([])
 
     # Builds out Behavior Plot
-    behaviorPlot = plt.subplot2grid(
+    behavior_plot = plt.subplot2grid(
         (9, 1), (0, 0), colspan=1, rowspan=2
     )  # subplot(4,1,1)
-    behaviorPlot.set_ylabel("Behavior", fontsize=10, labelpad=87, fontweight="bold")
-    behaviorPlot.set_xlim(0, percent_max)
-    behaviorPlot.barh(
+    behavior_plot.set_ylabel("Behavior", fontsize=10, labelpad=87, fontweight="bold")
+    behavior_plot.set_xlim(0, percent_max)
+    behavior_plot.barh(
         np.arange(4),
         indicators["behavior"]["click_rates"],
         align="center",
         color="#755998",
     )
-    behaviorPlot.set_yticks(np.arange(4))
-    behaviorPlot.set_yticklabels(indicators["behavior"]["indicators"], fontsize=10)
-    behaviorPlot.invert_yaxis()
-    behaviorPlot.spines["right"].set_visible(False)
-    behaviorPlot.spines["bottom"].set_visible(False)
-    behaviorPlot.xaxis.set_ticklabels([])
-    behaviorPlot.xaxis.grid()  # Vertical lines
-    behaviorPlot.tick_params(
+    behavior_plot.set_yticks(np.arange(4))
+    behavior_plot.set_yticklabels(indicators["behavior"]["indicators"], fontsize=10)
+    behavior_plot.invert_yaxis()
+    behavior_plot.spines["right"].set_visible(False)
+    behavior_plot.spines["bottom"].set_visible(False)
+    behavior_plot.xaxis.set_ticklabels([])
+    behavior_plot.xaxis.grid()  # Vertical lines
+    behavior_plot.tick_params(
         axis="x",  # changes apply to the x-axis
         which="both",  # both major and minor ticks are affected
         bottom=False,  # ticks along the bottom edge are off
@@ -499,8 +520,8 @@ def click_rate_based_deception_indicators(reportData):
     )  # labels along the bottom edge are off
 
     # adds behavior labels
-    for i, v in enumerate(indicators["behavior"]["click_rates"]):
-        behaviorPlot.text(v + 0.1, i, str(v) + "%", va="center", fontsize=10)
+    for item, val in enumerate(indicators["behavior"]["click_rates"]):
+        behavior_plot.text(val + 0.1, item, str(val) + "%", va="center", fontsize=10)
 
     # Plots the red Click Rate Line
     axes2 = plt.twinx()
@@ -513,27 +534,27 @@ def click_rate_based_deception_indicators(reportData):
     plt.margins(0)
 
     # Builds out Relevancy Plot
-    relevancyPlot = plt.subplot2grid(
+    relevancy_plot = plt.subplot2grid(
         (9, 1), (2, 0), colspan=1, rowspan=1
     )  # subplot(4,1,2)
-    relevancyPlot.set_ylabel("Relevancy", fontsize=10, labelpad=114, fontweight="bold")
-    relevancyPlot.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
-    relevancyPlot.set_xlim(0, percent_max)
-    relevancyPlot.barh(
+    relevancy_plot.set_ylabel("Relevancy", fontsize=10, labelpad=114, fontweight="bold")
+    relevancy_plot.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    relevancy_plot.set_xlim(0, percent_max)
+    relevancy_plot.barh(
         np.arange(2),
         indicators["relevancy"]["click_rates"],
         align="center",
         color="#4576B5",
     )
-    relevancyPlot.set_yticks(np.arange(2))
-    relevancyPlot.set_yticklabels(indicators["relevancy"]["indicators"], fontsize=10)
-    relevancyPlot.invert_yaxis()
-    relevancyPlot.spines["right"].set_visible(False)
-    relevancyPlot.spines["bottom"].set_visible(False)
-    relevancyPlot.spines["top"].set_visible(False)
-    relevancyPlot.xaxis.set_ticklabels([])
-    relevancyPlot.xaxis.grid()  # Vertical lines
-    relevancyPlot.tick_params(
+    relevancy_plot.set_yticks(np.arange(2))
+    relevancy_plot.set_yticklabels(indicators["relevancy"]["indicators"], fontsize=10)
+    relevancy_plot.invert_yaxis()
+    relevancy_plot.spines["right"].set_visible(False)
+    relevancy_plot.spines["bottom"].set_visible(False)
+    relevancy_plot.spines["top"].set_visible(False)
+    relevancy_plot.xaxis.set_ticklabels([])
+    relevancy_plot.xaxis.grid()  # Vertical lines
+    relevancy_plot.tick_params(
         axis="x",  # changes apply to the x-axis
         which="both",  # both major and minor ticks are affected
         bottom=False,  # ticks along the bottom edge are off
@@ -542,8 +563,8 @@ def click_rate_based_deception_indicators(reportData):
     )  # labels along the bottom edge are off
 
     # adds relevancy labels
-    for i, v in enumerate(indicators["relevancy"]["click_rates"]):
-        relevancyPlot.text(v + 0.1, i, str(v) + "%", va="center", fontsize=10)
+    for item, val in enumerate(indicators["relevancy"]["click_rates"]):
+        relevancy_plot.text(val + 0.1, item, str(val) + "%", va="center", fontsize=10)
 
     # Plots the red Click Rate Line
     axes2 = plt.twinx()
@@ -556,27 +577,27 @@ def click_rate_based_deception_indicators(reportData):
     plt.margins(0)
 
     # Builds out Sender Plot
-    senderPlot = plt.subplot2grid(
+    sender_plot = plt.subplot2grid(
         (9, 1), (3, 0), colspan=1, rowspan=3
     )  # subplot(4,1,3)
-    senderPlot.set_ylabel("Sender", fontsize=10, labelpad=10, fontweight="bold")
-    senderPlot.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
-    senderPlot.set_xlim(0, percent_max)
-    senderPlot.barh(
+    sender_plot.set_ylabel("Sender", fontsize=10, labelpad=10, fontweight="bold")
+    sender_plot.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    sender_plot.set_xlim(0, percent_max)
+    sender_plot.barh(
         np.arange(6),
         indicators["sender"]["click_rates"],
         align="center",
         color="#F68B3E",
     )
-    senderPlot.set_yticks(np.arange(6))
-    senderPlot.set_yticklabels(indicators["sender"]["indicators"], fontsize=10)
-    senderPlot.invert_yaxis()
-    senderPlot.spines["right"].set_visible(False)
-    senderPlot.spines["bottom"].set_visible(False)
-    senderPlot.spines["top"].set_visible(False)
-    senderPlot.xaxis.set_ticklabels([])
-    senderPlot.xaxis.grid()  # Vertical lines
-    senderPlot.tick_params(
+    sender_plot.set_yticks(np.arange(6))
+    sender_plot.set_yticklabels(indicators["sender"]["indicators"], fontsize=10)
+    sender_plot.invert_yaxis()
+    sender_plot.spines["right"].set_visible(False)
+    sender_plot.spines["bottom"].set_visible(False)
+    sender_plot.spines["top"].set_visible(False)
+    sender_plot.xaxis.set_ticklabels([])
+    sender_plot.xaxis.grid()  # Vertical lines
+    sender_plot.tick_params(
         axis="x",  # changes apply to the x-axis
         which="both",  # both major and minor ticks are affected
         bottom=False,  # ticks along the bottom edge are off
@@ -585,8 +606,8 @@ def click_rate_based_deception_indicators(reportData):
     )  # labels along the bottom edge are off
 
     # adds sender labels
-    for i, v in enumerate(indicators["sender"]["click_rates"]):
-        senderPlot.text(v + 0.1, i, str(v) + "%", va="center", fontsize=10)
+    for item, val in enumerate(indicators["sender"]["click_rates"]):
+        sender_plot.text(val + 0.1, item, str(val) + "%", va="center", fontsize=10)
 
     # Plots the red Click Rate Line
     axes2 = plt.twinx()
@@ -599,28 +620,30 @@ def click_rate_based_deception_indicators(reportData):
     axes2.margins(0)
 
     # Builds out Appearance Plot
-    appearancePlot = plt.subplot2grid(
+    appearance_plot = plt.subplot2grid(
         (9, 1), (6, 0), colspan=1, rowspan=3
     )  # subplot(4,1,4)
-    appearancePlot.set_ylabel("Appearance", fontsize=10, labelpad=11, fontweight="bold")
-    appearancePlot.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
-    appearancePlot.set_xlim(0, percent_max)
-    appearancePlot.barh(
+    appearance_plot.set_ylabel(
+        "Appearance", fontsize=10, labelpad=11, fontweight="bold"
+    )
+    appearance_plot.xaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    appearance_plot.set_xlim(0, percent_max)
+    appearance_plot.barh(
         np.arange(6),
         indicators["appearance"]["click_rates"],
         align="center",
         color="#B7B7B7",
     )
-    appearancePlot.set_yticks(np.arange(6))
-    appearancePlot.set_yticklabels(indicators["appearance"]["indicators"], fontsize=10)
-    appearancePlot.invert_yaxis()
-    appearancePlot.spines["right"].set_visible(False)
-    appearancePlot.spines["top"].set_visible(False)
-    appearancePlot.xaxis.grid()  # Vertical lines
+    appearance_plot.set_yticks(np.arange(6))
+    appearance_plot.set_yticklabels(indicators["appearance"]["indicators"], fontsize=10)
+    appearance_plot.invert_yaxis()
+    appearance_plot.spines["right"].set_visible(False)
+    appearance_plot.spines["top"].set_visible(False)
+    appearance_plot.xaxis.grid()  # Vertical lines
 
     # adds Appearance labels
-    for i, v in enumerate(indicators["appearance"]["click_rates"]):
-        appearancePlot.text(v + 0.1, i, str(v) + "%", va="center", fontsize=10)
+    for item, val in enumerate(indicators["appearance"]["click_rates"]):
+        appearance_plot.text(val + 0.1, item, str(val) + "%", va="center", fontsize=10)
 
     # Plots the red Click Rate Line
     axes2 = plt.twinx()
@@ -637,37 +660,38 @@ def click_rate_based_deception_indicators(reportData):
 
     # ----- Currently does not put the label in the correct spot each time.
     plt.savefig("figures/ClickRateBasedDeceptionIndicators.png", bbox_inches="tight")
-    reportData["figures"].append(4)
+    report_data["figures"].append(4)
 
 
 # Unique Click, Total Click, and Report Results by Level
 def unique_total_click_report_results_by_level(reportData):
+    """Handle Unique total click report results logic."""
     # data to plot
     n_groups = 6
-    unique_clicks = list()
-    total_clicks = list()
-    user_reports = list()
-    userReportProvided = reportData["User_Report_Provided"]
+    unique_clicks = []
+    total_clicks = []
+    user_reports = []
+    user_report_provided = reportData["User_Report_Provided"]
 
     # Pulls the Unique Clicks from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for numlevel in reportData["Level"].keys():
         unique_clicks.append(reportData["Level"][numlevel]["User_Clicks"])
 
     # Pulls the Total Clicks from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for numlevel in reportData["Level"].keys():
         total_clicks.append(reportData["Level"][numlevel]["Total_Clicks"])
 
-    if userReportProvided:
+    if user_report_provided:
         # Pulls the Report Rate from the Report Data
-        for numlevel, value1 in reportData["Level"].items():
+        for numlevel in reportData["Level"].keys():
             user_reports.append(reportData["Level"][numlevel]["User_Reports"])
     else:
         # Sets the Report Rate to 0
-        for numlevel, value1 in reportData["Level"].items():
+        for numlevel in reportData["Level"].keys():
             user_reports.append(0)
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7, 3.5))
+    _, ax_val = plt.subplots(figsize=(7, 3.5))
     index = np.arange(n_groups)
     bar_width = 0.3
 
@@ -677,7 +701,7 @@ def unique_total_click_report_results_by_level(reportData):
     plt.xticks(index + bar_width, ("1", "2", " 3", "4", "5", "6"))
 
     # Sets X Axis margin.
-    ax.margins(0.01, 0)
+    ax_val.margins(0.01, 0)
 
     # Establishes the unique clicks bars
     rects1 = plt.bar(
@@ -712,7 +736,7 @@ def unique_total_click_report_results_by_level(reportData):
     )
 
     # Lines xtick labels to center
-    for tick in ax.xaxis.get_major_ticks():
+    for tick in ax_val.xaxis.get_major_ticks():
         tick.tick1line.set_markersize(5)
         tick.tick2line.set_markersize(5)
         tick.label1.set_horizontalalignment("center")
@@ -720,7 +744,7 @@ def unique_total_click_report_results_by_level(reportData):
     plt.ylabel("# of Clicks")
 
     # Add counts above the two bar graphs
-    if userReportProvided:
+    if user_report_provided:
         for rect in rects1 + rects2 + rects3:
             height = rect.get_height()
             plt.text(
@@ -755,8 +779,8 @@ def unique_total_click_report_results_by_level(reportData):
 
     plt.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), frameon=False, ncol=3)
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("figures/UniqueTotalClickReportResultsByLevel.png", bbox_inches="tight")
@@ -764,45 +788,48 @@ def unique_total_click_report_results_by_level(reportData):
 
 
 # Breakdown of Multiple Clicks by Level
-def breakdown_multiple_clicks_by_level(reportData):
+def breakdown_multiple_clicks_by_level(report_data):
+    """Breakdown clicks by level logic."""
     # data to plot
     n_groups = 6
-    one_click = list()
-    two_3_clicks = list()
-    four_5_clicks = list()
-    six_10_clicks = list()
-    more_10_clicks = list()
+    one_click = []
+    two_3_clicks = []
+    four_5_clicks = []
+    six_10_clicks = []
+    more_10_clicks = []
 
     # Pulls the number of clikers that clicked onces from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
-        one_click.append(reportData["Level"][numlevel]["User_Click_Summary"]["1 time"])
+    for num_level in report_data["Level"].keys():
+        one_click.append(
+            report_data["Level"][num_level]["User_Click_Summary"]["1 time"]
+        )
 
     # Pulls the number of clikers that clicked 2 to 3 times from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for num_level in report_data["Level"].keys():
         two_3_clicks.append(
-            reportData["Level"][numlevel]["User_Click_Summary"]["2-3 times"]
+            report_data["Level"][num_level]["User_Click_Summary"]["2-3 times"]
         )
 
     # Pulls the number of clikers that clicked 4 to 5 times from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for num_level in report_data["Level"].keys():
         four_5_clicks.append(
-            reportData["Level"][numlevel]["User_Click_Summary"]["4-5 times"]
+            report_data["Level"][num_level]["User_Click_Summary"]["4-5 times"]
         )
 
     # Pulls the number of clikers that clicked 6 to 10 times from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for num_level in report_data["Level"].keys():
         six_10_clicks.append(
-            reportData["Level"][numlevel]["User_Click_Summary"]["6-10 times"]
+            report_data["Level"][num_level]["User_Click_Summary"]["6-10 times"]
         )
 
     # Pulls the number of clikers that clicked 6 to 10 times from the Report Data
-    for numlevel, value1 in reportData["Level"].items():
+    for num_level in report_data["Level"].keys():
         more_10_clicks.append(
-            reportData["Level"][numlevel]["User_Click_Summary"][">10 times"]
+            report_data["Level"][num_level]["User_Click_Summary"][">10 times"]
         )
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7, 3.5))
+    _, ax_val = plt.subplots(figsize=(7, 3.5))
     index = np.arange(n_groups)
     bar_width = 0.17
 
@@ -858,14 +885,14 @@ def breakdown_multiple_clicks_by_level(reportData):
     )
 
     plt.ylabel("# of Unique Users")
-    ax.set_yticks([])
+    ax_val.set_yticks([])
 
     # Sets x labels.
     plt.xlabel("Deception Level")
     plt.xticks(index + bar_width * 2, ("1", "2", " 3", "4", "5", "6"))
 
     # Sets X Axis margin.
-    ax.margins(0.01, 0)
+    ax_val.margins(0.01, 0)
 
     # Add counts above the two bar graphs
     for rect in rects1 + rects2 + rects3 + rects4 + rects5:
@@ -887,71 +914,71 @@ def breakdown_multiple_clicks_by_level(reportData):
         prop={"size": 8},
     )
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
-    ax.spines["left"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
+    ax_val.spines["left"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("figures/BreakdownMultipleClicksByLevel.png", bbox_inches="tight")
-    reportData["figures"].append(6)
+    report_data["figures"].append(6)
 
 
 # Time line of Unique Clicks
-def clicking_user_timeline(reportData):
+def clicking_user_timeline(report_data):
+    """User timeline logic."""
     # data to plot
+    time_frame = list(report_data["Unique_Click_Timeline"].keys())
 
-    timeFrame = list(reportData["Unique_Click_Timeline"].keys())
-
-    n_groups = len(timeFrame)
+    n_groups = len(time_frame)
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7, 3.5))
+    _, ax_val = plt.subplots(figsize=(7, 3.5))
     index = np.arange(n_groups)
 
     # Sets x labels.
-    plt.xticks(index, timeFrame, rotation=45, fontsize=8, ha="right")
+    plt.xticks(index, time_frame, rotation=45, fontsize=8, ha="right")
 
     # plt.ylabel('Rate Percentages')
-    levelOne_x = list(reportData["Level"]["1"]["timeIntervalCount"].values())
-    levelTwo_x = list(reportData["Level"]["2"]["timeIntervalCount"].values())
-    levelThree_x = list(reportData["Level"]["3"]["timeIntervalCount"].values())
-    levelFour_x = list(reportData["Level"]["4"]["timeIntervalCount"].values())
-    levelFive_x = list(reportData["Level"]["5"]["timeIntervalCount"].values())
-    levelSix_x = list(reportData["Level"]["6"]["timeIntervalCount"].values())
+    level_one_x = list(report_data["Level"]["1"]["timeIntervalCount"].values())
+    level_two_x = list(report_data["Level"]["2"]["timeIntervalCount"].values())
+    level_three_x = list(report_data["Level"]["3"]["timeIntervalCount"].values())
+    level_four_x = list(report_data["Level"]["4"]["timeIntervalCount"].values())
+    level_five_x = list(report_data["Level"]["5"]["timeIntervalCount"].values())
+    level_six_x = list(report_data["Level"]["6"]["timeIntervalCount"].values())
 
-    for xLists in [
-        levelOne_x,
-        levelTwo_x,
-        levelThree_x,
-        levelFour_x,
-        levelFive_x,
-        levelSix_x,
+    for x_lists in [
+        level_one_x,
+        level_two_x,
+        level_three_x,
+        level_four_x,
+        level_five_x,
+        level_six_x,
     ]:
 
-        if not xLists:
-            while len(xLists) < n_groups:
-                xLists.append(0)
+        if not x_lists:
+            while len(x_lists) < n_groups:
+                x_lists.append(0)
         else:
-            while len(xLists) < n_groups:
-                xLists.append(100)
+            while len(x_lists) < n_groups:
+                x_lists.append(100)
 
     # Plots Level One
-    plt.plot(index, levelOne_x, color=BLUE, label="Level 1")
+    plt.plot(index, level_one_x, color=BLUE, label="Level 1")
 
     # Plots Level Two
-    plt.plot(index, levelTwo_x, color=DARK_RED, label="Level 2")
+    plt.plot(index, level_two_x, color=DARK_RED, label="Level 2")
 
     # Plots Level Three
-    plt.plot(index, levelThree_x, color=GREEN, label="Level 3")
+    plt.plot(index, level_three_x, color=GREEN, label="Level 3")
 
     # Plots Level Four
-    plt.plot(index, levelFour_x, color=PURPLE, label="Level 4")
+    plt.plot(index, level_four_x, color=PURPLE, label="Level 4")
 
     # Plots Level Five
-    plt.plot(index, levelFive_x, color=LIGHT_BLUE, label="Level 5")
+    plt.plot(index, level_five_x, color=LIGHT_BLUE, label="Level 5")
 
     # Plots Level Six
-    plt.plot(index, levelSix_x, color=ORANGE, label="Level 6")
+    plt.plot(index, level_six_x, color=ORANGE, label="Level 6")
 
     # Adjusts the legend location
     plt.legend(
@@ -963,53 +990,54 @@ def clicking_user_timeline(reportData):
     )
     # Hide the right and top spines
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
-    ax.set_ylim(0, 101)
-    ax.yaxis.set_ticks(np.arange(0, 101, 25))
-    ax.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
-    ax.yaxis.grid()  # horizontal lines
+    ax_val.set_ylim(0, 101)
+    ax_val.yaxis.set_ticks(np.arange(0, 101, 25))
+    ax_val.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    ax_val.yaxis.grid()  # horizontal lines
 
     plt.tight_layout()
     plt.savefig("figures/ClickingUserTimeline.png", bbox_inches="tight")
-    reportData["figures"].append(7)
+    report_data["figures"].append(7)
 
 
 # Clicks by Level for offices
-def count_unique_clickes_by_office_per_level(reportData):
+def count_unique_clickes_by_office_per_level(report_data):
+    """Count unique clicks by office per level logic."""
     # data to plot
-    label_names = list()
-    level_one = list()
-    level_two = list()
-    level_three = list()
-    level_four = list()
-    level_five = list()
-    level_six = list()
+    label_names = []
+    level_one = []
+    level_two = []
+    level_three = []
+    level_four = []
+    level_five = []
+    level_six = []
 
     # pulls all office Names and each levels unique clicks.
-    for label, data in reportData["Labels"].items():
+    for label in report_data["Labels"].keys():
         if label != "Other":
             label_names.append(
-                "\n".join(textwrap.wrap(reportData["Labels"][label]["Name"], 15))
+                "\n".join(textwrap.wrap(report_data["Labels"][label]["Name"], 15))
             )
-            level_one.append(reportData["Labels"][label]["1"]["Unique_Clicks"])
-            level_two.append(reportData["Labels"][label]["2"]["Unique_Clicks"])
-            level_three.append(reportData["Labels"][label]["3"]["Unique_Clicks"])
-            level_four.append(reportData["Labels"][label]["4"]["Unique_Clicks"])
-            level_five.append(reportData["Labels"][label]["5"]["Unique_Clicks"])
-            level_six.append(reportData["Labels"][label]["6"]["Unique_Clicks"])
+            level_one.append(report_data["Labels"][label]["1"]["Unique_Clicks"])
+            level_two.append(report_data["Labels"][label]["2"]["Unique_Clicks"])
+            level_three.append(report_data["Labels"][label]["3"]["Unique_Clicks"])
+            level_four.append(report_data["Labels"][label]["4"]["Unique_Clicks"])
+            level_five.append(report_data["Labels"][label]["5"]["Unique_Clicks"])
+            level_six.append(report_data["Labels"][label]["6"]["Unique_Clicks"])
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7.5, 3.75))
+    _, ax_val = plt.subplots(figsize=(7.5, 3.75))
     bar_width = 0.16
 
     lvl1 = np.arange(len(level_one))
-    lvl2 = [x + bar_width for x in lvl1]
-    lvl3 = [x + bar_width for x in lvl2]
-    lvl4 = [x + bar_width for x in lvl3]
-    lvl5 = [x + bar_width for x in lvl4]
-    lvl6 = [x + bar_width for x in lvl5]
+    lvl2 = [x_val + bar_width for x_val in lvl1]
+    lvl3 = [x_val + bar_width for x_val in lvl2]
+    lvl4 = [x_val + bar_width for x_val in lvl3]
+    lvl5 = [x_val + bar_width for x_val in lvl4]
+    lvl6 = [x_val + bar_width for x_val in lvl5]
 
     # Establishes the unique clicks bars
     rects1 = plt.bar(
@@ -1075,10 +1103,10 @@ def count_unique_clickes_by_office_per_level(reportData):
     plt.ylabel("# of Unique Users")
 
     # Sets x labels.
-    plt.xticks([r + bar_width * 3 for r in range(len(level_one))], label_names)
+    plt.xticks([r_val + bar_width * 3 for r_val in range(len(level_one))], label_names)
 
     # Sets X Axis margin.
-    ax.margins(0.01, 0)
+    ax_val.margins(0.01, 0)
 
     # Add counts above the two bar graphs
     for rect in rects1 + rects2 + rects3 + rects4 + rects5 + rects6:
@@ -1100,48 +1128,49 @@ def count_unique_clickes_by_office_per_level(reportData):
         prop={"size": 8},
     )
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("figures/CountUniqueClickesByOfficePerLevel.png", bbox_inches="tight")
-    reportData["figures"].append(8)
+    report_data["figures"].append(8)
 
 
 # Click percent by Level for offices
-def percentage_office_clicked_by_level(reportData):
+def percentage_office_clicked_by_level(report_data):
+    """Percentage office click by level logic."""
     # data to plot
-    label_names = list()
-    level_one = list()
-    level_two = list()
-    level_three = list()
-    level_four = list()
-    level_five = list()
-    level_six = list()
+    label_names = []
+    level_one = []
+    level_two = []
+    level_three = []
+    level_four = []
+    level_five = []
+    level_six = []
 
     # pulls all office Names and each levels unique clicks.
-    for label, data in reportData["Labels"].items():
+    for label in report_data["Labels"].keys():
         if label != "Other":
             label_names.append(
-                "\n".join(textwrap.wrap(reportData["Labels"][label]["Name"], 15))
+                "\n".join(textwrap.wrap(report_data["Labels"][label]["Name"], 15))
             )
-            level_one.append(reportData["Labels"][label]["1"]["Click_Rate"])
-            level_two.append(reportData["Labels"][label]["2"]["Click_Rate"])
-            level_three.append(reportData["Labels"][label]["3"]["Click_Rate"])
-            level_four.append(reportData["Labels"][label]["4"]["Click_Rate"])
-            level_five.append(reportData["Labels"][label]["5"]["Click_Rate"])
-            level_six.append(reportData["Labels"][label]["6"]["Click_Rate"])
+            level_one.append(report_data["Labels"][label]["1"]["Click_Rate"])
+            level_two.append(report_data["Labels"][label]["2"]["Click_Rate"])
+            level_three.append(report_data["Labels"][label]["3"]["Click_Rate"])
+            level_four.append(report_data["Labels"][label]["4"]["Click_Rate"])
+            level_five.append(report_data["Labels"][label]["5"]["Click_Rate"])
+            level_six.append(report_data["Labels"][label]["6"]["Click_Rate"])
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7.5, 3.75))
+    _, ax_val = plt.subplots(figsize=(7.5, 3.75))
     bar_width = 0.16
 
     lvl1 = np.arange(len(level_one))
-    lvl2 = [x + bar_width for x in lvl1]
-    lvl3 = [x + bar_width for x in lvl2]
-    lvl4 = [x + bar_width for x in lvl3]
-    lvl5 = [x + bar_width for x in lvl4]
-    lvl6 = [x + bar_width for x in lvl5]
+    lvl2 = [x_val + bar_width for x_val in lvl1]
+    lvl3 = [x_val + bar_width for x_val in lvl2]
+    lvl4 = [x_val + bar_width for x_val in lvl3]
+    lvl5 = [x_val + bar_width for x_val in lvl4]
+    lvl6 = [x_val + bar_width for x_val in lvl5]
 
     # Establishes the unique clicks bars
     rects1 = plt.bar(
@@ -1205,14 +1234,14 @@ def percentage_office_clicked_by_level(reportData):
     )
 
     # plt.ylabel('Rate Percentages')
-    ax.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    ax_val.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
 
     # Sets x labels.
     # plt.xlabel('Office Name')
     plt.xticks([r + bar_width * 3 for r in range(len(level_one))], label_names)
 
     # Sets X Axis margin.
-    ax.margins(0.01, 0)
+    ax_val.margins(0.01, 0)
 
     # Add counts above the two bar graphs
     for rect in rects1 + rects2 + rects3 + rects4 + rects5 + rects6:
@@ -1221,7 +1250,7 @@ def percentage_office_clicked_by_level(reportData):
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.1f" % height + "%",
+                f"{height:.1f}%",
                 ha="center",
                 va="bottom",
                 fontsize=6,
@@ -1230,7 +1259,7 @@ def percentage_office_clicked_by_level(reportData):
             plt.text(
                 rect.get_x() + rect.get_width() / 2.0,
                 1.01 * height,
-                "%.f" % height + "%",
+                f"{height:.0f}%",
                 ha="center",
                 va="bottom",
                 fontsize=6,
@@ -1244,63 +1273,64 @@ def percentage_office_clicked_by_level(reportData):
         prop={"size": 8},
     )
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("figures/PercentageOfficeClickedByLevel.png", bbox_inches="tight")
-    reportData["figures"].append(9)
+    report_data["figures"].append(9)
 
 
 # Click by Office for level
-def count_unique_clicks_by_level_per_office(reportData):
+def count_unique_clicks_by_level_per_office(report_data):
+    """Count unique clicks by level per office."""
     # data to plot
-    label_names = list()
-    labelData = dict()
-    labelData[1] = list()
-    labelData[2] = list()
-    labelData[3] = list()
-    labelData[4] = list()
-    labelData[5] = list()
-    labelData[6] = list()
+    label_names = []
+    label_data = {}
+    label_data[1] = []
+    label_data[2] = []
+    label_data[3] = []
+    label_data[4] = []
+    label_data[5] = []
+    label_data[6] = []
 
     count = 1
     # pulls all office Names and each levels unique clicks.
-    for label, data in reportData["Labels"].items():
+    for label in report_data["Labels"].keys():
         label_names.append(
-            "\n".join(textwrap.wrap(reportData["Labels"][label]["Name"], 15))
+            "\n".join(textwrap.wrap(report_data["Labels"][label]["Name"], 15))
         )
-        labelData[count].append(reportData["Labels"][label]["1"]["Unique_Clicks"])
-        labelData[count].append(reportData["Labels"][label]["2"]["Unique_Clicks"])
-        labelData[count].append(reportData["Labels"][label]["3"]["Unique_Clicks"])
-        labelData[count].append(reportData["Labels"][label]["4"]["Unique_Clicks"])
-        labelData[count].append(reportData["Labels"][label]["5"]["Unique_Clicks"])
-        labelData[count].append(reportData["Labels"][label]["6"]["Unique_Clicks"])
+        label_data[count].append(report_data["Labels"][label]["1"]["Unique_Clicks"])
+        label_data[count].append(report_data["Labels"][label]["2"]["Unique_Clicks"])
+        label_data[count].append(report_data["Labels"][label]["3"]["Unique_Clicks"])
+        label_data[count].append(report_data["Labels"][label]["4"]["Unique_Clicks"])
+        label_data[count].append(report_data["Labels"][label]["5"]["Unique_Clicks"])
+        label_data[count].append(report_data["Labels"][label]["6"]["Unique_Clicks"])
         count += 1
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7.5, 3.75))
+    _, ax_val = plt.subplots(figsize=(7.5, 3.75))
     bar_width = 0.16
 
-    numLabels = len(label_names)
-    label = [None] * numLabels
-    colorList = [BLUE, DARK_RED, GREEN, PURPLE, LIGHT_BLUE, ORANGE]
+    num_labels = len(label_names)
+    label = [None] * num_labels
+    color_list = [BLUE, DARK_RED, GREEN, PURPLE, LIGHT_BLUE, ORANGE]
 
-    for num in range(numLabels):
+    for num in range(num_labels):
         if num == 0:
-            label[num] = np.arange(len(labelData[1]))
+            label[num] = np.arange(len(label_data[1]))
         else:
-            label[num] = [x + bar_width for x in label[num - 1]]
+            label[num] = [x_val + bar_width for x_val in label[num - 1]]
 
     # Establishes the unique clicks bars
-    rects = list()
-    for num in range(numLabels):
+    rects = []
+    for num in range(num_labels):
         rect = plt.bar(
             label[num],
-            labelData[num + 1],
+            label_data[num + 1],
             bar_width,
             edgecolor="white",
-            color=colorList[num],
+            color=color_list[num],
             label=label_names[num],
             align="edge",
         )
@@ -1308,12 +1338,12 @@ def count_unique_clicks_by_level_per_office(reportData):
 
     # Sets x labels.
     plt.xticks(
-        [r + bar_width * 2.5 for r in range(len(labelData[1]))],
+        [r_val + bar_width * 2.5 for r_val in range(len(label_data[1]))],
         ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6"],
     )
 
     # Sets X Axis margin.
-    ax.margins(0.01, 0)
+    ax_val.margins(0.01, 0)
 
     # Add counts above the two bar graphs
     first = True
@@ -1321,12 +1351,12 @@ def count_unique_clicks_by_level_per_office(reportData):
     for rect in rects:
 
         if first:
-            allRects = rect
+            all_rects = rect
             first = False
         else:
-            allRects = allRects + rect
+            all_rects = all_rects + rect
 
-    for rect in allRects:
+    for rect in all_rects:
         height = rect.get_height()
         plt.text(
             rect.get_x() + rect.get_width() / 2.0,
@@ -1345,90 +1375,91 @@ def count_unique_clicks_by_level_per_office(reportData):
         prop={"size": 8},
     )
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("figures/CountUniqueClicksByLevelPerOffice.png", bbox_inches="tight")
-    reportData["figures"].append(10)
+    report_data["figures"].append(10)
 
 
 # Percent of All clicks by Office for level
-def perc_total_unique_clicks_belong_office_by_level(reportData):
+def perc_total_unique_clicks_belong_office_by_level(report_data):
+    """Percentage of total unique clicks by office by level logic."""
     # data to plot
-    label_names = list()
-    labelData = dict()
-    labelData[1] = list()
-    labelData[2] = list()
-    labelData[3] = list()
-    labelData[4] = list()
-    labelData[5] = list()
-    labelData[6] = list()
+    label_names = []
+    label_data = {}
+    label_data[1] = []
+    label_data[2] = []
+    label_data[3] = []
+    label_data[4] = []
+    label_data[5] = []
+    label_data[6] = []
 
     count = 1
     # pulls all office Names and each levels unique clicks.
-    for label, data in reportData["Labels"].items():
+    for label in report_data["Labels"].keys():
         label_names.append(
-            "\n".join(textwrap.wrap(reportData["Labels"][label]["Name"], 15))
+            "\n".join(textwrap.wrap(report_data["Labels"][label]["Name"], 15))
         )
-        labelData[count].append(
-            reportData["Labels"][label]["1"]["Percent_Of_All_Clicks"]
+        label_data[count].append(
+            report_data["Labels"][label]["1"]["Percent_Of_All_Clicks"]
         )
-        labelData[count].append(
-            reportData["Labels"][label]["2"]["Percent_Of_All_Clicks"]
+        label_data[count].append(
+            report_data["Labels"][label]["2"]["Percent_Of_All_Clicks"]
         )
-        labelData[count].append(
-            reportData["Labels"][label]["3"]["Percent_Of_All_Clicks"]
+        label_data[count].append(
+            report_data["Labels"][label]["3"]["Percent_Of_All_Clicks"]
         )
-        labelData[count].append(
-            reportData["Labels"][label]["4"]["Percent_Of_All_Clicks"]
+        label_data[count].append(
+            report_data["Labels"][label]["4"]["Percent_Of_All_Clicks"]
         )
-        labelData[count].append(
-            reportData["Labels"][label]["5"]["Percent_Of_All_Clicks"]
+        label_data[count].append(
+            report_data["Labels"][label]["5"]["Percent_Of_All_Clicks"]
         )
-        labelData[count].append(
-            reportData["Labels"][label]["6"]["Percent_Of_All_Clicks"]
+        label_data[count].append(
+            report_data["Labels"][label]["6"]["Percent_Of_All_Clicks"]
         )
         count += 1
 
     # create plot
-    fig, ax = plt.subplots(figsize=(7.5, 3.75))
+    _, ax_val = plt.subplots(figsize=(7.5, 3.75))
     bar_width = 0.16
 
-    numLabels = len(label_names)
-    label = [None] * numLabels
-    colorList = [BLUE, DARK_RED, GREEN, PURPLE, LIGHT_BLUE, ORANGE]
+    num_labels = len(label_names)
+    label = [None] * num_labels
+    color_list = [BLUE, DARK_RED, GREEN, PURPLE, LIGHT_BLUE, ORANGE]
 
-    for num in range(numLabels):
+    for num in range(num_labels):
         if num == 0:
-            label[num] = np.arange(len(labelData[1]))
+            label[num] = np.arange(len(label_data[1]))
         else:
-            label[num] = [x + bar_width for x in label[num - 1]]
+            label[num] = [x_val + bar_width for x_val in label[num - 1]]
 
     # Establishes the unique clicks bars
-    rects = list()
-    for num in range(numLabels):
+    rects = []
+    for num in range(num_labels):
         rect = plt.bar(
             label[num],
-            labelData[num + 1],
+            label_data[num + 1],
             bar_width,
             edgecolor="white",
-            color=colorList[num],
+            color=color_list[num],
             label=label_names[num],
             align="edge",
         )
         rects.append(rect)
 
-    ax.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
+    ax_val.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=100))
 
     # Sets x labels.
     plt.xticks(
-        [r + bar_width * 2.5 for r in range(len(labelData[1]))],
+        [r + bar_width * 2.5 for r in range(len(label_data[1]))],
         ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6"],
     )
 
     # Sets X Axis margin.
-    ax.margins(0.01, 0)
+    ax_val.margins(0.01, 0)
 
     # Add counts above the bars
     first = True
@@ -1436,17 +1467,17 @@ def perc_total_unique_clicks_belong_office_by_level(reportData):
     for rect in rects:
 
         if first:
-            allRects = rect
+            all_rects = rect
             first = False
         else:
-            allRects = allRects + rect
+            all_rects = all_rects + rect
 
-    for rect in allRects:
+    for rect in all_rects:
         height = rect.get_height()
         plt.text(
             rect.get_x() + rect.get_width() / 2.0,
             1.01 * height,
-            "%.f" % height + "%",
+            f"{height:.0f}%",
             ha="center",
             va="bottom",
             fontsize=6,
@@ -1460,11 +1491,11 @@ def perc_total_unique_clicks_belong_office_by_level(reportData):
         prop={"size": 8},
     )
 
-    ax.spines["right"].set_visible(False)
-    ax.spines["top"].set_visible(False)
+    ax_val.spines["right"].set_visible(False)
+    ax_val.spines["top"].set_visible(False)
 
     plt.tight_layout()
     plt.savefig(
         "figures/PercTotalUniqueClicksBelongOfficeByLevel.png", bbox_inches="tight"
     )
-    reportData["figures"].append(11)
+    report_data["figures"].append(11)

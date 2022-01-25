@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """PCA Report Generator builds PCA Reports with LaTeX template.
 
 Usage:
@@ -20,6 +19,20 @@ Options:
     -e --editable   Exports the needed tex file and supporting documents to allow manual editing.
 """
 
+__all__ = [
+    "assessment_metrics",
+    "dict_formater",
+    "group_text_builder",
+    "latex_builder",
+    "latex_data_fields",
+    "latex_dict_prep",
+    "latex_string_prep",
+    "main",
+    "manualData_processor",
+    "setup_work_directory",
+    "get_time_gap",
+]
+
 # Standard Python Libraries
 import codecs
 from datetime import datetime
@@ -35,20 +48,20 @@ from typing import Dict
 
 # Third-Party Libraries
 from docopt import docopt
+import pkg_resources
 import pystache
 from pytz import timezone
 
-# cisagov Libraries
-from _version import __version__
-from customer.closing import closing_builder
-from customer.graphs import graph_builder
-from utility.time import format_timedelta_to_HHMMSS, time_to_string
+from .._version import __version__
+from ..utility.time import format_timedelta_to_HHMMSS, time_to_string
+from .closing import closing_builder
+from .graphs import graph_builder
 
 utc = timezone("UTC")
 localTimeZone = timezone("US/Eastern")  # Holds the desired time zone.
 
 MUSTACHE_FILE = "report.mustache"
-ASSETS_DIR_SRC = "/usr/src/pca-report-tools/src/assets/"
+ASSETS_DIR = pkg_resources.resource_filename("pca_report_library", "assets")
 ASSETS_DIR_DST = "assets"
 TO_COPY = ["figures", "screenshots"]
 # Fields that should not be Escaped for LaTeX.
@@ -100,22 +113,18 @@ CLOSING_REPORTING = (
 
 def setup_work_directory(work_dir):
     """Set up a temporary working directory."""
-    me = os.path.realpath(__file__)
-    my_dir = os.path.dirname(me)
-    for n in (MUSTACHE_FILE,):
-        file_src = os.path.join(my_dir, n)
-        file_dst = os.path.join(work_dir, n)
-        shutil.copyfile(file_src, file_dst)
+    file_src = os.path.join(ASSETS_DIR, MUSTACHE_FILE)
+    file_dst = os.path.join(work_dir, MUSTACHE_FILE)
+    shutil.copyfile(file_src, file_dst)
     # copy static assets
-    dir_src = os.path.join(my_dir, ASSETS_DIR_SRC)
     dir_dst = os.path.join(work_dir, ASSETS_DIR_DST)
-    shutil.copytree(dir_src, dir_dst)
+    shutil.copytree(ASSETS_DIR, dir_dst)
 
 
 def dict_formater(dictionary, labels):
     """Set dictionary formatting for report merging."""
     # Loops through each of the Levels in main dictionary
-    for numLevel, replacement in dictionary["Level"].items():
+    for numLevel in dictionary["Level"].keys():
 
         # Loops through each of the Levels sub dictionary
         for word2, replacement in dictionary["Level"][numLevel].items():
@@ -128,7 +137,7 @@ def dict_formater(dictionary, labels):
                 dictionary["Level-" + numLevel + "-" + word2] = replacement.strftime(
                     "%m/%d/%Y %H:%M"
                 )
-            elif word2 != "User_Click_Summary" and word2 != "Complexity":
+            elif word2 not in ("User_Click_Summary", "Complexity"):
                 dictionary["Level-" + numLevel + "-" + word2] = replacement
 
             else:
@@ -191,8 +200,8 @@ def dict_formater(dictionary, labels):
     # Converts values to strings.
     for key, value in dictionary.items():
         if key not in ["figures", "User_Report_Provided"]:
-            if isinstance(dictionary[key], int) or isinstance(dictionary[key], float):
-                dictionary[key] = "{:,}".format(value)
+            if isinstance(dictionary[key], (float, int)):
+                dictionary[key] = f"{value:,}"
             else:
                 dictionary[key] = str(
                     value
@@ -225,7 +234,7 @@ def group_text_builder(reportData):
             reportData["Groups"][group_num]["Campaigns"],
         )
 
-    return "{} {}".format(first_line, second_line)
+    return f"{first_line} {second_line}"
 
 
 def manualData_processor(dataFile, manualFile):
@@ -237,19 +246,17 @@ def manualData_processor(dataFile, manualFile):
 
     print("\tLoading Manual Data from " + manualFile + "...")
 
-    with open(dataFile) as f:
+    with open(dataFile, encoding="utf-8") as f:
         reportData = json.load(f)
 
     # Tries to open manual data file
     try:
-        f = open(manualFile)
+        with open(manualFile, encoding="utf-8") as f:
+            manualData = json.load(f)
     except IOError:
         print("\tERROR- Manual Data File not found: " + manualFile)
         sys.exit(1)
     else:
-
-        manualData = json.load(f)
-        f.close()
 
         # Holds if user reports were provided
         userReportProvided = manualData["User_Report_Provided"]
@@ -267,7 +274,7 @@ def manualData_processor(dataFile, manualFile):
         for key, value in manualData.items():
             if key == "Email_Recon":
 
-                reportData["Email_Recon"] = dict()
+                reportData["Email_Recon"] = {}
 
                 for recon_name, recon_value in manualData["Email_Recon"].items():
                     reportData["Email_Recon"][recon_name] = recon_value
@@ -300,11 +307,9 @@ def manualData_processor(dataFile, manualFile):
                         ][numLevel]["From_Address"]
 
                     if "Display_Link" in manualData["Level"][numLevel].keys():
-                        reportData["Level"][numLevel]["Display_Link"] = '"{}"'.format(
-                            manualData["Level"][numLevel]["Display_Link"].replace(
-                                ", ", '", "'
-                            )
-                        )
+                        reportData["Level"][numLevel]["Display_Link"] = manualData[
+                            "Level"
+                        ][numLevel]["Display_Link"].replace(", ", '", "')
                     else:
                         reportData["Level"][numLevel]["Display_Link"] = ""
 
@@ -402,7 +407,7 @@ def manualData_processor(dataFile, manualFile):
                             reportData["Level"][numLevel]["Time_Gap"],
                             reportData["Level"][numLevel]["Time_Gap_TD"],
                             reportData["Level"][numLevel]["Gap_Type"],
-                        ) = time_gap(
+                        ) = get_time_gap(
                             reportData["Level"][str(numLevel)][
                                 "Time_To_First_Report_TD"
                             ],
@@ -438,9 +443,9 @@ def manualData_processor(dataFile, manualFile):
             elif key == "Customer_Setup":
                 reportData["Customer_Setup"] = ""
                 for entry in manualData["Customer_Setup"]:
-                    reportData["Customer_Setup"] += "\\item {} ".format(
-                        latex_string_prep(entry)
-                    )
+                    reportData[
+                        "Customer_Setup"
+                    ] += f"\\item {latex_string_prep(entry)} "
 
             else:
                 reportData[key] = value
@@ -475,7 +480,9 @@ def manualData_processor(dataFile, manualFile):
             reportData["Report_Ratio"] = "N/A"
             reportData["Ave_Time_First_Report"] = "N/A"
 
-        with open("reportData_" + reportData["RVA_Number"] + ".json", "w") as fp:
+        with open(
+            f"reportData_{reportData['RVA_Number']}.json", "w", encoding="utf-8"
+        ) as fp:
             json.dump(reportData, fp, indent=4)
 
         print(
@@ -489,7 +496,7 @@ def manualData_processor(dataFile, manualFile):
     return success
 
 
-def time_gap(report_td, click_td):
+def get_time_gap(report_td, click_td):
     """Build out the time Gap information.
 
     If Time to First Report is greater than  Time to first Click
@@ -553,30 +560,31 @@ def latex_data_fields(labels, reportData):
         reportData["User_Report_bool"] = "false"
 
     for level in range(1, 7):
-        link_type = reportData["Level-{}-Complexity-Link_Domain".format(level)]
+        link_type = reportData[f"Level-{level}-Complexity-Link_Domain"]
 
         if link_type == "0":
-            reportData["Level-{}-Link_Type".format(level)] = "Written Out/Hover Over"
-            reportData["Level-{}-Hover_Over".format(level)] = ""
-            reportData["Level-{}-Display_Link".format(level)] = ""
+            reportData[f"Level-{level}-Link_Type"] = "Written Out/Hover Over"
+            reportData[f"Level-{level}-Hover_Over"] = ""
+            reportData[f"Level-{level}-Display_Link"] = ""
 
         else:
-            reportData["Level-{}-Link_Type".format(level)] = "Spoofed/Hidden"
+            reportData[f"Level-{level}-Link_Type"] = "Spoofed/Hidden"
             reportData[
-                "Level-{}-Hover_Over".format(level)
+                f"Level-{level}-Hover_Over"
             ] = "\\newline \\textbf{Hover Over:} \\newline"
 
-            display_link = reportData["Level-{}-Display_Link".format(level)]
+            display_link = reportData[f"Level-{level}-Display_Link"]
+            newline_indent = "\\newline\\indent"
             if any(url_item in display_link for url_item in URL_ID):
                 display_link = '"\\nolinkurl{' + display_link.replace('"', "") + '}"'
-                reportData["Level-{}-Display_Link".format(level)] = "{} {}".format(
-                    "\\newline\\indent",
-                    display_link.replace("http", "hxxp").replace(":", "[:]"),
-                )
+                display_link = display_link.replace("http", "hxxp").replace(":", "[:]")
+                reportData[
+                    f"Level-{level}-Display_Link"
+                ] = f"{newline_indent} {display_link}"
             else:
-                reportData["Level-{}-Display_Link".format(level)] = "{} {}".format(
-                    "\\newline\\indent", display_link
-                )
+                reportData[
+                    f"Level-{level}-Display_Link"
+                ] = f"{newline_indent} {display_link}"
 
     return reportData
 
@@ -584,7 +592,7 @@ def latex_data_fields(labels, reportData):
 def latex_dict_prep(dictionary):
     """Prepare dictionary for latex."""
     del dictionary["figures"]
-    for data_key, data_value in dictionary.items():
+    for data_key in dictionary.keys():
         if not any(exclude in data_key for exclude in LATEX_EXCLUDE_ESCAPE):
             for latex_key, latex_value in LATEX_ESCAPE_MAP.items():
                 try:
@@ -592,8 +600,8 @@ def latex_dict_prep(dictionary):
                         latex_key, latex_value
                     )
                 except AttributeError as e:
-                    print("Attribute error with {}: {}".format(data_key, e))
-                    pass
+                    print(f"Attribute error with {data_key}: {e}")
+
             if "url" in data_key.lower():
                 dictionary[data_key] = (
                     "\\nolinkurl{"
@@ -606,7 +614,7 @@ def latex_dict_prep(dictionary):
 
 def latex_builder(assessment_id, dataFile, labels, template):
     """Compile latex report."""
-    with open(dataFile) as f:
+    with open(dataFile, encoding="utf-8") as f:
         reportData = json.load(f)
 
     reportData["Report_Date"] = datetime.today().strftime("%B %d, %Y")
@@ -617,7 +625,8 @@ def latex_builder(assessment_id, dataFile, labels, template):
 
     reportData = latex_dict_prep(reportData)
 
-    template = codecs.open(template, "r", encoding="utf-8").read()
+    with codecs.open(template, "r", encoding="utf-8") as f:
+        template = f.read()
 
     # renderer = pystache.Renderer(string_encoding="utf-8")
 
@@ -625,10 +634,10 @@ def latex_builder(assessment_id, dataFile, labels, template):
 
     r = html.unescape(r)
 
-    with codecs.open(assessment_id + "_report.tex", "w", encoding="utf-8") as output:
+    with codecs.open(f"{assessment_id}_report.tex", "w", encoding="utf-8") as output:
         output.write(r)
 
-    for x in range(1, 3):
+    for _ in range(1, 3):
         # Bandit complains about the use of subprocess, but this
         # should be safe as this will only run "xelatex". The command
         # is hardcoded, which limits the ease of abuse. It could still be
@@ -647,7 +656,7 @@ def latex_builder(assessment_id, dataFile, labels, template):
 
 def assessment_metrics(dataFile):
     """Build the assessment metric file."""
-    with open(dataFile) as f:
+    with open(dataFile, encoding="utf-8") as f:
         reportData = json.load(f)
 
     dropped_keys = [
@@ -669,7 +678,9 @@ def assessment_metrics(dataFile):
     for level in reportData["Level"]:
         reportData["Level"][level].pop("Url", None)
 
-    with open("assessmentMetrics_" + reportData["_id"] + ".json", "w") as fp:
+    with open(
+        f"assessmentMetrics_{reportData['_id']}.json", "w", encoding="utf-8"
+    ) as fp:
         json.dump(reportData, fp, indent=4)
 
     print(
@@ -697,12 +708,13 @@ def main():
     # Tries to see if report data file is present.
     try:
         # Checks for report data file
-        f = open(data_file)
-        f.close()
+        with open(data_file, encoding="utf-8"):
+            pass
 
         # Checks for template file.
-        f = open(manual_data_file)
-        f.close()
+        with open(manual_data_file, encoding="utf-8"):
+            pass
+
     except IOError as e:
         print("ERROR- File not found: " + e.filename)
         success = False
@@ -744,7 +756,7 @@ def main():
 
             for folder in TO_COPY:
                 dir_src = os.path.join(original_working_dir, folder)
-                dir_dst = os.path.join(temp_working_dir, "{}".format(folder))
+                dir_dst = os.path.join(temp_working_dir, folder)
                 shutil.copytree(dir_src, dir_dst)
 
             latex_builder(
@@ -780,17 +792,9 @@ def main():
 
             shutil.rmtree(temp_working_dir)
 
-            print(
-                "Completed, Please see report: {}_report.pdf".format(
-                    args["ASSESSMENT_ID"]
-                )
-            )
+            print(f'Completed, Please see report: {args["ASSESSMENT_ID"]}_report.pdf')
 
     if success:
         return 0
-    else:
-        return 1
 
-
-if __name__ == "__main__":
-    sys.exit(main())
+    return 1

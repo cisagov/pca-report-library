@@ -22,7 +22,7 @@ RUN addgroup --system --gid $CISA_UID cisa \
   && adduser --system --uid $CISA_UID --ingroup cisa cisa
 
 # Install fonts
-COPY src/assets/fonts /usr/share/fonts/truetype/ncats
+COPY src/pca_report_library/assets/fonts /usr/share/fonts/truetype/ncats
 RUN fc-cache -fsv
 
 
